@@ -7,3 +7,6 @@ IQTest.xcodeproj/
 # Xcode 用户数据
 xcuserdata/
 *.xcuserstate
+
+# UI 测试 harness（xcodegen 生成）
+UITests/UITestHarness.xcodeproj/

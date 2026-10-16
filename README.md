@@ -114,15 +114,16 @@ xcrun simctl install <模拟器ID> \
   ~/Library/Developer/Xcode/DerivedData/IQTest-*/Build/Products/Debug-iphonesimulator/IQTest.app
 ```
 
-UI 测试使用 /tmp/iqtest_verify/uitest 下的独立 harness 工程（xcodegen 项目，DummyHost + XCUITest target），以黑盒方式驱动已安装的 app（bundle id `com.iqtest.IQTest`）：
+UI 测试 harness 已纳入仓库 `UITests/` 目录（xcodegen 工程：DummyHost + XCUITest target），以黑盒方式驱动已安装的 app（bundle id `com.iqtest.IQTest`）：
 
 ```bash
-cd /tmp/iqtest_verify/uitest && USER=$(id -un) xcodebuild test \
+cd UITests && USER=$(id -un) xcodegen   # 首次或新增文件后重新生成工程
+USER=$(id -un) xcodebuild test \
   -project UITestHarness.xcodeproj -scheme UITestHarness \
   -destination 'platform=iOS Simulator,id=<模拟器ID>'
 ```
 
-现有用例：`testRavenFlow`（瑞文 + 年龄输入）、`testWechslerFlow`（韦氏全流程 + 结果雷达图）、`testPracticeFlow`（练习模式 + 雷达图统计）。
+现有用例：`testRavenFlow`（瑞文 + 年龄输入）、`testWechslerFlow`（韦氏全流程 + 结果雷达图）、`testPracticeFlow`（练习模式 + 雷达图统计）。注意：测试不会自动构建/安装被测 app，需先执行上面的构建与 `simctl install`；测试过程会写入截图（断言留证）与 UserDefaults 数据（年龄、练习记录）。
 
 ## 已知坑（血泪经验）
 
