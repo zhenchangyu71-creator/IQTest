@@ -1,0 +1,9 @@
+# XcodeGen 生成的工程文件，用 xcodegen 重新生成
+IQTest.xcodeproj/
+
+# macOS
+.DS_Store
+
+# Xcode 用户数据
+xcuserdata/
+*.xcuserstate

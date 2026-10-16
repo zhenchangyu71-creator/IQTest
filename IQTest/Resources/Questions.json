@@ -1,0 +1,2018 @@
+[
+ {
+  "id": 1,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：2，4，6，8，？",
+  "options": [
+   "9",
+   "10",
+   "12",
+   "14"
+  ],
+  "correctIndex": 1,
+  "explanation": "公差为 2 的等差数列，8 + 2 = 10。"
+ },
+ {
+  "id": 2,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：5，10，15，20，？",
+  "options": [
+   "22",
+   "24",
+   "25",
+   "30"
+  ],
+  "correctIndex": 2,
+  "explanation": "5 的倍数依次递增，20 + 5 = 25。"
+ },
+ {
+  "id": 3,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：1，4，7，10，？",
+  "options": [
+   "12",
+   "13",
+   "14",
+   "15"
+  ],
+  "correctIndex": 1,
+  "explanation": "公差为 3 的等差数列，10 + 3 = 13。"
+ },
+ {
+  "id": 4,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "猫 : 动物 ＝ 玫瑰 : ？",
+  "options": [
+   "花瓣",
+   "植物",
+   "花园",
+   "香味"
+  ],
+  "correctIndex": 1,
+  "explanation": "猫属于动物，玫瑰属于植物，是种属关系。"
+ },
+ {
+  "id": 5,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "书 : 阅读 ＝ 音乐 : ？",
+  "options": [
+   "演唱",
+   "聆听",
+   "乐器",
+   "音符"
+  ],
+  "correctIndex": 1,
+  "explanation": "书用来阅读，音乐用来聆听，是对象与感知的对应。"
+ },
+ {
+  "id": 6,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "白天 : 夜晚 ＝ 夏天 : ？",
+  "options": [
+   "炎热",
+   "空调",
+   "冬天",
+   "游泳"
+  ],
+  "correctIndex": 2,
+  "explanation": "白天与夜晚相对，夏天与冬天相对，是反义对应。"
+ },
+ {
+  "id": 7,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "小明比小红高，小红比小华高。那么三人中最矮的是：",
+  "options": [
+   "小明",
+   "小红",
+   "小华",
+   "无法确定"
+  ],
+  "correctIndex": 2,
+  "explanation": "由小明 > 小红 > 小华，可知最矮的是小华。"
+ },
+ {
+  "id": 8,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "已知：所有的狗都会叫。旺财是一只狗。那么：",
+  "options": [
+   "旺财会叫",
+   "旺财不会叫",
+   "旺财是猫",
+   "无法判断"
+  ],
+  "correctIndex": 0,
+  "explanation": "由全称命题「所有狗都会叫」和「旺财是狗」，可直接推出旺财会叫。"
+ },
+ {
+  "id": 9,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "如果今天下雨，我就带伞。今天我没有带伞。那么：",
+  "options": [
+   "今天下雨了",
+   "今天没下雨",
+   "伞丢了",
+   "无法判断"
+  ],
+  "correctIndex": 1,
+  "explanation": "原命题的逆否命题成立：没带伞 ⇒ 今天没下雨。"
+ },
+ {
+  "id": 10,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：● ○ ● ○ ● ？",
+  "options": [
+   "●",
+   "○",
+   "◆",
+   "▲"
+  ],
+  "correctIndex": 1,
+  "explanation": "实心圆与空心圆交替出现，● 之后应为 ○。"
+ },
+ {
+  "id": 11,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：◆ ◆ ◇　◆ ◆ ◇　◆ ？",
+  "options": [
+   "◆",
+   "◇",
+   "●",
+   "△"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「◆ ◆ ◇」为一组循环，第三组第二个应为 ◆。"
+ },
+ {
+  "id": 12,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：★ ☆ ★ ☆ ★ ？",
+  "options": [
+   "★",
+   "☆",
+   "●",
+   "◆"
+  ],
+  "correctIndex": 1,
+  "explanation": "实心星与空心星交替出现，★ 之后应为 ☆。"
+ },
+ {
+  "id": 13,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：1，1，2，3，5，8，？",
+  "options": [
+   "11",
+   "12",
+   "13",
+   "15"
+  ],
+  "correctIndex": 2,
+  "explanation": "斐波那契数列，每项等于前两项之和：5 + 8 = 13。"
+ },
+ {
+  "id": 14,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：3，6，11，18，27，？",
+  "options": [
+   "36",
+   "38",
+   "40",
+   "42"
+  ],
+  "correctIndex": 1,
+  "explanation": "相邻差值为 3、5、7、9、11（连续奇数），27 + 11 = 38。"
+ },
+ {
+  "id": 15,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：100，81，64，49，？",
+  "options": [
+   "32",
+   "34",
+   "35",
+   "36"
+  ],
+  "correctIndex": 3,
+  "explanation": "各项依次为 10²、9²、8²、7²，下一项为 6² = 36。"
+ },
+ {
+  "id": 16,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "医生 : 医院 ＝ 教师 : ？",
+  "options": [
+   "课本",
+   "学校",
+   "学生",
+   "黑板"
+  ],
+  "correctIndex": 1,
+  "explanation": "医生工作于医院，教师工作于学校，是工作地点的对应关系。"
+ },
+ {
+  "id": 17,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "鸟 : 天空 ＝ 鱼 : ？",
+  "options": [
+   "水草",
+   "大海",
+   "鳞片",
+   "渔夫"
+  ],
+  "correctIndex": 1,
+  "explanation": "鸟的活动空间是天空，鱼的活动空间是大海。"
+ },
+ {
+  "id": 18,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "高兴 : 笑容 ＝ 悲伤 : ？",
+  "options": [
+   "眼泪",
+   "沉默",
+   "音乐",
+   "孤独"
+  ],
+  "correctIndex": 0,
+  "explanation": "高兴时自然流露笑容，悲伤时自然流露眼泪，是情绪与外在表现的对应。"
+ },
+ {
+  "id": 19,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "已知：所有的猫都是动物。Tom 是一只猫。那么：",
+  "options": [
+   "Tom 可能不是动物",
+   "Tom 是动物",
+   "Tom 是狗",
+   "无法判断"
+  ],
+  "correctIndex": 1,
+  "explanation": "由全称命题「所有猫都是动物」和「Tom 是猫」，可直接推出 Tom 是动物。"
+ },
+ {
+  "id": 20,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "如果今天是星期三，那么 49 天后是星期几？",
+  "options": [
+   "星期一",
+   "星期二",
+   "星期三",
+   "星期四"
+  ],
+  "correctIndex": 2,
+  "explanation": "49 ÷ 7 = 7 余 0，49 天恰好是整数个星期，所以仍是星期三。"
+ },
+ {
+  "id": 21,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "停车场里有汽车和摩托车共 20 辆，轮子总数 56 个（汽车 4 轮、摩托车 2 轮）。汽车有多少辆？",
+  "options": [
+   "6 辆",
+   "8 辆",
+   "10 辆",
+   "12 辆"
+  ],
+  "correctIndex": 1,
+  "explanation": "设汽车 x 辆、摩托车 y 辆：x + y = 20，4x + 2y = 56。解得 x = 8，y = 12。"
+ },
+ {
+  "id": 22,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：● ● ◆　● ● ◆　● ？",
+  "options": [
+   "●",
+   "◆",
+   "▲",
+   "○"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「● ● ◆」为一组循环，第三组开头是 ●。"
+ },
+ {
+  "id": 23,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：▲ △ ▲ △ ▲ ？",
+  "options": [
+   "▲",
+   "△",
+   "○",
+   "□"
+  ],
+  "correctIndex": 1,
+  "explanation": "实心与空心三角形交替出现，▲ 之后应为 △。"
+ },
+ {
+  "id": 24,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：★ ★ ☆　★ ★ ☆　★ ？",
+  "options": [
+   "☆",
+   "★",
+   "✦",
+   "○"
+  ],
+  "correctIndex": 1,
+  "explanation": "图案以「★ ★ ☆」为一组循环，第三组第二个应为 ★。"
+ },
+ {
+  "id": 25,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：1，11，21，1211，111221，？",
+  "options": [
+   "122211",
+   "312211",
+   "131221",
+   "112221"
+  ],
+  "correctIndex": 1,
+  "explanation": "报数数列：每一项描述上一项的组成。111221 读作「三个 1、两个 2、一个 1」，即 312211。"
+ },
+ {
+  "id": 26,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：1，2，6，15，31，？",
+  "options": [
+   "45",
+   "52",
+   "56",
+   "62"
+  ],
+  "correctIndex": 2,
+  "explanation": "相邻差值为 1、4、9、16、25（连续平方数），31 + 25 = 56。"
+ },
+ {
+  "id": 27,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：1，4，27，256，？",
+  "options": [
+   "1024",
+   "3125",
+   "625",
+   "5125"
+  ],
+  "correctIndex": 1,
+  "explanation": "各项依次为 1¹、2²、3³、4⁴，下一项为 5⁵ = 3125。"
+ },
+ {
+  "id": 28,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "时间 : 秒 ＝ 质量 : ？",
+  "options": [
+   "千克",
+   "天平",
+   "重量",
+   "重力"
+  ],
+  "correctIndex": 0,
+  "explanation": "秒是时间的国际单位，千克是质量的国际单位。"
+ },
+ {
+  "id": 29,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "莎士比亚 : 哈姆雷特 ＝ 曹雪芹 : ？",
+  "options": [
+   "西游记",
+   "红楼梦",
+   "水浒传",
+   "三国演义"
+  ],
+  "correctIndex": 1,
+  "explanation": "《哈姆雷特》是莎士比亚的代表作，《红楼梦》是曹雪芹的代表作。"
+ },
+ {
+  "id": 30,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "重力 : 下落 ＝ 浮力 : ？",
+  "options": [
+   "下沉",
+   "上浮",
+   "静止",
+   "旋转"
+  ],
+  "correctIndex": 1,
+  "explanation": "重力使物体下落，浮力使物体上浮，是力与运动趋势的对应。"
+ },
+ {
+  "id": 31,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "甲说：「乙在说谎。」乙说：「丙在说谎。」丙说：「甲和乙都在说谎。」三人中只有一人说了真话，他是：",
+  "options": [
+   "甲",
+   "乙",
+   "丙",
+   "无法确定"
+  ],
+  "correctIndex": 1,
+  "explanation": "假设乙说真话，则丙说谎（甲乙不都在说谎，成立），甲说的「乙在说谎」为假，甲也在说谎，恰好只有乙一人说真话；其他假设均矛盾。"
+ },
+ {
+  "id": 32,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "一个数除以 3 余 2，除以 5 余 3，除以 7 余 2。这个数最小是：",
+  "options": [
+   "23",
+   "28",
+   "33",
+   "38"
+  ],
+  "correctIndex": 0,
+  "explanation": "23 ÷ 3 余 2、÷ 5 余 3、÷ 7 余 2，均满足条件，且是满足条件的最小正整数。"
+ },
+ {
+  "id": 33,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "商店促销「买 3 送 1」，商品单价 24 元。一次性买 16 件，实际需要支付多少钱？",
+  "options": [
+   "384 元",
+   "336 元",
+   "288 元",
+   "144 元"
+  ],
+  "correctIndex": 2,
+  "explanation": "每 4 件只需付 3 件的钱，16 件分 4 组，共付 12 × 24 = 288 元。"
+ },
+ {
+  "id": 34,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：● ○　● ○ ○　● ○ ○ ○　？",
+  "options": [
+   "○",
+   "◆",
+   "●",
+   "▲"
+  ],
+  "correctIndex": 2,
+  "explanation": "一个 ● 后跟的 ○ 数量依次增加 1（1、2、3 个），下一组应重新开始，为 ●。"
+ },
+ {
+  "id": 35,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：▶ ▼ ◀ ▲ ？",
+  "options": [
+   "▶",
+   "▼",
+   "◀",
+   "▲"
+  ],
+  "correctIndex": 0,
+  "explanation": "箭头方向依次顺时针旋转 90°：右 → 下 → 左 → 上 → 右，所以下一个是 ▶。"
+ },
+ {
+  "id": 36,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：● ◆ ▲　● ◆ ▲　● ？",
+  "options": [
+   "●",
+   "▲",
+   "◆",
+   "☆"
+  ],
+  "correctIndex": 2,
+  "explanation": "图案以「● ◆ ▲」为一组循环，第三组第二个应为 ◆。"
+ },
+ {
+  "id": 37,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：3，6，9，12，？",
+  "options": [
+   "14",
+   "15",
+   "16",
+   "18"
+  ],
+  "correctIndex": 1,
+  "explanation": "公差为 3 的等差数列，12 + 3 = 15。"
+ },
+ {
+  "id": 38,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：2，4，8，16，？",
+  "options": [
+   "24",
+   "28",
+   "30",
+   "32"
+  ],
+  "correctIndex": 3,
+  "explanation": "等比数列，后一项是前一项的 2 倍，16 × 2 = 32。"
+ },
+ {
+  "id": 39,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：100，90，80，70，？",
+  "options": [
+   "50",
+   "60",
+   "65",
+   "68"
+  ],
+  "correctIndex": 1,
+  "explanation": "公差为 −10 的等差数列，70 − 10 = 60。"
+ },
+ {
+  "id": 40,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：1，3，5，7，？",
+  "options": [
+   "8",
+   "9",
+   "10",
+   "11"
+  ],
+  "correctIndex": 1,
+  "explanation": "连续奇数依次排列，7 之后是 9。"
+ },
+ {
+  "id": 41,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：7，14，21，28，？",
+  "options": [
+   "32",
+   "34",
+   "35",
+   "42"
+  ],
+  "correctIndex": 2,
+  "explanation": "7 的倍数依次递增，28 + 7 = 35。"
+ },
+ {
+  "id": 42,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "香蕉 : 水果 ＝ 黄瓜 : ？",
+  "options": [
+   "蔬菜",
+   "绿色",
+   "农田",
+   "沙拉"
+  ],
+  "correctIndex": 0,
+  "explanation": "香蕉属于水果，黄瓜属于蔬菜，是种属关系。"
+ },
+ {
+  "id": 43,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "眼睛 : 看 ＝ 耳朵 : ？",
+  "options": [
+   "听",
+   "说",
+   "闻",
+   "拿"
+  ],
+  "correctIndex": 0,
+  "explanation": "眼睛用来看，耳朵用来听，是器官与功能的对应。"
+ },
+ {
+  "id": 44,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "大 : 小 ＝ 高 : ？",
+  "options": [
+   "矮",
+   "长",
+   "胖",
+   "远"
+  ],
+  "correctIndex": 0,
+  "explanation": "大与小互为反义，高与矮互为反义。"
+ },
+ {
+  "id": 45,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "医生 : 治病 ＝ 老师 : ？",
+  "options": [
+   "教书",
+   "学校",
+   "学生",
+   "课本"
+  ],
+  "correctIndex": 0,
+  "explanation": "医生的职责是治病，老师的职责是教书，是职业与职责的对应。"
+ },
+ {
+  "id": 46,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "春天 : 播种 ＝ 秋天 : ？",
+  "options": [
+   "收获",
+   "开花",
+   "炎热",
+   "冬眠"
+  ],
+  "correctIndex": 0,
+  "explanation": "春天播种、秋天收获，是季节与农事活动的对应。"
+ },
+ {
+  "id": 47,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "大象比老虎重，老虎比狮子重。三者中最重的是：",
+  "options": [
+   "老虎",
+   "狮子",
+   "大象",
+   "无法确定"
+  ],
+  "correctIndex": 2,
+  "explanation": "由大象 > 老虎 > 狮子，可知最重的是大象。"
+ },
+ {
+  "id": 48,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "桌上有 4 个苹果，小明吃掉 1 个，妈妈又买来 2 个。现在桌上有几个苹果？",
+  "options": [
+   "4 个",
+   "5 个",
+   "6 个",
+   "3 个"
+  ],
+  "correctIndex": 1,
+  "explanation": "4 − 1 + 2 = 5，现在有 5 个苹果。"
+ },
+ {
+  "id": 49,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "如果明天下雪，学校就停课。学校没有停课。那么：",
+  "options": [
+   "明天下雪了",
+   "明天没下雪",
+   "学校提前放学了",
+   "无法判断"
+  ],
+  "correctIndex": 1,
+  "explanation": "逆否命题成立：没有停课 ⇒ 明天没下雪。"
+ },
+ {
+  "id": 50,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "小朋友排成一队，小华排第 3 个，小明排第 5 个。小华和小明之间有几个人？",
+  "options": [
+   "1 个人",
+   "2 个人",
+   "3 个人",
+   "没有人"
+  ],
+  "correctIndex": 0,
+  "explanation": "第 3 和第 5 之间是第 4 个位置，共 1 个人。"
+ },
+ {
+  "id": 51,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "三个人每两个人握一次手，一共握了几次手？",
+  "options": [
+   "2 次",
+   "3 次",
+   "4 次",
+   "6 次"
+  ],
+  "correctIndex": 1,
+  "explanation": "三人两两组合共 C(3,2) = 3 次握手。"
+ },
+ {
+  "id": 52,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：■ □ ■ □ ■ ？",
+  "options": [
+   "□",
+   "■",
+   "▲",
+   "○"
+  ],
+  "correctIndex": 0,
+  "explanation": "实心方块与空心方块交替出现，■ 之后应为 □。"
+ },
+ {
+  "id": 53,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：● ● ○ ○　● ● ○ ○　● ？",
+  "options": [
+   "●",
+   "○",
+   "▲",
+   "△"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「● ● ○ ○」为一组循环，第三组第二个应为 ●。"
+ },
+ {
+  "id": 54,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：▲ ▲ ▲ △　▲ ▲ ▲ △　▲ ？",
+  "options": [
+   "△",
+   "▲",
+   "●",
+   "■"
+  ],
+  "correctIndex": 1,
+  "explanation": "图案以「▲ ▲ ▲ △」为一组循环，第三组第二个应为 ▲。"
+ },
+ {
+  "id": 55,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：● ▲ ■　● ▲ ■　● ？",
+  "options": [
+   "▲",
+   "●",
+   "■",
+   "◆"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「● ▲ ■」为一组循环，第三组第二个应为 ▲。"
+ },
+ {
+  "id": 56,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：○ ○ ●　○ ○ ●　○ ？",
+  "options": [
+   "○",
+   "●",
+   "▲",
+   "■"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「○ ○ ●」为一组循环，第三组第二个应为 ○。"
+ },
+ {
+  "id": 57,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：2，3，5，8，12，17，？",
+  "options": [
+   "22",
+   "23",
+   "24",
+   "25"
+  ],
+  "correctIndex": 1,
+  "explanation": "相邻差值为 1、2、3、4、5、6（连续递增），17 + 6 = 23。"
+ },
+ {
+  "id": 58,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：1，4，9，16，25，？",
+  "options": [
+   "30",
+   "32",
+   "36",
+   "49"
+  ],
+  "correctIndex": 2,
+  "explanation": "各项依次为 1²、2²、3²、4²、5²，下一项为 6² = 36。"
+ },
+ {
+  "id": 59,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：2，6，12，20，30，？",
+  "options": [
+   "36",
+   "40",
+   "42",
+   "44"
+  ],
+  "correctIndex": 2,
+  "explanation": "相邻差值为 4、6、8、10、12（连续偶数），30 + 12 = 42。"
+ },
+ {
+  "id": 60,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：5，7，11，17，25，？",
+  "options": [
+   "33",
+   "34",
+   "35",
+   "37"
+  ],
+  "correctIndex": 2,
+  "explanation": "相邻差值为 2、4、6、8、10（连续偶数），25 + 10 = 35。"
+ },
+ {
+  "id": 61,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：2，5，10，17，26，？",
+  "options": [
+   "35",
+   "36",
+   "37",
+   "38"
+  ],
+  "correctIndex": 2,
+  "explanation": "各项依次为 1²+1、2²+1、3²+1、4²+1、5²+1，下一项为 6²+1 = 37。"
+ },
+ {
+  "id": 62,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "律师 : 法庭 ＝ 演员 : ？",
+  "options": [
+   "舞台",
+   "剧本",
+   "观众",
+   "电影"
+  ],
+  "correctIndex": 0,
+  "explanation": "律师的工作场所是法庭，演员的表演场所是舞台。"
+ },
+ {
+  "id": 63,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "笔 : 写字 ＝ 刀 : ？",
+  "options": [
+   "切割",
+   "锋利",
+   "砧板",
+   "厨师"
+  ],
+  "correctIndex": 0,
+  "explanation": "笔的功能是写字，刀的功能是切割，是工具与用途的对应。"
+ },
+ {
+  "id": 64,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "种子 : 树 ＝ 幼虫 : ？",
+  "options": [
+   "蝴蝶",
+   "树叶",
+   "鸟巢",
+   "春天"
+  ],
+  "correctIndex": 0,
+  "explanation": "种子发育成长为树，幼虫发育成长为蝴蝶，是成长阶段的对应。"
+ },
+ {
+  "id": 65,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "明亮 : 黑暗 ＝ 干燥 : ？",
+  "options": [
+   "潮湿",
+   "炎热",
+   "寒冷",
+   "沙漠"
+  ],
+  "correctIndex": 0,
+  "explanation": "明亮与黑暗互为反义，干燥与潮湿互为反义。"
+ },
+ {
+  "id": 66,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "指南针 : 方向 ＝ 温度计 : ？",
+  "options": [
+   "温度",
+   "刻度",
+   "水银",
+   "天气"
+  ],
+  "correctIndex": 0,
+  "explanation": "指南针用于指示方向，温度计用于测量温度，是仪器与功能的对应。"
+ },
+ {
+  "id": 67,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "鸡和兔共 15 只，腿共 40 条（鸡 2 条腿、兔 4 条腿）。兔有多少只？",
+  "options": [
+   "3 只",
+   "5 只",
+   "7 只",
+   "10 只"
+  ],
+  "correctIndex": 1,
+  "explanation": "设兔 x 只、鸡 15 − x 只：4x + 2(15 − x) = 40，解得 x = 5。"
+ },
+ {
+  "id": 68,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "5 台机器 5 分钟做 5 个零件，照此速度，100 台机器做 100 个零件需要多久？",
+  "options": [
+   "5 分钟",
+   "20 分钟",
+   "100 分钟",
+   "1 分钟"
+  ],
+  "correctIndex": 0,
+  "explanation": "每台机器 5 分钟做 1 个零件，100 台各做 1 个仍需 5 分钟。"
+ },
+ {
+  "id": 69,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "一项工程，甲单独做 12 天完成，乙单独做 6 天完成。两人合作几天完成？",
+  "options": [
+   "3 天",
+   "4 天",
+   "6 天",
+   "9 天"
+  ],
+  "correctIndex": 1,
+  "explanation": "合作效率为 1/12 + 1/6 = 1/4，故需 4 天完成。"
+ },
+ {
+  "id": 70,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "如果今天是星期二，那么 100 天后是星期几？",
+  "options": [
+   "星期一",
+   "星期三",
+   "星期四",
+   "星期六"
+  ],
+  "correctIndex": 2,
+  "explanation": "100 ÷ 7 余 2，星期二往后 2 天是星期四。"
+ },
+ {
+  "id": 71,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "已知：A 比 B 高，B 比 C 矮，C 比 D 高。四人中最高的是：",
+  "options": [
+   "A",
+   "C",
+   "D",
+   "无法确定"
+  ],
+  "correctIndex": 3,
+  "explanation": "由 A > B、C > B、C > D，只能确定 B、D 不是最高，A 与 C 无法比较。"
+ },
+ {
+  "id": 72,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：▲ ▲ △ △　▲ ▲ △ △　▲ ？",
+  "options": [
+   "▲",
+   "△",
+   "●",
+   "○"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「▲ ▲ △ △」为一组循环，第三组第二个应为 ▲。"
+ },
+ {
+  "id": 73,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：● ○ ○　● ○ ○　● ○ ？",
+  "options": [
+   "●",
+   "○",
+   "▲",
+   "★"
+  ],
+  "correctIndex": 1,
+  "explanation": "图案以「● ○ ○」为一组循环，第三组末尾应为 ○。"
+ },
+ {
+  "id": 74,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：■ □ □　■ □ □　■ ？",
+  "options": [
+   "□",
+   "■",
+   "△",
+   "○"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「■ □ □」为一组循环，第三组第二个应为 □。"
+ },
+ {
+  "id": 75,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：△ ▲ △ ▲ △ ？",
+  "options": [
+   "▲",
+   "△",
+   "★",
+   "●"
+  ],
+  "correctIndex": 0,
+  "explanation": "空心三角形与实心三角形交替出现，△ 之后应为 ▲。"
+ },
+ {
+  "id": 76,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：● ◆ ● ◆ ◆　● ◆ ● ◆ ◆　● ？",
+  "options": [
+   "●",
+   "◆",
+   "▲",
+   "☆"
+  ],
+  "correctIndex": 1,
+  "explanation": "图案以「● ◆ ● ◆ ◆」为一组循环，第三组第二个应为 ◆。"
+ },
+ {
+  "id": 77,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：2，3，5，9，17，？",
+  "options": [
+   "31",
+   "32",
+   "33",
+   "35"
+  ],
+  "correctIndex": 2,
+  "explanation": "相邻差值为 1、2、4、8、16（依次翻倍），17 + 16 = 33。"
+ },
+ {
+  "id": 78,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：1，2，6，24，120，？",
+  "options": [
+   "240",
+   "360",
+   "620",
+   "720"
+  ],
+  "correctIndex": 3,
+  "explanation": "阶乘数列，各项依次为 1!、2!、3!、4!、5!，下一项为 6! = 720。"
+ },
+ {
+  "id": 79,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：3，5，9，17，33，？",
+  "options": [
+   "63",
+   "64",
+   "65",
+   "67"
+  ],
+  "correctIndex": 2,
+  "explanation": "后一项等于前一项的 2 倍减 1：33 × 2 − 1 = 65。"
+ },
+ {
+  "id": 80,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：1，8，27，64，125，？",
+  "options": [
+   "216",
+   "186",
+   "206",
+   "226"
+  ],
+  "correctIndex": 0,
+  "explanation": "各项依次为 1³、2³、3³、4³、5³，下一项为 6³ = 216。"
+ },
+ {
+  "id": 81,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：1，3，7，15，31，？",
+  "options": [
+   "61",
+   "62",
+   "63",
+   "65"
+  ],
+  "correctIndex": 2,
+  "explanation": "各项依次为 2¹−1、2²−1、2³−1、2⁴−1、2⁵−1，下一项为 2⁶−1 = 63。"
+ },
+ {
+  "id": 82,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "牛顿 : 万有引力 ＝ 瓦特 : ？",
+  "options": [
+   "蒸汽机",
+   "电灯",
+   "电话",
+   "电磁感应"
+  ],
+  "correctIndex": 0,
+  "explanation": "万有引力是牛顿的标志性成就，改良蒸汽机是瓦特的标志性成就。"
+ },
+ {
+  "id": 83,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "故宫 : 北京 ＝ 金字塔 : ？",
+  "options": [
+   "开罗",
+   "罗马",
+   "伦敦",
+   "巴黎"
+  ],
+  "correctIndex": 0,
+  "explanation": "故宫位于北京，金字塔位于开罗附近，是地标与所在城市的对应。"
+ },
+ {
+  "id": 84,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "安全 : 危险 ＝ 诚实 : ？",
+  "options": [
+   "虚伪",
+   "善良",
+   "聪明",
+   "坦率"
+  ],
+  "correctIndex": 0,
+  "explanation": "安全与危险互为反义，诚实与虚伪互为反义。"
+ },
+ {
+  "id": 85,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "小学 : 中学 : 大学 ＝ 种子 : 幼苗 : ？",
+  "options": [
+   "大树",
+   "花朵",
+   "果实",
+   "森林"
+  ],
+  "correctIndex": 0,
+  "explanation": "小学、中学、大学是递进的学习阶段，种子、幼苗、大树是递进的生长阶段。"
+ },
+ {
+  "id": 86,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "显微镜 : 观察 ＝ 天平 : ？",
+  "options": [
+   "称量",
+   "平衡",
+   "砝码",
+   "实验室"
+  ],
+  "correctIndex": 0,
+  "explanation": "显微镜用于观察，天平用于称量，是仪器与功能的对应。"
+ },
+ {
+  "id": 87,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "袋中有红、黄、蓝三种颜色的球各 10 个，闭上眼睛摸球。至少摸出多少个，才能保证一定有 3 个颜色相同的球？",
+  "options": [
+   "6 个",
+   "7 个",
+   "8 个",
+   "9 个"
+  ],
+  "correctIndex": 1,
+  "explanation": "最不利情况是每种颜色各摸 2 个（共 6 个），再摸 1 个必凑成 3 同色，故至少 7 个。"
+ },
+ {
+  "id": 88,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "父亲今年 40 岁，儿子今年 10 岁。几年后父亲的年龄恰好是儿子的 3 倍？",
+  "options": [
+   "3 年",
+   "5 年",
+   "8 年",
+   "10 年"
+  ],
+  "correctIndex": 1,
+  "explanation": "设 x 年后：40 + x = 3(10 + x)，解得 x = 5。"
+ },
+ {
+  "id": 89,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "三个盒子分别装有苹果、橘子、两者混合，但三个标签「苹果」「橘子」「混合」全部贴错。只能从一个盒子中拿出一个水果，要据此确定三个盒子的内容，应该从贴哪个标签的盒子拿？",
+  "options": [
+   "贴「苹果」的",
+   "贴「橘子」的",
+   "贴「混合」的",
+   "任意一个都可以"
+  ],
+  "correctIndex": 2,
+  "explanation": "标签全错，贴「混合」的盒子里必为纯苹果或纯橘子；摸出一个确定它后，可由「全错」推出另外两个。"
+ },
+ {
+  "id": 90,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "甲、乙、丙三人赛跑，赛后三人都说了真话：甲说「我不是第一名」，乙说「我不是第二名」，丙说「我比甲慢」。三人的第二名是：",
+  "options": [
+   "甲",
+   "乙",
+   "丙",
+   "无法确定"
+  ],
+  "correctIndex": 0,
+  "explanation": "逐一验证六种名次组合，只有「乙第一、甲第二、丙第三」让三人的话同时为真。"
+ },
+ {
+  "id": 91,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "9 个外观相同的小球，其中 1 个较轻，其余一样重。用天平称重，至少称几次才能保证找出轻球？",
+  "options": [
+   "1 次",
+   "2 次",
+   "3 次",
+   "4 次"
+  ],
+  "correctIndex": 1,
+  "explanation": "把 9 球分成 3、3、3 三组：第一次称可锁定较轻一组，第二次称其中两个即可找出，至少 2 次。"
+ },
+ {
+  "id": 92,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：● ● ○　● ● ○　● ● ？",
+  "options": [
+   "○",
+   "●",
+   "◆",
+   "▲"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「● ● ○」为一组循环，第三组末尾应为 ○。"
+ },
+ {
+  "id": 93,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：▲ △ △　▲ ▲ △ △　▲ ▲ ▲ △ △　？",
+  "options": [
+   "▲",
+   "△",
+   "●",
+   "■"
+  ],
+  "correctIndex": 0,
+  "explanation": "每组依次为 1 个 ▲、2 个 ▲、3 个 ▲ 加 2 个 △，下一组从 ▲ 开始。"
+ },
+ {
+  "id": 94,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：■ ■ □ □ □　■ ■ □ □ □　■ ？",
+  "options": [
+   "■",
+   "□",
+   "▲",
+   "○"
+  ],
+  "correctIndex": 0,
+  "explanation": "图案以「■ ■ □ □ □」为一组循环，第三组第二个应为 ■。"
+ },
+ {
+  "id": 95,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：★ ☆ ☆　★ ★ ☆　★ ★ ★ ？",
+  "options": [
+   "★",
+   "☆",
+   "◆",
+   "●"
+  ],
+  "correctIndex": 0,
+  "explanation": "每组中 ★ 依次多一个：1 个、2 个、3 个，下一组从 ★ 开始。"
+ },
+ {
+  "id": 96,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：▶ ▶ ▼ ▼ ◀ ◀ ▲ ▲ ？",
+  "options": [
+   "▶",
+   "▼",
+   "◀",
+   "▲"
+  ],
+  "correctIndex": 0,
+  "explanation": "箭头按顺时针每次旋转 90°，每个方向出现两次：右右、下下、左左、上上，下一个是 ▶。"
+ },
+ {
+  "id": 97,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：3，6，9，12，？",
+  "options": [
+   "14",
+   "15",
+   "16",
+   "18"
+  ],
+  "correctIndex": 1,
+  "explanation": "公差为 3 的等差数列，12 + 3 = 15。"
+ },
+ {
+  "id": 98,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：1，4，7，10，？",
+  "options": [
+   "11",
+   "12",
+   "13",
+   "15"
+  ],
+  "correctIndex": 2,
+  "explanation": "公差为 3 的等差数列，10 + 3 = 13。"
+ },
+ {
+  "id": 99,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：2，6，10，14，？",
+  "options": [
+   "16",
+   "17",
+   "18",
+   "20"
+  ],
+  "correctIndex": 2,
+  "explanation": "公差为 4 的等差数列，14 + 4 = 18。"
+ },
+ {
+  "id": 100,
+  "difficulty": "easy",
+  "category": "number",
+  "prompt": "数列：64，32，16，8，？",
+  "options": [
+   "2",
+   "3",
+   "4",
+   "6"
+  ],
+  "correctIndex": 2,
+  "explanation": "每次除以 2，8 ÷ 2 = 4。"
+ },
+ {
+  "id": 101,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：1，1，2，3，5，8，？",
+  "options": [
+   "11",
+   "12",
+   "13",
+   "15"
+  ],
+  "correctIndex": 2,
+  "explanation": "斐波那契数列，从第三项起每项等于前两项之和，5 + 8 = 13。"
+ },
+ {
+  "id": 102,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：2，3，5，9，17，？",
+  "options": [
+   "25",
+   "31",
+   "33",
+   "35"
+  ],
+  "correctIndex": 2,
+  "explanation": "相邻两项的差依次为 1、2、4、8、16，17 + 16 = 33。"
+ },
+ {
+  "id": 103,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：1，4，9，16，25，？",
+  "options": [
+   "30",
+   "32",
+   "35",
+   "36"
+  ],
+  "correctIndex": 3,
+  "explanation": "依次为 1²、2²、3²、4²、5²，下一项 6² = 36。"
+ },
+ {
+  "id": 104,
+  "difficulty": "medium",
+  "category": "number",
+  "prompt": "数列：3，5，9，17，33，？",
+  "options": [
+   "49",
+   "63",
+   "65",
+   "66"
+  ],
+  "correctIndex": 2,
+  "explanation": "每项 = 前项 × 2 − 1，33 × 2 − 1 = 65。"
+ },
+ {
+  "id": 105,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：2，6，12，20，30，？",
+  "options": [
+   "36",
+   "40",
+   "42",
+   "56"
+  ],
+  "correctIndex": 2,
+  "explanation": "依次为 1×2、2×3、3×4、4×5、5×6，下一项 6×7 = 42。"
+ },
+ {
+  "id": 106,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：1，8，27，64，？",
+  "options": [
+   "81",
+   "100",
+   "121",
+   "125"
+  ],
+  "correctIndex": 3,
+  "explanation": "依次为 1³、2³、3³、4³，下一项 5³ = 125。"
+ },
+ {
+  "id": 107,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：5，11，23，47，？",
+  "options": [
+   "71",
+   "89",
+   "95",
+   "94"
+  ],
+  "correctIndex": 2,
+  "explanation": "每项 = 前项 × 2 + 1，47 × 2 + 1 = 95。"
+ },
+ {
+  "id": 108,
+  "difficulty": "hard",
+  "category": "number",
+  "prompt": "数列：1，2，6，24，120，？",
+  "options": [
+   "240",
+   "360",
+   "600",
+   "720"
+  ],
+  "correctIndex": 3,
+  "explanation": "阶乘数列 1!、2!、3!、4!、5!，下一项 6! = 720。"
+ },
+ {
+  "id": 109,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "苹果 : 水果 ＝ 土豆 : ？",
+  "options": [
+   "淀粉",
+   "蔬菜",
+   "土地",
+   "薯条"
+  ],
+  "correctIndex": 1,
+  "explanation": "苹果是水果的一种，土豆是蔬菜的一种，都是种属关系。"
+ },
+ {
+  "id": 110,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "医生 : 医院 ＝ 教师 : ？",
+  "options": [
+   "学生",
+   "学校",
+   "教室",
+   "课本"
+  ],
+  "correctIndex": 1,
+  "explanation": "医生在医院工作，教师在学校工作，都是职业与工作地点的关系。"
+ },
+ {
+  "id": 111,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "眼睛 : 看 ＝ 耳朵 : ？",
+  "options": [
+   "声音",
+   "听",
+   "头部",
+   "耳朵"
+  ],
+  "correctIndex": 1,
+  "explanation": "眼睛用来看，耳朵用来听，都是感觉器官与功能的关系。"
+ },
+ {
+  "id": 112,
+  "difficulty": "easy",
+  "category": "verbal",
+  "prompt": "鸟 : 巢 ＝ 蜜蜂 : ？",
+  "options": [
+   "花朵",
+   "蜂蜜",
+   "蜂房",
+   "翅膀"
+  ],
+  "correctIndex": 2,
+  "explanation": "鸟住在巢里，蜜蜂住在蜂房里，都是动物与住所的关系。"
+ },
+ {
+  "id": 113,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "剪刀 : 布匹 ＝ 锄头 : ？",
+  "options": [
+   "菜园",
+   "土地",
+   "农民",
+   "庄稼"
+  ],
+  "correctIndex": 1,
+  "explanation": "剪刀用来裁布匹，锄头用来锄土地，都是工具与作用对象的关系。"
+ },
+ {
+  "id": 114,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "蜜蜂 : 蜂蜜 ＝ 奶牛 : ？",
+  "options": [
+   "青草",
+   "牛奶",
+   "农场",
+   "牛角"
+  ],
+  "correctIndex": 1,
+  "explanation": "蜜蜂产出蜂蜜，奶牛产出牛奶，都是动物与产出的关系。"
+ },
+ {
+  "id": 115,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "种子 : 树 ＝ 幼虫 : ？",
+  "options": [
+   "卵",
+   "蝴蝶",
+   "毛毛虫",
+   "蛹"
+  ],
+  "correctIndex": 1,
+  "explanation": "种子长成树，幼虫长成蝴蝶，都是生物不同发育阶段的对应。"
+ },
+ {
+  "id": 116,
+  "difficulty": "medium",
+  "category": "verbal",
+  "prompt": "医生 : 处方 ＝ 律师 : ？",
+  "options": [
+   "诉状",
+   "法庭",
+   "法官",
+   "客户"
+  ],
+  "correctIndex": 0,
+  "explanation": "医生开处方，律师写诉状，都是职业与其出具文书的对应。"
+ },
+ {
+  "id": 117,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "呢喃 : 细语 ＝ 咆哮 : ？",
+  "options": [
+   "怒吼",
+   "低语",
+   "微笑",
+   "沉默"
+  ],
+  "correctIndex": 0,
+  "explanation": "呢喃与细语是近义词，咆哮与怒吼是近义词，且程度由轻到重。"
+ },
+ {
+  "id": 118,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "画饼充饥 : 望梅止渴 ＝ 卧虎藏龙 : ？",
+  "options": [
+   "藏龙卧虎",
+   "叶公好龙",
+   "龙争虎斗",
+   "如虎添翼"
+  ],
+  "correctIndex": 0,
+  "explanation": "画饼充饥与望梅止渴都比喻用空想安慰自己，为近义并列；藏龙卧虎与卧虎藏龙同义。"
+ },
+ {
+  "id": 119,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "凤毛麟角 : 稀少 ＝ 汗牛充栋 : ？",
+  "options": [
+   "繁多",
+   "珍贵",
+   "勤劳",
+   "沉重"
+  ],
+  "correctIndex": 0,
+  "explanation": "凤毛麟角形容稀少，汗牛充栋形容书籍极多，都是成语与其含义的对应。"
+ },
+ {
+  "id": 120,
+  "difficulty": "hard",
+  "category": "verbal",
+  "prompt": "榜样 : 效仿 ＝ 警钟 : ？",
+  "options": [
+   "警醒",
+   "声音",
+   "敲打",
+   "金属"
+  ],
+  "correctIndex": 0,
+  "explanation": "榜样的作用是供人效仿，警钟的作用是使人警醒，都是事物与功能的对应。"
+ },
+ {
+  "id": 121,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "所有的猫都怕水，咪咪是一只猫，那么咪咪：",
+  "options": [
+   "不怕水",
+   "怕水",
+   "可能会游泳",
+   "不一定"
+  ],
+  "correctIndex": 1,
+  "explanation": "由『所有猫都怕水』和『咪咪是猫』可直接推出咪咪怕水。"
+ },
+ {
+  "id": 122,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "盒子里只有红球和蓝球，摸出一个球，它不是红球，那么它：",
+  "options": [
+   "一定是蓝球",
+   "可能是红球",
+   "一定不是球",
+   "无法确定"
+  ],
+  "correctIndex": 0,
+  "explanation": "盒中只有红、蓝两种球，不是红球就一定是蓝球。"
+ },
+ {
+  "id": 123,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "如果明天下雨，运动会就延期。已知运动会没有延期，那么明天：",
+  "options": [
+   "下雨了",
+   "没有下雨",
+   "可能是阴天",
+   "无法确定"
+  ],
+  "correctIndex": 1,
+  "explanation": "『下雨 → 延期』的逆否命题是『不延期 → 不下雨』，所以明天没有下雨。"
+ },
+ {
+  "id": 124,
+  "difficulty": "easy",
+  "category": "logic",
+  "prompt": "甲比乙高，丙比乙矮，丁比丙高。四人中最矮的是：",
+  "options": [
+   "甲",
+   "乙",
+   "丙",
+   "丁"
+  ],
+  "correctIndex": 2,
+  "explanation": "由条件可知甲、乙、丁都比丙高，所以最矮的是丙。"
+ },
+ {
+  "id": 125,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "某班 30 人，喜欢数学的有 18 人，喜欢语文的有 15 人，两门都喜欢的至少有几人？",
+  "options": [
+   "0 人",
+   "2 人",
+   "3 人",
+   "5 人"
+  ],
+  "correctIndex": 2,
+  "explanation": "18 + 15 − 30 = 3，由容斥原理，两门都喜欢的至少有 3 人。"
+ },
+ {
+  "id": 126,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "甲、乙、丙三人中只有一人做了好事，也只有一人说了真话。甲说：『是乙做的。』乙说：『不是我做的。』好事是谁做的？",
+  "options": [
+   "甲",
+   "乙",
+   "丙",
+   "无法确定"
+  ],
+  "correctIndex": 2,
+  "explanation": "若乙说真话，则甲说的『是乙』为假、丙说的『不是我』为假，恰有一真，好事是丙做的；其他假设均导致不止一人说真话或无人说真话。"
+ },
+ {
+  "id": 127,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "前提：所有会飞的动物都有翅膀。已知蝙蝠有翅膀。结论：蝙蝠会飞。这个结论：",
+  "options": [
+   "一定正确",
+   "一定错误",
+   "无法由前提确定",
+   "前提本身错误"
+  ],
+  "correctIndex": 2,
+  "explanation": "有翅膀只是会飞的必要条件而非充分条件，有翅膀推不出一定会飞。"
+ },
+ {
+  "id": 128,
+  "difficulty": "medium",
+  "category": "logic",
+  "prompt": "甲、乙、丙、丁四人赛跑。甲不是第一也不是最后；乙跑在丙前面；丁是最后。第一是谁？",
+  "options": [
+   "甲",
+   "乙",
+   "丙",
+   "丁"
+  ],
+  "correctIndex": 1,
+  "explanation": "丁最后、甲不是第一，故第一只能是乙或丙；乙在丙前面，所以乙第一。"
+ },
+ {
+  "id": 129,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "走廊有编号 1–100 的灯共 100 盏，开始全灭。第 1 人拉所有 1 的倍数的灯，第 2 人拉所有 2 的倍数的灯……第 100 人拉所有 100 的倍数的灯。最后亮着的灯有几盏？",
+  "options": [
+   "9 盏",
+   "10 盏",
+   "11 盏",
+   "50 盏"
+  ],
+  "correctIndex": 1,
+  "explanation": "灯被拉的次数等于其编号的约数个数，只有完全平方数的约数个数为奇数，1–100 共有 10 个完全平方数。"
+ },
+ {
+  "id": 130,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "甲、乙、丙、丁四人中有一人打碎了花瓶。甲说：『是乙打碎的。』乙说：『是丁打碎的。』丙说：『不是我打碎的。』丁说：『乙在说谎。』已知四人中只有一人说了真话，打碎花瓶的是谁？",
+  "options": [
+   "甲",
+   "乙",
+   "丙",
+   "丁"
+  ],
+  "correctIndex": 2,
+  "explanation": "逐一假设：若是甲，则丙、丁都说真话；若是乙，则甲、丙、丁都说真话；若是丁，则乙说真话；均不止一人说真话。若是丙，则只有丁说真话（乙确实在说谎），恰好符合。"
+ },
+ {
+  "id": 131,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "袋中有 3 个红球、2 个白球，不放回地摸出 2 个，两球同色的概率是：",
+  "options": [
+   "1/5",
+   "2/5",
+   "3/5",
+   "4/5"
+  ],
+  "correctIndex": 1,
+  "explanation": "同色情况有 C(3,2)+C(2,2)=4 种，总情况 C(5,2)=10 种，概率 4/10=2/5。"
+ },
+ {
+  "id": 132,
+  "difficulty": "hard",
+  "category": "logic",
+  "prompt": "岛上只有骑士（总说真话）和无赖（总说假话）。甲说：『乙是无赖。』乙说：『甲和我是同一种人。』那么乙是：",
+  "options": [
+   "骑士",
+   "无赖",
+   "无法确定",
+   "有时真有时假"
+  ],
+  "correctIndex": 1,
+  "explanation": "若甲是骑士，则乙是无赖，乙说假话，两人不同类，一致；若甲是无赖，则乙是骑士，乙说真话要求两人同类，矛盾。故乙是无赖。"
+ },
+ {
+  "id": 133,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：▲ ▲ ■ ▲ ▲ ■ ▲ ？",
+  "options": [
+   "▲",
+   "■",
+   "◆",
+   "●"
+  ],
+  "correctIndex": 0,
+  "explanation": "以『▲ ▲ ■』三个为一组循环，▲ 后应接下一组的第一个 ▲。"
+ },
+ {
+  "id": 134,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：○ ◇ ○ ◇ ○ ？",
+  "options": [
+   "○",
+   "◇",
+   "●",
+   "◆"
+  ],
+  "correctIndex": 1,
+  "explanation": "○ 与 ◇ 交替出现，○ 之后应为 ◇。"
+ },
+ {
+  "id": 135,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：● ● ○ ○ ● ● ？",
+  "options": [
+   "●",
+   "○",
+   "◆",
+   "▲"
+  ],
+  "correctIndex": 1,
+  "explanation": "两个 ● 接两个 ○ 循环，●● 之后应为 ○。"
+ },
+ {
+  "id": 136,
+  "difficulty": "easy",
+  "category": "pattern",
+  "prompt": "图形规律：↑ ↑ ↓ ↑ ↑ ？",
+  "options": [
+   "↑",
+   "↓",
+   "←",
+   "→"
+  ],
+  "correctIndex": 1,
+  "explanation": "两个 ↑ 接一个 ↓ 循环，↑↑ 之后应为 ↓。"
+ },
+ {
+  "id": 137,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：● ○ ○ ● ○ ○ ● ？",
+  "options": [
+   "●",
+   "○",
+   "◆",
+   "▲"
+  ],
+  "correctIndex": 1,
+  "explanation": "一个 ● 接两个 ○ 循环，● 之后应为 ○。"
+ },
+ {
+  "id": 138,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：▲ ■ ▲ ■ ▲ ？",
+  "options": [
+   "▲",
+   "■",
+   "●",
+   "◆"
+  ],
+  "correctIndex": 1,
+  "explanation": "▲ 与 ■ 交替出现，▲ 之后应为 ■。"
+ },
+ {
+  "id": 139,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：☆ ★ ★ ☆ ★ ★ ☆ ？",
+  "options": [
+   "☆",
+   "★",
+   "●",
+   "▲"
+  ],
+  "correctIndex": 1,
+  "explanation": "一个 ☆ 接两个 ★ 循环，☆ 之后应为 ★。"
+ },
+ {
+  "id": 140,
+  "difficulty": "medium",
+  "category": "pattern",
+  "prompt": "图形规律：● ◆ ▲ ● ◆ ▲ ● ？",
+  "options": [
+   "●",
+   "◆",
+   "▲",
+   "■"
+  ],
+  "correctIndex": 1,
+  "explanation": "『● ◆ ▲』三个为一组循环，● 后应为 ◆。"
+ },
+ {
+  "id": 141,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：● ○ ●● ○○ ●●● ？",
+  "options": [
+   "●",
+   "○",
+   "○○",
+   "●●●"
+  ],
+  "correctIndex": 2,
+  "explanation": "依次为 1 实 1 空、2 实 2 空、3 实 3 空，●●● 后应接 ○○。"
+ },
+ {
+  "id": 142,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：▲ ▲ ▲ ○ ○ ▲ ▲ ▲ ○ ？",
+  "options": [
+   "▲",
+   "○",
+   "◆",
+   "●"
+  ],
+  "correctIndex": 1,
+  "explanation": "三个 ▲ 接两个 ○ 循环，▲▲▲ 后应为 ○。"
+ },
+ {
+  "id": 143,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：● ▲ ■ ◆ ● ▲ ■ ◆ ● ？",
+  "options": [
+   "●",
+   "▲",
+   "■",
+   "◆"
+  ],
+  "correctIndex": 1,
+  "explanation": "『● ▲ ■ ◆』四个为一组循环，● 后应为 ▲。"
+ },
+ {
+  "id": 144,
+  "difficulty": "hard",
+  "category": "pattern",
+  "prompt": "图形规律：↑ → ↓ ← ↑ → ↓ ？",
+  "options": [
+   "↑",
+   "→",
+   "↓",
+   "←"
+  ],
+  "correctIndex": 3,
+  "explanation": "箭头按顺时针每次旋转 90°：↑ → ↓ ← 循环，↓ 之后应为 ←。"
+ }
+]
