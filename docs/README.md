@@ -12,6 +12,7 @@
 | [HISTORY_STORAGE.md](HISTORY_STORAGE.md) | 历史记录的落盘方式、迁移与损坏隔离、导出格式 | 要改数据存储或导出时 |
 | [HISTORY_AND_EXIT.md](HISTORY_AND_EXIT.md) | 完成状态、结束并保存、记录详情的展示规则 | 要改历史页展示时 |
 | [QUESTION_BANK_EXPANSION.md](QUESTION_BANK_EXPANSION.md) | 题库扩充与答案复核的逐项记录 | 改题库内容前先看这里 |
+| [COLLECTION_PLAN.md](COLLECTION_PLAN.md) | 真实样本采集方案：阶段、招募、知情同意、操作流程与分析计划 | 要开始收集数据时 |
 
 ## 建议阅读顺序
 
@@ -45,4 +46,5 @@
    它复用自检的同一套估计流程但换成真实作答，实测尺度分之和的离散度，据此反推「让合成分标准差回到 15」的斜率。
    用 `--synthetic 60` 可在真值已知的情况下检验脚本本身是否正确。
 9. **要提升测量精度，看 [IQ_ESTIMATION.md](IQ_ESTIMATION.md) 的「怎样有证据地接近韦氏」**，
-   其中列出了需要真实样本才能完成的步骤。
+   其中列出了需要真实样本才能完成的步骤；开始采集前先读 [COLLECTION_PLAN.md](COLLECTION_PLAN.md)
+   的方案（分阶段样本量、招募分层、知情同意与分析顺序）。

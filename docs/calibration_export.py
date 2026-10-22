@@ -4,12 +4,16 @@
 （结果页或历史页的「导出 JSON」得到，格式见 docs/HISTORY_STORAGE.md）生成这三张表。
 
 用法：
-    python3 docs/calibration_export.py <导出的JSON路径> [输出目录]
+    python3 docs/calibration_export.py <导出文件或目录> [...] [-o 输出目录]
+
+输入可以是多个导出 JSON，也可以是包含多个 JSON 的目录（多人采集会得到多个文件，
+逐个处理不便，脚本会把它们合并；记录以 UUID 标识，合并不会冲突）。
 
 输出（默认写到当前目录）：
     items.csv       题目：题号、分测验、域、满分、难度阈值、区分度、猜测率
     responses.csv   作答：被试、题号、得分、满分、状态、用时
     persons.csv     被试：日期、年龄、题组、原始分、完整度
+    baselines.csv   各分测验在模型平均能力下的预期得分率（难度基准）
     quality.txt     质量检查报告
 
 拟合脚本需要的是 responses.csv 与 items.csv：前者给出每名被试在每道题上的得分，
@@ -36,20 +40,70 @@ def load_model(path):
     return {p['itemID']: p for p in model['items']}, model.get('version', '')
 
 
+def collect_sources(paths):
+    """把若干导出文件（或一个目录）里的记录合并起来。
+
+    多人采集会得到多个导出文件，逐个处理不便；记录以 UUID 标识，合并不会冲突。
+    """
+    files = []
+    for path in paths:
+        if os.path.isdir(path):
+            for name in sorted(os.listdir(path)):
+                if name.endswith('.json'):
+                    files.append(os.path.join(path, name))
+        elif os.path.exists(path):
+            files.append(path)
+    records, used = [], []
+    for path in files:
+        try:
+            envelope = json.load(open(path, encoding='utf-8'))
+        except (json.JSONDecodeError, OSError) as error:
+            print(f'跳过无法读取的文件 {path}：{error}')
+            continue
+        entries = envelope.get('records', [])
+        if entries:
+            records.extend(entries)
+            used.append(path)
+    return records, used
+
+
 def main():
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    if not args:
         print(__doc__)
         return 1
-    source = sys.argv[1]
-    out_dir = sys.argv[2] if len(sys.argv) > 2 else '.'
+    out_dir = '.'
+    if '-o' in args:
+        index = args.index('-o')
+        if index + 1 >= len(args):
+            print('缺少 -o 后的输出目录')
+            return 1
+        out_dir = args[index + 1]
+        args = args[:index] + args[index + 2:]
+    if not args:
+        print(__doc__)
+        return 1
     os.makedirs(out_dir, exist_ok=True)
 
-    envelope = json.load(open(source))
-    records = envelope.get('records', [])
+    records, used = collect_sources(args)
     wechsler = [r for r in records if r.get('testType') == 'wechsler']
     if not wechsler:
-        print('导出文件里没有韦氏记录，无法生成校准数据。')
+        print('没有找到韦氏记录，无法生成校准数据。')
         return 1
+    # 真实记录的 id 是 UUID，正常不会重复；重复说明同一份数据被导入了多次，
+    # 静默合并会让同一个人被算成两个人。这里检出并保留先出现的一条。
+    seen = set()
+    duplicates = []
+    unique = []
+    for record in wechsler:
+        rid = record.get('id')
+        if rid in seen:
+            duplicates.append(rid)
+            continue
+        seen.add(rid)
+        unique.append(record)
+    wechsler = unique
+    source = f'{len(used)} 个导出文件，共 {len(wechsler)} 条韦氏记录'
 
     params_a, version_a = load_model(os.path.join(ROOT, 'WechslerIQModel.json'))
     params_b, version_b = load_model(os.path.join(ROOT, 'WechslerIQModelB.json'))
@@ -182,6 +236,14 @@ def main():
         f'作答记录数              {len(response_rows)}',
         f'题组分布                {dict(question_sets)}',
         '',
+    ]
+    if duplicates:
+        report.append(f'检出重复的记录 ID        {len(duplicates)} 条（已保留首次出现的一条）')
+        report.append('  真实记录以 UUID 标识，重复通常意味着同一份数据被导入了多次。')
+        for rid in duplicates[:5]:
+            report.append(f'    {rid}')
+        report.append('')
+    report += [
         f'作答状态分布            {dict(outcome_counts)}',
     ]
     if total_outcomes:

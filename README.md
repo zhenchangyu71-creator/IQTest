@@ -87,6 +87,7 @@ IQTest/
   Resources/Wechsler.json           # A 组 120 道自编练习题
   Resources/WechslerB.json          # B 组 120 道自编练习题
   Resources/WechslerIQModelB.json   # B 组独立的启发式参数
+docs/COLLECTION_PLAN.md            # 真实样本采集方案与知情同意要点
   Services/RecordArchive.swift      # 逐条历史文件、迁移、异常隔离与原始备份
 Tests/WechslerTests.swift            # 计分、计时、校验、历史兼容测试
 Tests/QuizViewModelTests.swift       # 瑞文截止时间、反馈、防重复提交与保存测试
@@ -162,7 +163,8 @@ python3 docs/ALGORITHM_COMPARISON.py
 python3 docs/ITEM_DIFFICULTY_AUDIT.py
 
 # 把历史导出转成参数拟合数据集（items/responses/persons/baselines + 质量检查）
-python3 docs/calibration_export.py <导出的JSON路径> [输出目录]
+# 可给多个导出文件或一个目录，多人采集的多个文件会被合并
+python3 docs/calibration_export.py <导出的JSON或目录> [...] [-o 输出目录]
 
 # 用真实作答重新标定合成分斜率（需要上一步的输出目录）
 python3 docs/calibrate_slopes.py <上一步的输出目录>
