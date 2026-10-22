@@ -2,9 +2,9 @@ import SwiftUI
 
 struct QuizView: View {
     @EnvironmentObject private var viewModel: QuizViewModel
-    @State private var selectedIndex: Int? = nil
+    private var selectedIndex: Int? { viewModel.selectedIndex }
 
-    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    private let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack(spacing: 16) {
@@ -27,6 +27,7 @@ struct QuizView: View {
 
             // 题干
             if let question = viewModel.currentQuestion {
+                let questionToken = viewModel.questionToken
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 8) {
                         Image(systemName: question.category.systemImage)
@@ -49,7 +50,7 @@ struct QuizView: View {
                 VStack(spacing: 12) {
                     ForEach(Array(question.options.enumerated()), id: \.offset) { index, option in
                         Button {
-                            choose(index)
+                            viewModel.recordAnswer(index, questionToken: questionToken)
                         } label: {
                             HStack {
                                 Text(option)
@@ -68,6 +69,7 @@ struct QuizView: View {
                             )
                         }
                         .disabled(selectedIndex != nil)
+                        .accessibilityIdentifier("ravenOption")
                     }
                 }
             }
@@ -77,16 +79,6 @@ struct QuizView: View {
         .padding()
         .onReceive(timer) { _ in
             viewModel.tick()
-        }
-    }
-
-    private func choose(_ index: Int) {
-        guard selectedIndex == nil else { return }
-        selectedIndex = index
-        // 短暂展示对错后进入下一题
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            viewModel.recordAnswer(index)
-            selectedIndex = nil
         }
     }
 

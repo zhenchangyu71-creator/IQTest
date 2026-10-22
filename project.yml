@@ -20,3 +20,21 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         UIStatusBarStyle: UIStatusBarStyleLightContent
+  IQTestTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: IQTest
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  IQTest:
+    build:
+      targets:
+        IQTest: all
+    test:
+      targets:
+        - IQTestTests

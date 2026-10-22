@@ -5,7 +5,7 @@
   "options": [
    "一层 2×2 的正方形",
    "一个大圆球",
-   "一根长条",
+   "一层 2×3 的实心长方形",
    "一个大圆锥"
   ],
   "optionScores": [
@@ -13,7 +13,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "block-01",
+  "explanation": "4 块可排成 2×2；2×3 的实心长方形需要 6 块。"
  },
  {
   "subtest": "block",
@@ -29,7 +31,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "block-02",
+  "explanation": "三层合计 3+2+1=6 块。"
  },
  {
   "subtest": "block",
@@ -45,7 +49,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "block-03",
+  "explanation": "8÷4=2 块。"
  },
  {
   "subtest": "block",
@@ -61,7 +67,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "block-04",
+  "explanation": "两个全等的等腰直角三角形可沿斜边拼成正方形。"
  },
  {
   "subtest": "block",
@@ -77,15 +85,17 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "block-05",
+  "explanation": "重新排列不会改变块数，仍为 8 块。"
  },
  {
   "subtest": "block",
-  "prompt": "一块 L 形积木在桌面上水平旋转 180° 后，它的形状：",
+  "prompt": "一块 L 形积木在桌面内旋转 180°。以下哪项保持不变？",
   "options": [
-   "不变，仍是 L 形",
+   "各部分的连接关系",
+   "朝向一定不变",
    "变成一条直线",
-   "变成一个正方形",
    "变成一个圆形"
   ],
   "optionScores": [
@@ -93,7 +103,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "block-06",
+  "explanation": "刚体旋转改变朝向，不改变各部分连接关系。"
  },
  {
   "subtest": "block",
@@ -109,7 +121,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "block-07",
+  "explanation": "边长 2 的实心正方体需要 2³=8 块，6 块不够。"
  },
  {
   "subtest": "similarities",
@@ -125,7 +139,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-01",
+  "explanation": "最概括的共同类别为水果；可食用是较宽泛的用途。"
  },
  {
   "subtest": "similarities",
@@ -141,7 +157,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-02",
+  "explanation": "共同类别是家具；腿的数量仅为常见外形特征。"
  },
  {
   "subtest": "similarities",
@@ -157,7 +175,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-03",
+  "explanation": "共同类别是家养哺乳动物；四条腿是具体特征。"
  },
  {
   "subtest": "similarities",
@@ -173,7 +193,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-04",
+  "explanation": "眼睛接收视觉信息，耳朵接收听觉信息，都是感觉器官。"
  },
  {
   "subtest": "similarities",
@@ -189,7 +211,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-05",
+  "explanation": "都是用于演奏音乐的乐器；琴弦是发声结构特征。"
  },
  {
   "subtest": "similarities",
@@ -205,7 +229,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-06",
+  "explanation": "最概括的类别为交通工具，载人旅行是具体用途。"
  },
  {
   "subtest": "similarities",
@@ -221,7 +247,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-07",
+  "explanation": "两者均为规范行为的社会规则，但约束方式不同。"
  },
  {
   "subtest": "digitspan",
@@ -240,7 +268,10 @@
   ],
   "presentation": "digits",
   "stimulus": "4 8 2",
-  "displaySeconds": 4
+  "displaySeconds": 4,
+  "id": "digitspan-01",
+  "explanation": "按原顺序回忆，应输入：482。",
+  "recallRule": "forward"
  },
  {
   "subtest": "digitspan",
@@ -259,7 +290,10 @@
   ],
   "presentation": "digits",
   "stimulus": "6 1 9 3",
-  "displaySeconds": 5
+  "displaySeconds": 5,
+  "id": "digitspan-02",
+  "explanation": "按原顺序回忆，应输入：6193。",
+  "recallRule": "forward"
  },
  {
   "subtest": "digitspan",
@@ -278,7 +312,10 @@
   ],
   "presentation": "digits",
   "stimulus": "7 2 8 4 5",
-  "displaySeconds": 6
+  "displaySeconds": 6,
+  "id": "digitspan-03",
+  "explanation": "按原顺序回忆，应输入：72845。",
+  "recallRule": "forward"
  },
  {
   "subtest": "digitspan",
@@ -297,7 +334,10 @@
   ],
   "presentation": "digits",
   "stimulus": "5 2 9",
-  "displaySeconds": 4
+  "displaySeconds": 4,
+  "id": "digitspan-04",
+  "explanation": "按逆序回忆，应输入：925。",
+  "recallRule": "backward"
  },
  {
   "subtest": "digitspan",
@@ -316,7 +356,10 @@
   ],
   "presentation": "digits",
   "stimulus": "3 8 1 6",
-  "displaySeconds": 5
+  "displaySeconds": 5,
+  "id": "digitspan-05",
+  "explanation": "按逆序回忆，应输入：6183。",
+  "recallRule": "backward"
  },
  {
   "subtest": "digitspan",
@@ -335,7 +378,10 @@
   ],
   "presentation": "digits",
   "stimulus": "9 4 2 7 5",
-  "displaySeconds": 7
+  "displaySeconds": 7,
+  "id": "digitspan-06",
+  "explanation": "按逆序回忆，应输入：57249。",
+  "recallRule": "backward"
  },
  {
   "subtest": "digitspan",
@@ -354,7 +400,10 @@
   ],
   "presentation": "digits",
   "stimulus": "7 3 5 1",
-  "displaySeconds": 6
+  "displaySeconds": 6,
+  "id": "digitspan-07",
+  "explanation": "按升序回忆，应输入：1357。",
+  "recallRule": "ascending"
  },
  {
   "subtest": "matrix",
@@ -370,7 +419,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-01",
+  "explanation": "每行按 ◆、●、○ 循环排列，缺少 ●。"
  },
  {
   "subtest": "matrix",
@@ -386,11 +437,13 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-02",
+  "explanation": "实心圆沿主对角线移动，右下格应为 ●。"
  },
  {
   "subtest": "matrix",
-  "prompt": "矩阵：每列中箭头从上到下依次顺时针旋转 90°。第一行 → ▼ ◀ ▲，第二行 ▼ ◀ ▲ ▶，第三行 ◀ ▲ ▶ ？",
+  "prompt": "图阵：每列箭头从上到下依次顺时针旋转 90°。第一行 ▶ ▼ ◀ ▲，第二行 ▼ ◀ ▲ ▶，第三行 ◀ ▲ ▶ ？",
   "options": [
    "▼",
    "▶",
@@ -402,7 +455,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-03",
+  "explanation": "每列向下顺时针转 90°，最后一列 ▲→▶→▼。"
  },
  {
   "subtest": "matrix",
@@ -418,7 +473,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-04",
+  "explanation": "字母与数字同步递增，D4 后为 E5。"
  },
  {
   "subtest": "matrix",
@@ -434,11 +491,13 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-05",
+  "explanation": "第三行每格有 3 个三角形。"
  },
  {
   "subtest": "matrix",
-  "prompt": "矩阵：每行关于中间格对称。第一行 ▲ ● ▲，第二行 ■ ◆ ■，第三行 ▲ ？▲",
+  "prompt": "每行首尾图形相同。第一行 ▲ ● ▲，第二行 ■ ◆ ■，第三行 ● ▲ ？。问号处应为：",
   "options": [
    "●",
    "▲",
@@ -450,7 +509,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-06",
+  "explanation": "每行首尾相同，第三行开头为 ●，末尾也为 ●。"
  },
  {
   "subtest": "matrix",
@@ -466,7 +527,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-07",
+  "explanation": "每列依次减少一个图形，◆◆ 后为 ◆。"
  },
  {
   "subtest": "vocabulary",
@@ -482,14 +545,16 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-01",
+  "explanation": "雨伞是遮雨或遮阳的工具。"
  },
  {
   "subtest": "vocabulary",
   "prompt": "「邻居」指什么？",
   "options": [
    "住在附近的人",
-   "认识的人",
+   "与自己居住在同一区域的人",
    "家里的家具",
    "一种职业"
   ],
@@ -498,14 +563,16 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-02",
+  "explanation": "邻居是住在相邻或附近的人；同一区域只描述了宽泛的居住范围，未明确相邻关系。"
  },
  {
   "subtest": "vocabulary",
   "prompt": "「干旱」是什么意思？",
   "options": [
    "长时间缺少降水的气候现象",
-   "天气很热的意思",
+   "水分不足",
    "一种农作物",
    "河流的名字"
   ],
@@ -514,7 +581,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-03",
+  "explanation": "干旱指较长时间降水或可用水分不足，单纯炎热不等于干旱。"
  },
  {
   "subtest": "vocabulary",
@@ -530,14 +599,16 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-04",
+  "explanation": "妥协指在分歧中通过让步达成一致。"
  },
  {
   "subtest": "vocabulary",
   "prompt": "「渊博」是什么意思？",
   "options": [
    "知识广博而深厚",
-   "藏书很多",
+   "知道的东西很多",
    "水很深",
    "身材魁梧"
   ],
@@ -546,13 +617,15 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-05",
+  "explanation": "渊博形容知识广博且深厚；知道得多只说明范围，未说明理解深度。"
  },
  {
   "subtest": "vocabulary",
   "prompt": "「迁徙」是什么意思？",
   "options": [
-   "动物或人群定期从一个地方迁往另一个地方",
+   "动物或人群从一个地方迁移到另一个地方",
    "搬家的意思",
    "原地转圈",
    "一种舞蹈动作"
@@ -562,14 +635,16 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-06",
+  "explanation": "迁徙指人群或动物从一地向另一地移动，不限于搬家。"
  },
  {
   "subtest": "vocabulary",
   "prompt": "「悖论」是什么意思？",
   "options": [
    "看似自相矛盾却可能成立的论述",
-   "错误的说法",
+   "说法之间似乎存在矛盾",
    "一种打击乐器",
    "古代的货币"
   ],
@@ -578,7 +653,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-07",
+  "explanation": "悖论指由看似合理的前提或推理导出相互矛盾或反直觉结论的论述。"
  },
  {
   "subtest": "arithmetic",
@@ -594,7 +671,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "arithmetic-01",
+  "explanation": "15+28=43。"
  },
  {
   "subtest": "arithmetic",
@@ -610,7 +689,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "arithmetic-02",
+  "explanation": "12×3=36 元。"
  },
  {
   "subtest": "arithmetic",
@@ -626,7 +707,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "arithmetic-03",
+  "explanation": "72÷8=9 颗。"
  },
  {
   "subtest": "arithmetic",
@@ -642,7 +725,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "arithmetic-04",
+  "explanation": "长方形面积 12×5=60 平方米。"
  },
  {
   "subtest": "arithmetic",
@@ -658,7 +743,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "arithmetic-05",
+  "explanation": "81÷3=27。"
  },
  {
   "subtest": "arithmetic",
@@ -674,7 +761,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "arithmetic-06",
+  "explanation": "100−48−36=16 元。"
  },
  {
   "subtest": "arithmetic",
@@ -690,7 +779,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "arithmetic-07",
+  "explanation": "60×3=180 千米。"
  },
  {
   "subtest": "symbolsearch",
@@ -706,7 +797,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "symbolsearch-01",
+  "explanation": "逐一核对目标 ◆，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -722,7 +815,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "symbolsearch-02",
+  "explanation": "逐一核对目标 ★，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -738,7 +833,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "symbolsearch-03",
+  "explanation": "逐一核对目标 ▲，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -754,7 +851,9 @@
    0,
    0,
    1
-  ]
+  ],
+  "id": "symbolsearch-04",
+  "explanation": "逐一核对目标 ●，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -770,7 +869,9 @@
    0,
    0,
    1
-  ]
+  ],
+  "id": "symbolsearch-05",
+  "explanation": "逐一核对目标 ■，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -786,7 +887,9 @@
    0,
    0,
    1
-  ]
+  ],
+  "id": "symbolsearch-06",
+  "explanation": "逐一核对目标 ◆，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -802,7 +905,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "symbolsearch-07",
+  "explanation": "逐一核对目标 ★，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "visualpuzzle",
@@ -818,7 +923,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-01",
+  "explanation": "两个全等半圆沿直径拼合可成一个圆。"
  },
  {
   "subtest": "visualpuzzle",
@@ -834,7 +941,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-02",
+  "explanation": "正方形对角线将其分成两个全等的等腰直角三角形。"
  },
  {
   "subtest": "visualpuzzle",
@@ -850,7 +959,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-03",
+  "explanation": "面积之比为 2²÷1²=4，需要 4 块。"
  },
  {
   "subtest": "visualpuzzle",
@@ -866,7 +977,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-04",
+  "explanation": "三个等边三角形可拼成上下底比为 1:2 的梯形。"
  },
  {
   "subtest": "visualpuzzle",
@@ -882,14 +995,16 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-05",
+  "explanation": "沿两条中线剪开，得到四个小长方形。"
  },
  {
   "subtest": "visualpuzzle",
   "prompt": "一个圆沿直径剪开，得到两个：",
   "options": [
    "半圆",
-   "扇形",
+   "完整的圆",
    "椭圆",
    "三角形"
   ],
@@ -898,7 +1013,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-06",
+  "explanation": "直径把圆分为两个半圆；半圆也属于扇形，因此不能将扇形设为错误选项。"
  },
  {
   "subtest": "visualpuzzle",
@@ -914,11 +1031,13 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "visualpuzzle-07",
+  "explanation": "有限条直边不能组成圆的曲线边界。"
  },
  {
   "subtest": "information",
-  "prompt": "一年有几个季节？",
+  "prompt": "在通常的四季划分中，一年有几个季节？",
   "options": [
    "两个",
    "三个",
@@ -930,7 +1049,9 @@
    0,
    2,
    0
-  ]
+  ],
+  "id": "information-01",
+  "explanation": "通常按春、夏、秋、冬划分四季。"
  },
  {
   "subtest": "information",
@@ -946,7 +1067,9 @@
    2,
    0,
    0
-  ]
+  ],
+  "id": "information-02",
+  "explanation": "中国的首都是北京。"
  },
  {
   "subtest": "information",
@@ -962,7 +1085,9 @@
    0,
    2,
    0
-  ]
+  ],
+  "id": "information-03",
+  "explanation": "标准大气压下纯水沸点约 100℃。"
  },
  {
   "subtest": "information",
@@ -978,7 +1103,9 @@
    0,
    2,
    0
-  ]
+  ],
+  "id": "information-04",
+  "explanation": "成年人通常有约 206 块骨骼，个体可有差异。"
  },
  {
   "subtest": "information",
@@ -994,11 +1121,13 @@
    0,
    2,
    0
-  ]
+  ],
+  "id": "information-05",
+  "explanation": "地球绕太阳公转一周约一年。"
  },
  {
   "subtest": "information",
-  "prompt": "中国古典名著《红楼梦》的作者是谁？",
+  "prompt": "《红楼梦》前八十回通常归于哪位作者？",
   "options": [
    "罗贯中",
    "施耐庵",
@@ -1010,7 +1139,9 @@
    0,
    0,
    2
-  ]
+  ],
+  "id": "information-06",
+  "explanation": "《红楼梦》前八十回通常归于曹雪芹。"
  },
  {
   "subtest": "information",
@@ -1026,7 +1157,9 @@
    0,
    2,
    0
-  ]
+  ],
+  "id": "information-07",
+  "explanation": "真空光速约每秒 30 万千米。"
  },
  {
   "subtest": "coding",
@@ -1042,7 +1175,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-01",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：8 4 2。"
  },
  {
   "subtest": "coding",
@@ -1058,7 +1193,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-02",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：5 8 4。"
  },
  {
   "subtest": "coding",
@@ -1074,7 +1211,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-03",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：2 5 8。"
  },
  {
   "subtest": "coding",
@@ -1090,7 +1229,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-04",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：4 2 5。"
  },
  {
   "subtest": "coding",
@@ -1106,7 +1247,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-05",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：8 5 2。"
  },
  {
   "subtest": "coding",
@@ -1122,7 +1265,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-06",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：2 4 8。"
  },
  {
   "subtest": "coding",
@@ -1138,7 +1283,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-07",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：5 4 8。"
  },
  {
   "subtest": "block",
@@ -1154,7 +1301,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "block-08",
+  "explanation": "3³=27 块。"
  },
  {
   "subtest": "block",
@@ -1170,7 +1319,9 @@
    0,
    0,
    1
-  ]
+  ],
+  "id": "block-09",
+  "explanation": "两块长方形的外边只能沿原有边方向，不能拼出三角形。"
  },
  {
   "subtest": "block",
@@ -1186,7 +1337,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "block-10",
+  "explanation": "俯视有 4 个占位，每个至少一块，共至少 4 块。"
  },
  {
   "subtest": "block",
@@ -1202,7 +1355,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "block-11",
+  "explanation": "正方体有 8 个顶点，每个顶角小方块有三个面涂红。"
  },
  {
   "subtest": "block",
@@ -1218,7 +1373,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "block-12",
+  "explanation": "4³=64 块。"
  },
  {
   "subtest": "similarities",
@@ -1234,14 +1391,16 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-08",
+  "explanation": "共同类别是交通工具，人造机械是较宽泛特征。"
  },
  {
   "subtest": "similarities",
-  "prompt": "春天和秋天在哪些方面相似？",
+  "prompt": "春天和秋天在类别上最主要的共同点是什么？",
   "options": [
-   "都是过渡季节，气温比较适中",
-   "都是季节",
+   "都是一年中的季节",
+   "有些地方这时气温适中",
    "都是最寒冷的季节",
    "都只有一个月"
   ],
@@ -1250,7 +1409,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-09",
+  "explanation": "两者都属于季节；气温适中只适用于部分地区。"
  },
  {
   "subtest": "similarities",
@@ -1266,7 +1427,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-10",
+  "explanation": "共同类别是视觉艺术；艺术家创作是制作特征。"
  },
  {
   "subtest": "similarities",
@@ -1282,7 +1445,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-11",
+  "explanation": "两者都可体现结构和规律，这是题目设定的抽象共同点。"
  },
  {
   "subtest": "similarities",
@@ -1298,7 +1463,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "similarities-12",
+  "explanation": "两者都是具有社会分工的群居昆虫；六条腿是一般昆虫特征。"
  },
  {
   "subtest": "digitspan",
@@ -1317,7 +1484,10 @@
   ],
   "presentation": "digits",
   "stimulus": "3 9 1 7 4 6",
-  "displaySeconds": 8
+  "displaySeconds": 8,
+  "id": "digitspan-08",
+  "explanation": "按原顺序回忆，应输入：391746。",
+  "recallRule": "forward"
  },
  {
   "subtest": "digitspan",
@@ -1336,7 +1506,10 @@
   ],
   "presentation": "digits",
   "stimulus": "8 3 6 2 9",
-  "displaySeconds": 7
+  "displaySeconds": 7,
+  "id": "digitspan-09",
+  "explanation": "按逆序回忆，应输入：92638。",
+  "recallRule": "backward"
  },
  {
   "subtest": "digitspan",
@@ -1355,7 +1528,10 @@
   ],
   "presentation": "digits",
   "stimulus": "9 2 7 4 6",
-  "displaySeconds": 7
+  "displaySeconds": 7,
+  "id": "digitspan-10",
+  "explanation": "按升序回忆，应输入：24679。",
+  "recallRule": "ascending"
  },
  {
   "subtest": "digitspan",
@@ -1374,7 +1550,10 @@
   ],
   "presentation": "digits",
   "stimulus": "5 1 8 4 3 9 7",
-  "displaySeconds": 9
+  "displaySeconds": 9,
+  "id": "digitspan-11",
+  "explanation": "按原顺序回忆，应输入：5184397。",
+  "recallRule": "forward"
  },
  {
   "subtest": "digitspan",
@@ -1393,7 +1572,10 @@
   ],
   "presentation": "digits",
   "stimulus": "7 4 2 9 5 1",
-  "displaySeconds": 9
+  "displaySeconds": 9,
+  "id": "digitspan-12",
+  "explanation": "按逆序回忆，应输入：159247。",
+  "recallRule": "backward"
  },
  {
   "subtest": "matrix",
@@ -1409,7 +1591,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-08",
+  "explanation": "相同部分抵消，两个相同的方形抵消后为空白。"
  },
  {
   "subtest": "matrix",
@@ -1425,7 +1609,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "matrix-09",
+  "explanation": "每行后一数为前数的两倍，10×2=20。"
  },
  {
   "subtest": "matrix",
@@ -1441,7 +1627,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-10",
+  "explanation": "第三列 F、G 后为 H。"
  },
  {
   "subtest": "matrix",
@@ -1457,7 +1645,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-11",
+  "explanation": "15−4−9=2。"
  },
  {
   "subtest": "matrix",
@@ -1473,7 +1663,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "matrix-12",
+  "explanation": "每行相对上一行循环右移一格，第三行是 ■、◆、●。"
  },
  {
   "subtest": "vocabulary",
@@ -1489,14 +1681,16 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-08",
+  "explanation": "比喻义的瓶颈是限制整体进展的关键环节。"
  },
  {
   "subtest": "vocabulary",
-  "prompt": "「里程碑」是什么意思？",
+  "prompt": "比喻意义上的「里程碑」是什么意思？",
   "options": [
    "发展过程中具有标志意义的重大事件",
-   "路边立的石碑",
+   "一件重要的事",
    "一种交通工具",
    "一种测量工具"
   ],
@@ -1505,13 +1699,15 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-09",
+  "explanation": "比喻义的里程碑是发展中有重大标志意义的事件；重要的事只表达重要性，未说明发展中的标志意义。"
  },
  {
   "subtest": "vocabulary",
   "prompt": "「杠杆」是什么意思？",
   "options": [
-   "能绕固定点转动、用较小的力撬动重物的简单机械",
+   "能绕固定支点转动、用来传递力的硬棒",
    "一根硬棒",
    "齿轮的别名",
    "一种容器"
@@ -1521,7 +1717,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-10",
+  "explanation": "杠杆可绕支点转动以传递力；是否省力取决于两侧力臂。"
  },
  {
   "subtest": "vocabulary",
@@ -1537,7 +1735,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-11",
+  "explanation": "潜移默化指不知不觉受到影响并发生变化。"
  },
  {
   "subtest": "vocabulary",
@@ -1553,7 +1753,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "vocabulary-12",
+  "explanation": "墨守成规指拘守旧规，不肯改进。"
  },
  {
   "subtest": "arithmetic",
@@ -1569,7 +1771,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "arithmetic-08",
+  "explanation": "96÷4=24 页，下一页为第 25 页。"
  },
  {
   "subtest": "arithmetic",
@@ -1585,7 +1789,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "arithmetic-09",
+  "explanation": "设宽为 x，则 2(x+2x)=36，x=6 米。"
  },
  {
   "subtest": "arithmetic",
@@ -1601,7 +1807,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "arithmetic-10",
+  "explanation": "250×0.8−10=190 元。"
  },
  {
   "subtest": "arithmetic",
@@ -1617,7 +1825,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "arithmetic-11",
+  "explanation": "总路程 40×2+60×3=260 千米，总时间 5 小时，均速 52。"
  },
  {
   "subtest": "arithmetic",
@@ -1633,7 +1843,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "arithmetic-12",
+  "explanation": "设原数为 x，则 ((x+6)×6−6)÷6=x+5=6，故 x=1。"
  },
  {
   "subtest": "symbolsearch",
@@ -1649,7 +1861,9 @@
    0,
    0,
    1
-  ]
+  ],
+  "id": "symbolsearch-08",
+  "explanation": "逐一核对目标 ◆，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -1665,7 +1879,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "symbolsearch-09",
+  "explanation": "逐一核对目标 ▲，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -1681,7 +1897,9 @@
    0,
    0,
    1
-  ]
+  ],
+  "id": "symbolsearch-10",
+  "explanation": "逐一核对目标 ■，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -1697,7 +1915,9 @@
    0,
    0,
    1
-  ]
+  ],
+  "id": "symbolsearch-11",
+  "explanation": "逐一核对目标 ★，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "symbolsearch",
@@ -1713,15 +1933,17 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "symbolsearch-12",
+  "explanation": "逐一核对目标 ●，只有得分选项含有完全相同的符号。"
  },
  {
   "subtest": "visualpuzzle",
-  "prompt": "用 4 个相同的等腰直角三角形，可以拼成：",
+  "prompt": "用 4 个相同的等腰直角三角形，不重叠、完整拼合，下面哪个图形可以拼成？",
   "options": [
    "一个正方形",
    "一个圆",
-   "一个五边形",
+   "一个正五边形",
    "一个椭圆"
   ],
   "optionScores": [
@@ -1729,11 +1951,13 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-08",
+  "explanation": "四个等腰直角三角形可围绕共同顶点拼成正方形；正五边形的 108° 内角不能由 45° 和 90° 角拼成。"
  },
  {
   "subtest": "visualpuzzle",
-  "prompt": "一个正方体沿水平、竖直、垂直三个方向各切一刀，可以切成：",
+  "prompt": "一个实心正方体，沿三个互相垂直且经过中心的平面各切一刀，得到几块？",
   "options": [
    "4 块",
    "6 块",
@@ -1745,14 +1969,16 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "visualpuzzle-09",
+  "explanation": "三个互相垂直的中截面将正方体分为 2×2×2=8 块。"
  },
  {
   "subtest": "visualpuzzle",
-  "prompt": "下面哪个图形绕中心旋转 180° 后能与原图完全重合？",
+  "prompt": "下面哪个图形绕中心旋转 180° 后，一定能与原图完全重合？",
   "options": [
    "等边三角形",
-   "字母 S",
+   "长方形",
    "字母 L",
    "半圆"
   ],
@@ -1761,11 +1987,13 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-10",
+  "explanation": "长方形关于中心旋转 180° 后重合。"
  },
  {
   "subtest": "visualpuzzle",
-  "prompt": "一张正方形纸片对折两次后展开，折痕把它分成：",
+  "prompt": "一张正方形纸，先沿水平中线对折，再沿竖直中线对折。展开后，折痕把纸分成几份？",
   "options": [
    "2 份",
    "4 份",
@@ -1777,7 +2005,9 @@
    1,
    0,
    0
-  ]
+  ],
+  "id": "visualpuzzle-11",
+  "explanation": "两条互相垂直的中线把正方形分成 4 份。"
  },
  {
   "subtest": "visualpuzzle",
@@ -1793,7 +2023,9 @@
    0,
    1,
    0
-  ]
+  ],
+  "id": "visualpuzzle-12",
+  "explanation": "每块接触两个相邻方块，6 个面中有 4 个外露面涂色。"
  },
  {
   "subtest": "information",
@@ -1809,11 +2041,13 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "information-08",
+  "explanation": "马里亚纳海沟含有已知海洋最深处。"
  },
  {
   "subtest": "information",
-  "prompt": "DNA 双螺旋结构是由哪两位科学家提出的？",
+  "prompt": "1953 年提出 DNA 双螺旋结构模型的两位研究者是哪两位？",
   "options": [
    "沃森和克里克",
    "达尔文和华莱士",
@@ -1825,7 +2059,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "information-09",
+  "explanation": "沃森和克里克提出该模型；富兰克林、威尔金斯等人的研究也作出了关键贡献。"
  },
  {
   "subtest": "information",
@@ -1841,27 +2077,31 @@
    2,
    0,
    0
-  ]
+  ],
+  "id": "information-10",
+  "explanation": "Fe 是铁的元素符号。"
  },
  {
   "subtest": "information",
-  "prompt": "一般认为世界上最长的河流是哪条？",
+  "prompt": "太阳系中体积最大的行星是哪颗？",
   "options": [
-   "长江",
-   "密西西比河",
-   "尼罗河",
-   "黄河"
+   "地球",
+   "火星",
+   "木星",
+   "金星"
   ],
   "optionScores": [
    0,
    0,
    2,
    0
-  ]
+  ],
+  "id": "information-11",
+  "explanation": "木星是太阳系体积最大的行星。"
  },
  {
   "subtest": "information",
-  "prompt": "世界上面积最大的沙漠是哪一个？",
+  "prompt": "世界上面积最大的热沙漠是哪一个？",
   "options": [
    "撒哈拉沙漠",
    "阿拉伯沙漠",
@@ -1873,7 +2113,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "information-12",
+  "explanation": "撒哈拉是最大的热沙漠；若包含极地沙漠，南极沙漠面积更大。"
  },
  {
   "subtest": "coding",
@@ -1889,7 +2131,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-08",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：7 4 3。"
  },
  {
   "subtest": "coding",
@@ -1905,7 +2149,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-09",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：3 2 7。"
  },
  {
   "subtest": "coding",
@@ -1921,7 +2167,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-10",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：9 1 6。"
  },
  {
   "subtest": "coding",
@@ -1937,7 +2185,9 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-11",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：4 9 1。"
  },
  {
   "subtest": "coding",
@@ -1953,6 +2203,8 @@
    0,
    0,
    0
-  ]
+  ],
+  "id": "coding-12",
+  "explanation": "逐个按题干映射替换并保持顺序，结果是：58。"
  }
 ]

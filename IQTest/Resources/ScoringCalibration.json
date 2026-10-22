@@ -1,0 +1,11 @@
+{
+  "version": "wechsler-style-borrowed-v1",
+  "note": "换算标定参数的唯一真源。Swift 生产代码与 docs/ 下的分析脚本都从这里取值，避免两处副本各改各的。斜率借用自 Pearson 官方示例报告，尚未用本项目数据重新标定，详见 docs/WECHSLER_STYLE_SCORING.md。",
+  "indexSlope": 2.75,
+  "fullScaleSlope": 0.72,
+  "fullScaleSlopeSevenSubtests": 0.96,
+  "shrinkageSD": 1.5,
+  "compositeRangeLower": 50,
+  "compositeRangeUpper": 145,
+  "minimumIntervalHalfWidth": 30.0
+}

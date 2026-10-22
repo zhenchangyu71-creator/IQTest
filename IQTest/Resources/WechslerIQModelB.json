@@ -1,0 +1,871 @@
+{
+  "version": "irt-heuristic-form-b-v1",
+  "bankVersion": "practice-2026-10-21-v3",
+  "calibrationStatus": "heuristic",
+  "items": [
+    {
+      "itemID": "b-block-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.5
+      ]
+    },
+    {
+      "itemID": "b-block-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.5
+      ]
+    },
+    {
+      "itemID": "b-block-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.7
+      ]
+    },
+    {
+      "itemID": "b-block-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.0
+      ]
+    },
+    {
+      "itemID": "b-block-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.8
+      ]
+    },
+    {
+      "itemID": "b-block-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.7
+      ]
+    },
+    {
+      "itemID": "b-block-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.8
+      ]
+    },
+    {
+      "itemID": "b-block-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.0
+      ]
+    },
+    {
+      "itemID": "b-block-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.8
+      ]
+    },
+    {
+      "itemID": "b-block-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.2
+      ]
+    },
+    {
+      "itemID": "b-block-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.0
+      ]
+    },
+    {
+      "itemID": "b-block-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.8
+      ]
+    },
+    {
+      "itemID": "b-similarities-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -3.4,
+        -2.4
+      ]
+    },
+    {
+      "itemID": "b-similarities-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -3.2,
+        -2.2
+      ]
+    },
+    {
+      "itemID": "b-similarities-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -3.1,
+        -2.1
+      ]
+    },
+    {
+      "itemID": "b-similarities-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -3.0,
+        -2.0
+      ]
+    },
+    {
+      "itemID": "b-similarities-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.7,
+        -1.7
+      ]
+    },
+    {
+      "itemID": "b-similarities-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.9,
+        -1.9
+      ]
+    },
+    {
+      "itemID": "b-similarities-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.8,
+        -0.8
+      ]
+    },
+    {
+      "itemID": "b-similarities-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.6,
+        -1.6
+      ]
+    },
+    {
+      "itemID": "b-similarities-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.9,
+        -1.9
+      ]
+    },
+    {
+      "itemID": "b-similarities-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.0,
+        -1.0
+      ]
+    },
+    {
+      "itemID": "b-similarities-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.4,
+        -0.4
+      ]
+    },
+    {
+      "itemID": "b-similarities-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.6,
+        -0.6
+      ]
+    },
+    {
+      "itemID": "b-digitspan-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.0
+      ]
+    },
+    {
+      "itemID": "b-digitspan-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.3
+      ]
+    },
+    {
+      "itemID": "b-digitspan-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.6
+      ]
+    },
+    {
+      "itemID": "b-digitspan-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.0
+      ]
+    },
+    {
+      "itemID": "b-digitspan-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.3
+      ]
+    },
+    {
+      "itemID": "b-digitspan-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        0.6
+      ]
+    },
+    {
+      "itemID": "b-digitspan-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.1
+      ]
+    },
+    {
+      "itemID": "b-digitspan-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        0.3
+      ]
+    },
+    {
+      "itemID": "b-digitspan-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        0.6
+      ]
+    },
+    {
+      "itemID": "b-digitspan-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        0.6
+      ]
+    },
+    {
+      "itemID": "b-digitspan-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        1.0
+      ]
+    },
+    {
+      "itemID": "b-digitspan-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        1.1
+      ]
+    },
+    {
+      "itemID": "b-matrix-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.4
+      ]
+    },
+    {
+      "itemID": "b-matrix-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.7
+      ]
+    },
+    {
+      "itemID": "b-matrix-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.6
+      ]
+    },
+    {
+      "itemID": "b-matrix-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.2
+      ]
+    },
+    {
+      "itemID": "b-matrix-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.6
+      ]
+    },
+    {
+      "itemID": "b-matrix-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.5
+      ]
+    },
+    {
+      "itemID": "b-matrix-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.4
+      ]
+    },
+    {
+      "itemID": "b-matrix-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.5
+      ]
+    },
+    {
+      "itemID": "b-matrix-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.1
+      ]
+    },
+    {
+      "itemID": "b-matrix-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.2
+      ]
+    },
+    {
+      "itemID": "b-matrix-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.0
+      ]
+    },
+    {
+      "itemID": "b-matrix-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.5
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -3.5,
+        -2.5
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -3.2,
+        -2.2
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.6,
+        -1.6
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.0,
+        -1.0
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.7,
+        -0.7
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.8,
+        -0.8
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.5,
+        -0.5
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.7,
+        -0.7
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.4,
+        -0.4
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.1,
+        -0.1
+      ]
+    },
+    {
+      "itemID": "b-vocabulary-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.2,
+        -0.2
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.5
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.6
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.4
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.1
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.2
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.0
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.1
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.3
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.6
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.1
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        0.0
+      ]
+    },
+    {
+      "itemID": "b-arithmetic-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.2
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.4
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.4
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.3
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.3
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.3
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.2
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.3
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.2
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.0
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.0
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.0
+      ]
+    },
+    {
+      "itemID": "b-symbolsearch-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.1
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.7
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.5
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.6
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.3
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.1
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.5
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.5
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.8
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.1
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.5
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.8
+      ]
+    },
+    {
+      "itemID": "b-visualpuzzle-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.7
+      ]
+    },
+    {
+      "itemID": "b-information-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.8
+      ]
+    },
+    {
+      "itemID": "b-information-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.8
+      ]
+    },
+    {
+      "itemID": "b-information-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.0
+      ]
+    },
+    {
+      "itemID": "b-information-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.8
+      ]
+    },
+    {
+      "itemID": "b-information-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -2.6
+      ]
+    },
+    {
+      "itemID": "b-information-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.6
+      ]
+    },
+    {
+      "itemID": "b-information-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.2
+      ]
+    },
+    {
+      "itemID": "b-information-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.5
+      ]
+    },
+    {
+      "itemID": "b-information-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.3
+      ]
+    },
+    {
+      "itemID": "b-information-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.5
+      ]
+    },
+    {
+      "itemID": "b-information-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.3
+      ]
+    },
+    {
+      "itemID": "b-information-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.4
+      ]
+    },
+    {
+      "itemID": "b-coding-01",
+      "discrimination": 1.0,
+      "thresholds": [
+        -1.0
+      ]
+    },
+    {
+      "itemID": "b-coding-02",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.9
+      ]
+    },
+    {
+      "itemID": "b-coding-03",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.9
+      ]
+    },
+    {
+      "itemID": "b-coding-04",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.8
+      ]
+    },
+    {
+      "itemID": "b-coding-05",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.8
+      ]
+    },
+    {
+      "itemID": "b-coding-06",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.7
+      ]
+    },
+    {
+      "itemID": "b-coding-07",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.6
+      ]
+    },
+    {
+      "itemID": "b-coding-08",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.5
+      ]
+    },
+    {
+      "itemID": "b-coding-09",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.4
+      ]
+    },
+    {
+      "itemID": "b-coding-10",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.3
+      ]
+    },
+    {
+      "itemID": "b-coding-11",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.2
+      ]
+    },
+    {
+      "itemID": "b-coding-12",
+      "discrimination": 1.0,
+      "thresholds": [
+        -0.1
+      ]
+    }
+  ]
+}

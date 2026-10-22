@@ -1,213 +1,159 @@
 import SwiftUI
-import Charts
 
 struct HistoryView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var records: [TestRecord] = []
     @State private var showClearConfirm = false
-
-    private var averageIQ: Int {
-        guard !records.isEmpty else { return 0 }
-        return Int((Double(records.map(\.iq).reduce(0, +)) / Double(records.count)).rounded())
+    @State private var filter = HistoryFilter()
+    @State private var unreadableCount = 0
+    @State private var loadError: String?
+    @State private var operationError: String?
+    @State private var hasLegacyBackup = false
+    private var visible: [TestRecord] { filter.apply(to: records) }
+    /// 当前筛选结果里出现的题组。两组题目不同且尚未等值，分数不能直接比较。
+    private var visibleQuestionSets: [WechslerQuestionSet] {
+        let sets = Set(visible.compactMap { $0.questionSet })
+        return WechslerQuestionSet.allCases.filter { sets.contains($0) }
     }
-
-    private var maxIQ: Int { records.map(\.iq).max() ?? 0 }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 20) {
-                    if records.isEmpty {
-                        emptyState
-                    } else {
-                        summaryCards
-                        chartSection
-                        recordList
-                        Button("清空历史记录", role: .destructive) {
-                            showClearConfirm = true
-                        }
-                        .font(.footnote)
-                        .padding(.bottom, 20)
+                LazyVStack(spacing: 20) {
+                    if hasLegacyBackup && loadError == nil {
+                        Text("保留有旧版迁移备份。清空全部历史时会一并删除备份。")
+                            .font(.caption).foregroundStyle(.secondary)
+                        RecordExportButton(recovery: true)
                     }
-                }
-                .padding(.horizontal, 24)
-                .padding(.top, 8)
+                    if let loadError {
+                        Text("历史记录暂不可读").font(.headline)
+                        Text(loadError).font(.footnote).foregroundStyle(.secondary)
+                        Button("重新读取") { reload() }
+                        RecordExportButton(recovery: true)
+                    } else if records.isEmpty && unreadableCount == 0 {
+                        Image(systemName: "clock.arrow.circlepath").font(.system(size: 48)).foregroundStyle(.purple)
+                        Text("暂无测试记录").font(.headline)
+                        Text("完成练习或结束并保存已答题后，可在这里查看记录。")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        if unreadableCount > 0 {
+                            Text("有 \(unreadableCount) 条记录无法读取，原始数据已保留；其余记录仍可查看。")
+                                .font(.footnote).foregroundStyle(.orange)
+                            if !hasLegacyBackup { RecordExportButton(recovery: true) }
+                        }
+                        Picker("模块", selection: $filter.module) {
+                            ForEach(HistoryFilter.Module.allCases) { Text($0.rawValue).tag($0) }
+                        }.pickerStyle(.segmented).accessibilityIdentifier("historyModuleFilter")
+                        Picker("完成状态", selection: $filter.completion) {
+                            ForEach(HistoryFilter.Completion.allCases) { Text($0.rawValue).tag($0) }
+                        }.pickerStyle(.segmented).accessibilityIdentifier("historyCompletionFilter")
+                        HStack(spacing: 12) {
+                            summary("当前结果", visible.count)
+                            summary("已完成", visible.filter { $0.completion == .completed }.count)
+                            summary("提前结束", visible.filter { $0.completion == .endedEarly }.count)
+                        }
+                        if !visible.isEmpty { RecordExportButton(records: visible) }
+                        else { Text("没有符合筛选条件的记录").foregroundStyle(.secondary) }
+                        if visibleQuestionSets.count > 1 {
+                            Text("本页包含 \(visibleQuestionSets.map(\.title).joined(separator: "、")) 的记录。两组题目不同且尚未等值，分数不能直接比较，也不能据此判断哪一题组更难。")
+                                .font(.caption).foregroundStyle(.orange)
+                        }
+                        Text("IQ 估算尚未校准，不同题库、模型或难度的结果不合并为能力趋势。")
+                            .font(.caption).foregroundStyle(.secondary)
+                        ForEach(visible) { record in
+                            NavigationLink {
+                                TestRecordDetailView(record: record, onDeleted: reload, keepsLegacyBackup: hasLegacyBackup)
+                            } label: {
+                                row(record)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("historyRecord")
+                        }
+                    }
+                }.padding(24)
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle("历史成绩")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("历史成绩").navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("完成") { dismiss() }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("清空", role: .destructive) { showClearConfirm = true }
+                        .disabled(records.isEmpty && loadError == nil && unreadableCount == 0 && !hasLegacyBackup)
                 }
+                ToolbarItem(placement: .topBarTrailing) { Button("完成") { dismiss() } }
             }
-            .onAppear { records = RecordStore.load().reversed() }
-            .confirmationDialog("确定清空所有历史记录吗？", isPresented: $showClearConfirm, titleVisibility: .visible) {
-                Button("清空", role: .destructive) {
-                    RecordStore.clear()
-                    records = []
+            .onAppear { reload() }
+            .refreshable { reload() }
+            .confirmationDialog("确定清空全部历史记录及原始备份吗？此操作不受当前筛选影响。", isPresented: $showClearConfirm, titleVisibility: .visible) {
+                Button("清空所有历史和备份", role: .destructive) {
+                    do { try RecordStore.clear(); reload() }
+                    catch { reload(); operationError = error.localizedDescription }
                 }
                 Button("取消", role: .cancel) {}
             }
+            .alert("操作未完成", isPresented: Binding(get: { operationError != nil }, set: { if !$0 { operationError = nil } })) {
+                Button("好") { operationError = nil }
+            } message: { Text(operationError ?? "") }
         }
     }
 
-    // MARK: - 空状态
-
-    private var emptyState: some View {
-        VStack(spacing: 16) {
-            Spacer(minLength: 80)
-            Image(systemName: "chart.line.uptrend.xyaxis")
-                .font(.system(size: 56))
-                .foregroundStyle(.purple)
-            Text("暂无测试记录")
-                .font(.headline)
-            Text("完成一次智商测试后，\n这里会展示你的成绩趋势。")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-            Spacer()
+    private func reload() {
+        do {
+            let snapshot = try RecordStore.read()
+            records = snapshot.records
+            unreadableCount = snapshot.unreadableCount
+            hasLegacyBackup = snapshot.hasLegacyBackup
+            loadError = nil
+        } catch {
+            records = []
+            loadError = error.localizedDescription
         }
     }
 
-    // MARK: - 汇总卡片
-
-    private var summaryCards: some View {
-        HStack(spacing: 12) {
-            SummaryCard(title: "测试次数", value: "\(records.count)", icon: "list.number", color: .purple)
-            SummaryCard(title: "平均 IQ", value: "\(averageIQ)", icon: "brain.head.profile", color: .indigo)
-            SummaryCard(title: "最高 IQ", value: "\(maxIQ)", icon: "trophy.fill", color: .orange)
-        }
-    }
-
-    // MARK: - 趋势图
-
-    private var chartSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("IQ 趋势")
-                .font(.headline)
-            let ordered = records.reversed() // 时间正序
-            Chart {
-                RuleMark(y: .value("平均", 100))
-                    .lineStyle(StrokeStyle(dash: [5, 5]))
-                    .foregroundStyle(.secondary.opacity(0.5))
-                ForEach(Array(ordered.enumerated()), id: \.element.id) { index, record in
-                    LineMark(
-                        x: .value("次数", index + 1),
-                        y: .value("IQ", record.iq)
-                    )
-                    .interpolationMethod(.catmullRom)
-                    .foregroundStyle(.purple)
-                    PointMark(
-                        x: .value("次数", index + 1),
-                        y: .value("IQ", record.iq)
-                    )
-                    .foregroundStyle(.purple)
-                    .annotation(position: .top) {
-                        Text("\(record.iq)")
-                            .font(.caption2.bold())
-                            .foregroundStyle(.purple)
-                    }
-                }
-            }
-            .chartYScale(domain: 55...145)
-            .chartXAxis {
-                AxisMarks(values: .automatic(desiredCount: min(records.count, 6))) { _ in
-                    AxisValueLabel()
-                }
-            }
-            .frame(height: 180)
-        }
-        .padding()
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
-    }
-
-    // MARK: - 记录列表
-
-    private var recordList: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("测试记录")
-                .font(.headline)
-            ForEach(records) { record in
-                let agePrefix = record.age.map { "\($0) 岁 · " } ?? ""
-                HStack(spacing: 12) {
-                    Image(systemName: record.testType.systemImage)
-                        .font(.title3)
-                        .foregroundStyle(.white)
-                        .frame(width: 36, height: 36)
-                        .background(difficultyColor(record.difficulty), in: RoundedRectangle(cornerRadius: 8))
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(Self.dateFormatter.string(from: record.date))
-                            .font(.subheadline.bold())
-                        if let detail = record.detail {
-                            Text(agePrefix + detail)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        } else {
-                            Text(agePrefix + "\(record.difficulty.rawValue) · 答对 \(record.score)/\(record.total) · 超 \(record.percentile)% 的人")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    Spacer()
-                    VStack(alignment: .trailing) {
-                        Text("\(record.iq)")
-                            .font(.title3.bold())
-                            .foregroundStyle(.purple)
-                        Text("IQ")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .padding()
-                .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
-            }
-        }
-        .padding()
-        .background(Color(.secondarySystemGroupedBackground).opacity(0.5), in: RoundedRectangle(cornerRadius: 16))
-    }
-
-    private func difficultyColor(_ level: Difficulty) -> Color {
-        switch level {
-        case .easy: return .green
-        case .medium: return .orange
-        case .hard: return .red
-        }
-    }
-
-    private static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "zh_CN")
-        formatter.dateFormat = "yyyy年M月d日"
-        return formatter
-    }()
-}
-
-private struct SummaryCard: View {
-    let title: String
-    let value: String
-    let icon: String
-    let color: Color
-
-    var body: some View {
+    private func summary(_ title: String, _ value: Int) -> some View {
         VStack(spacing: 6) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundStyle(.white)
-                .frame(width: 32, height: 32)
-                .background(color, in: RoundedRectangle(cornerRadius: 8))
-            Text(value)
-                .font(.title3.bold())
-            Text(title)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+            Text("\(value)").font(.title2.bold()).foregroundStyle(.purple)
+                .accessibilityIdentifier("historySummary-\(title)")
+            Text(title).font(.caption)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity).padding(.vertical, 12)
         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
     }
-}
 
-#Preview {
-    HistoryView()
+    private func row(_ record: TestRecord) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: record.testType.systemImage)
+                .font(.title3).foregroundStyle(.purple)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(record.testType.title).font(.headline)
+                if let set = record.questionSet { Text(set.title).font(.caption.bold()) }
+                Text(record.date.formatted(date: .abbreviated, time: .shortened)).font(.caption)
+                let age = record.age.map { "\($0) 岁 · " } ?? ""
+                let isLegacyWechsler = record.testType == .wechsler && record.scoringVersion == nil
+                Text(age + (isLegacyWechsler
+                            ? "旧版记录 · 原始分 \(record.score)/\(record.total)"
+                            : record.detail ?? "\(record.difficulty.rawValue) · 原始分 \(record.score)/\(record.total)"))
+                    .font(.caption).foregroundStyle(.secondary)
+                if record.completion == .endedEarly {
+                    Text("提前结束 · 未生成 IQ 估算").font(.caption).foregroundStyle(.secondary)
+                } else if let administration = record.administration, !administration.interruptions.isEmpty {
+                    Text("中断 \(administration.interruptions.count) 题 · 未生成 IQ 估算")
+                        .font(.caption).foregroundStyle(.secondary)
+                } else if record.iq != nil && record.estimateValue == nil {
+                    Text("旧版估算不作 IQ 解释").font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            Spacer(minLength: 4)
+            VStack(alignment: .trailing, spacing: 4) {
+                if let value = record.profileValue ?? record.estimateValue {
+                    Text("\(value)").font(.title2.bold()).foregroundStyle(.purple)
+                    Text(record.wechslerProfile == nil ? "估算 IQ · 未校准" : "全量表分 · 未校准")
+                        .font(.caption2).foregroundStyle(.secondary)
+                }
+                Text("\(record.score)/\(record.total)").font(.subheadline.bold())
+                Text("原始分").font(.caption2).foregroundStyle(.secondary)
+            }
+            Image(systemName: "chevron.right").font(.caption).foregroundStyle(.secondary)
+        }
+        .padding().background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
+    }
 }

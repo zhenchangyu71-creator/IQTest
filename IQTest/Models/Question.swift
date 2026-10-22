@@ -79,6 +79,8 @@ enum TestType: String, Codable, CaseIterable, Identifiable {
         }
     }
 
+    var title: String { self == .wechsler ? "韦氏风格练习" : rawValue }
+
     var shortName: String {
         switch self {
         case .raven: return "瑞文"
@@ -89,7 +91,7 @@ enum TestType: String, Codable, CaseIterable, Identifiable {
     var subtitle: String {
         switch self {
         case .raven: return "图形矩阵 · 逻辑推理"
-        case .wechsler: return "10 分测验 · 标准施测流程"
+        case .wechsler: return "10 分测验 · 自编认知练习"
         }
     }
 

@@ -1,0 +1,54 @@
+#!/bin/bash
+# 提交前检查：题目参数、题库或换算标定被改动时，先跑一遍诊断门禁。
+#
+# 这类改动会直接影响分数的刻度，却往往看不出问题：改一道题的阈值可能让
+# 整份剖面的离散度漂移，而合成分本身仍然"看起来正常"。门禁用固定样本
+# 比对基线，捕捉这类劣化。
+#
+# 安装（选一种）：
+#   git config core.hooksPath scripts/hooks     # 推荐，钩子随仓库走
+#   cp scripts/pre-commit.sh .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+#
+# 无需联网，也不改动任何文件；门禁只读参数与题库。
+
+set -uo pipefail
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+cd "$ROOT" || exit 0
+
+STAGED="$(git diff --cached --name-only 2>/dev/null)" || exit 0
+[ -n "$STAGED" ] || exit 0
+
+triggered=0
+while IFS= read -r file; do
+  [ -n "$file" ] || continue
+  case "$file" in
+    IQTest/Resources/WechslerIQModel*.json|\
+    IQTest/Resources/ScoringCalibration.json|\
+    IQTest/Resources/Wechsler.json|\
+    IQTest/Resources/WechslerB.json|\
+    IQTest/Models/Wechsler*.swift|\
+    docs/ALGORITHM_SELF_CHECK.py|\
+    docs/ITEM_DIFFICULTY_AUDIT.py)
+      triggered=1
+      ;;
+  esac
+done <<< "$STAGED"
+
+[ "$triggered" -eq 1 ] || exit 0
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "未找到 python3，跳过诊断门禁。"
+  exit 0
+fi
+
+echo "改动涉及题目参数或换算标定，运行诊断门禁…"
+if ! python3 docs/run_diagnostics.py; then
+  echo ""
+  echo "诊断门禁未通过，提交被中止。"
+  echo "若这次改动是有意的，请先确认门禁报告里的指标变化符合预期，"
+  echo "再执行 python3 docs/run_diagnostics.py --update 重建基线，然后重新提交。"
+  exit 1
+fi
+
+exit 0

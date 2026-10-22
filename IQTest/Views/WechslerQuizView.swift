@@ -45,12 +45,14 @@ struct WechslerQuizView: View {
     private func stimulusView(item: WechslerItem) -> some View {
         VStack(spacing: 24) {
             Spacer()
-            Text("请记住以下数字")
+            Text(item.prompt)
                 .font(.headline)
                 .foregroundStyle(.secondary)
             Text(item.stimulus ?? "")
-                .font(.system(size: 44, weight: .bold, design: .monospaced))
-                .tracking(12)
+                .font(.system(size: 32, weight: .bold, design: .monospaced))
+                .tracking(2)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
                 .foregroundStyle(.primary)
                 .padding()
                 .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
@@ -62,7 +64,7 @@ struct WechslerQuizView: View {
         .frame(maxWidth: .infinity)
     }
 
-    // MARK: - 作答阶段（标准施测不反馈对错，直接下一题）
+    // MARK: - 作答阶段（完整练习中不即时反馈对错，直接下一题）
 
     private func questionView(item: WechslerItem) -> some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -72,10 +74,14 @@ struct WechslerQuizView: View {
                 .padding()
                 .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
 
+            if item.requiresRecall {
+                RecallAnswerView(item: item) { vm.submitRecall($0, for: item.id) }
+                    .id(item.id)
+            }
             VStack(spacing: 12) {
                 ForEach(vm.presentedOptions) { option in
                     Button {
-                        vm.record(option.score)
+                        vm.choose(optionID: option.id, for: item.id)
                     } label: {
                         Text(option.text)
                             .font(.headline)
@@ -84,6 +90,7 @@ struct WechslerQuizView: View {
                             .padding()
                             .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
                     }
+                    .accessibilityIdentifier("wechslerOption")
                 }
             }
         }

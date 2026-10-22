@@ -6,152 +6,61 @@ struct ResultView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // IQ 大数字
+                RecordSaveStatusView(error: viewModel.saveError, retry: viewModel.retrySave)
                 VStack(spacing: 8) {
-                    Text("你的估算 IQ")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    Text("\(viewModel.estimatedIQ)")
-                        .font(.system(size: 84, weight: .bold, design: .rounded))
-                        .foregroundStyle(.purple)
-                    HStack(spacing: 8) {
-                        Image(systemName: viewModel.difficulty.icon)
-                        Text("\(viewModel.testType.shortName) · \(viewModel.difficulty.rawValue) · \(viewModel.questions.count) 题 · \(viewModel.secondsPerQuestion)s/题")
+                    Text(viewModel.endedEarly ? "本次练习提前结束" : "本次推理练习报告").font(.headline)
+                    if let estimate = viewModel.ravenEstimate {
+                        Text("实验性 IQ 估算").font(.subheadline)
+                        Text("\(estimate.value)")
+                            .font(.system(size: 72, weight: .bold, design: .rounded)).foregroundStyle(.purple)
+                            .accessibilityIdentifier("experimentalRavenIQValue")
+                        Text("未校准 · 年龄仅作记录、未参与换算").font(.headline).foregroundStyle(.secondary)
+                        if let lower = estimate.confidenceLower, let upper = estimate.confidenceUpper {
+                            Text("95% 估计区间 \(lower)–\(upper)")
+                                .font(.subheadline).monospacedDigit().foregroundStyle(.secondary)
+                        }
+                        let percentile = IQScale.percentile(fromComposite: Double(estimate.value))
+                        Text("\(IQScale.CompositeBand.band(for: Double(estimate.value)).rawValue) · 近似百分位 ≈ \(Int(percentile.rounded()))")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                        Text("每轮只有 12 题，区间通常很宽；点估计不要当作精确测量。")
+                            .font(.caption).foregroundStyle(.secondary)
+                    } else {
+                        Text("未完成 · 不生成 IQ 估算").font(.headline)
                     }
-                    .font(.caption.bold())
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Color.purple, in: Capsule())
-                    Text("超过全球约 \(viewModel.percentile)% 的人")
-                        .font(.headline)
-                    Text("常模：\(AgeBand.current.title)（简化年龄校准）")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
-                    Text(viewModel.iqComment)
+                    Text("原始分 \(viewModel.score)/\(viewModel.scoredItemCount) · 已记录 \(viewModel.scoredItemCount)/\(viewModel.questions.count) 题")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
-                .padding(.top, 20)
-
-                // 成绩概览
-                HStack(spacing: 24) {
-                    VStack {
-                        Text("\(viewModel.score)/\(viewModel.questions.count)")
-                            .font(.title2.bold())
-                        Text("答对题目")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    Divider().frame(height: 40)
-                    VStack {
-                        Text("\(viewModel.percentile)%")
-                            .font(.title2.bold())
-                        Text("百分位")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                    Text("\(viewModel.sessionAge) 岁 · \(viewModel.sessionDifficulty.rawValue) · 每题 \(viewModel.sessionDifficulty.secondsPerQuestion) 秒")
+                        .font(.caption).foregroundStyle(.secondary)
+                    Text(RavenIQEstimate.notice).font(.footnote).foregroundStyle(.secondary)
+                    if viewModel.endedEarly {
+                        Text("已提交及已超时的项目已保存；未提交项目未计分。")
+                            .font(.caption).foregroundStyle(.secondary)
                     }
                 }
+                .multilineTextAlignment(.center).padding(.top, 20)
 
-                // 分类维度
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("维度分析")
-                        .font(.headline)
-                    ForEach(viewModel.categoryBreakdown, id: \.category) { item in
-                        HStack(spacing: 12) {
-                            Image(systemName: item.category.systemImage)
-                                .frame(width: 24)
+                    Text("各类题目表现").font(.headline)
+                    ForEach(viewModel.categoryBreakdown.filter { $0.total > 0 }, id: \.category) { item in
+                        HStack {
                             Text(item.category.rawValue)
-                                .frame(width: 70, alignment: .leading)
-                            ProgressView(value: Double(item.correct), total: Double(max(item.total, 1)))
-                                .tint(item.correct == item.total ? .green : .purple)
-                            Text("\(item.correct)/\(item.total)")
-                                .font(.caption.monospacedDigit())
-                                .foregroundStyle(.secondary)
+                            Spacer()
+                            Text("\(item.correct)/\(item.total)").monospacedDigit()
                         }
                     }
+                    Text("不同题型的原始得分不等同于标准化能力指数。")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
-                .padding()
-                .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
+                .padding().background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
 
-                // 答案回顾
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("答案回顾")
-                        .font(.headline)
-                    ForEach(Array(viewModel.questions.enumerated()), id: \.element.id) { index, question in
-                        let userAnswer: Int? = viewModel.answers[safe: index] ?? nil
-                        let isCorrect = userAnswer == question.correctIndex
-                        DisclosureGroup {
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("正确答案：\(question.options[question.correctIndex])")
-                                    .foregroundStyle(.green)
-                                if let answer = userAnswer {
-                                    Text("你的选择：\(question.options[answer])")
-                                        .foregroundStyle(isCorrect ? .green : .red)
-                                } else {
-                                    Text("你的选择：超时未答").foregroundStyle(.red)
-                                }
-                                Text(question.explanation)
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                            }
-                            .padding(.top, 6)
-                        } label: {
-                            HStack {
-                                Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                                    .foregroundStyle(isCorrect ? .green : .red)
-                                Text(question.prompt)
-                                    .font(.subheadline)
-                                    .lineLimit(1)
-                            }
-                        }
-                    }
-                }
-                .padding()
-                .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
-
-                // 操作按钮
-                VStack(spacing: 12) {
-                    Button {
-                        viewModel.start()
-                    } label: {
-                        Text("再测一次")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.purple)
-
-                    Button("返回首页") {
-                        viewModel.reset()
-                    }
-                    .foregroundStyle(.secondary)
-                }
-
-                Text("本测试结果基于固定题库与简化模型，仅供娱乐参考，不构成专业心理测评。")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 20)
+                RecordedItemsView(items: viewModel.reviewItems)
+                if let record = viewModel.completedRecord { RecordExportButton(records: [record]) }
+                ResultExitActions(hasUnsavedRecord: viewModel.saveError != nil,
+                                  again: viewModel.start, home: viewModel.reset)
+                Text("题库 \(RavenIQEstimate.currentBankVersion) · 模型 \(RavenIQEstimate.currentModelVersion)")
+                    .font(.caption2).foregroundStyle(.secondary).padding(.bottom, 20)
             }
             .padding(.horizontal, 24)
         }
     }
-}
-
-private extension Array {
-    subscript(safe index: Int) -> Element? {
-        indices.contains(index) ? self[index] : nil
-    }
-}
-
-#Preview {
-    let vm = QuizViewModel()
-    vm.start()
-    vm.recordAnswer(0)
-    vm.recordAnswer(nil)
-    return ResultView()
-        .environmentObject(vm)
 }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// 分测验练习：选分测验 → 答 3 题 → 估计量表分 + 历史最佳
+/// 分测验练习：选分测验 → 答 3 题 → 原始成绩 + 逐题解析
 struct SubtestPracticeView: View {
     @EnvironmentObject private var vm: PracticeViewModel
     @Environment(\.dismiss) private var dismiss
@@ -11,25 +11,35 @@ struct SubtestPracticeView: View {
         NavigationStack {
             Group {
                 switch vm.phase {
-                case .picker:
+                case .idle:
                     pickerView
+                case .briefing:
+                    WechslerInstructionsView(vm: vm).id(vm.currentSubtest)
+                case .interrupted:
+                    WechslerInterruptionView(vm: vm)
                 case .stimulus, .question:
                     quizView
-                case .done:
+                case .finished:
                     resultView
+                case .failed:
+                    VStack(spacing: 16) {
+                        Text(vm.errorMessage ?? "题库暂不可用")
+                        Button("返回选择") { vm.backToPicker() }
+                    }.padding()
                 }
             }
             .navigationTitle("分测验练习")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("关闭") { dismiss() }
+                    Button("关闭") { vm.backToPicker(); dismiss() }
                 }
             }
         }
         .onReceive(timer) { _ in
             vm.tick()
         }
+        .onDisappear { vm.backToPicker() }
     }
 
     // MARK: - 选分测验
@@ -37,11 +47,11 @@ struct SubtestPracticeView: View {
     private var pickerView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
-                // 能力雷达图：各分测验最佳量表分
+                // 能力雷达图：各分测验最佳练习得分率
                 PracticeRadarView(scores: WechslerSubtest.allCases.map { PracticeStore.best(subtest: $0) })
                     .padding(.vertical, 4)
 
-                Text("任选一个分测验练 3 题（低、中、高难度各 1 题），跟踪你的最佳量表分。")
+                Text("从题库前、中、后三段各抽 1 题，共练 3 题。得分率只描述这组题，不代表同龄人水平。")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
 
@@ -67,7 +77,7 @@ struct SubtestPracticeView: View {
                                 if count > 0 {
                                     HStack(spacing: 4) {
                                         Image(systemName: "chart.bar.fill")
-                                        Text("练过 \(count) 次 · 最佳 \(PracticeStore.best(subtest: subtest)) 分")
+                                        Text("练过 \(count) 次 · 最佳 \(PracticeStore.best(subtest: subtest) ?? 0)%")
                                     }
                                     .font(.caption2.bold())
                                     .foregroundStyle(.orange)
@@ -91,7 +101,7 @@ struct SubtestPracticeView: View {
         .background(Color(.systemGroupedBackground))
     }
 
-    // MARK: - 答题（复用标准施测的呈现方式）
+    // MARK: - 答题（与完整练习共用计时和作答逻辑）
 
     private var quizView: some View {
         VStack(spacing: 16) {
@@ -127,12 +137,14 @@ struct SubtestPracticeView: View {
     private func stimulusView(item: WechslerItem) -> some View {
         VStack(spacing: 24) {
             Spacer()
-            Text("请记住以下数字")
+            Text(item.prompt)
                 .font(.headline)
                 .foregroundStyle(.secondary)
             Text(item.stimulus ?? "")
-                .font(.system(size: 44, weight: .bold, design: .monospaced))
-                .tracking(12)
+                .font(.system(size: 32, weight: .bold, design: .monospaced))
+                .tracking(2)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
                 .foregroundStyle(.primary)
                 .padding()
                 .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
@@ -152,10 +164,14 @@ struct SubtestPracticeView: View {
                 .padding()
                 .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
 
+            if item.requiresRecall {
+                RecallAnswerView(item: item) { vm.submitRecall($0, for: item.id) }
+                    .id(item.id)
+            }
             VStack(spacing: 12) {
                 ForEach(vm.presentedOptions) { option in
                     Button {
-                        vm.record(option.score)
+                        vm.choose(optionID: option.id, for: item.id)
                     } label: {
                         Text(option.text)
                             .font(.headline)
@@ -164,6 +180,7 @@ struct SubtestPracticeView: View {
                             .padding()
                             .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
                     }
+                    .accessibilityIdentifier("wechslerOption")
                 }
             }
         }
@@ -178,21 +195,28 @@ struct SubtestPracticeView: View {
                     Text(vm.subtest.rawValue + " · 练习结果")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-                    Text("\(vm.estimatedScaled)")
+                    Text(vm.maxRaw > 0 ? "\(vm.performancePercentage)%" : "—")
                         .font(.system(size: 84, weight: .bold, design: .rounded))
                         .foregroundStyle(.purple)
-                    Text("估计量表分（满分 19）")
+                    Text("本组题目得分率")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Text("原始分 \(vm.rawScore)/\(vm.maxRaw) · 按 \(AgeBand.current.title) 年龄常模校准（简化）")
+                    Text("原始分 \(vm.rawScore)/\(vm.maxRaw) · 超时 \(vm.timedOutCount) 题 · 中断 \(vm.interruptedCount) 题")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
-                    Text(vm.scaledComment)
+                    Text(vm.performanceComment)
                         .font(.subheadline)
                         .foregroundStyle(.primary)
                 }
                 .padding()
                 .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
+
+                WechslerAdministrationView(administration: vm.administration)
+                    .padding()
+                    .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
+
+                WechslerReviewView(responses: vm.responses, item: vm.item(for:))
+                Text(WechslerLoader.scoringNotice).font(.caption).foregroundStyle(.secondary)
 
                 VStack(spacing: 12) {
                     Button {

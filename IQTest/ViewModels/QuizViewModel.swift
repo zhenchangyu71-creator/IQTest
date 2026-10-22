@@ -12,7 +12,7 @@ final class QuizViewModel: ObservableObject {
         didSet { timeRemaining = difficulty.secondsPerQuestion }
     }
     @Published var testType: TestType = .raven
-    /// 被试年龄（首页输入，持久化，用于年龄常模校准）
+    /// 基本信息；测试开始时固定保存，不参与未校准估算。
     @Published var age: Int = AgeBand.age {
         didSet { AgeBand.age = age }
     }
@@ -22,6 +22,38 @@ final class QuizViewModel: ObservableObject {
     @Published private(set) var score = 0
     @Published private(set) var answers: [Int?] = []
     @Published private(set) var timeRemaining = Difficulty.medium.secondsPerQuestion
+    @Published private(set) var selectedIndex: Int?
+    /// 每次呈现都更换，避免旧视图事件提交到下一题或新一轮测试。
+    @Published private(set) var questionToken = UUID()
+
+    @Published private(set) var endedEarly = false
+    @Published private(set) var bankError: String?
+    @Published private(set) var saveError: String?
+    private(set) var completedRecord: TestRecord?
+    private var recordSaved = false
+    private(set) var sessionAge = AgeBand.age
+    private(set) var sessionDifficulty = Difficulty.medium
+    private(set) var reviewItems: [RecordedItem] = []
+    private var questionStarted: TimeInterval = 0
+    private var questionDeadline: TimeInterval = 0
+    private var feedbackDeadline: TimeInterval?
+    private let now: () -> TimeInterval
+    private let saveRecord: @MainActor (TestRecord) throws -> Void
+    private let loader: () throws -> [Question]
+
+    private nonisolated static let clockOrigin = ContinuousClock.now
+    private nonisolated static func continuousTime() -> TimeInterval {
+        let elapsed = clockOrigin.duration(to: .now).components
+        return Double(elapsed.seconds) + Double(elapsed.attoseconds) / 1e18
+    }
+
+    init(loader: @escaping () throws -> [Question] = QuestionLoader.loadValidated,
+         now: @escaping () -> TimeInterval = QuizViewModel.continuousTime,
+         saveRecord: @escaping @MainActor (TestRecord) throws -> Void = RecordStore.append) {
+        self.now = now
+        self.saveRecord = saveRecord
+        self.loader = loader
+    }
 
     var secondsPerQuestion: Int { difficulty.secondsPerQuestion }
 
@@ -35,28 +67,21 @@ final class QuizViewModel: ObservableObject {
         return Double(currentIndex) / Double(questions.count)
     }
 
-    /// 基于难度与年龄带校准的简化模型：均值 100、标准差 15 的 IQ 分布
+    /// IQ 量尺上的经验模型输出；只有完整作答结果页才展示。
     var estimatedIQ: Int {
-        let maxScore = max(questions.count, 1)
-        let fraction = Double(score) / Double(maxScore)
-        let sd: Double = 0.20
-        let mean = min(0.95, max(0.05, difficulty.scoreMean + AgeBand.current.ravenMeanOffset))
-        let iq = 100 + (fraction - mean) / sd * 15
-        return Int(min(145, max(55, iq.rounded())))
+        RavenIQEstimate.make(score: score, total: questions.count, difficulty: sessionDifficulty)?.value ?? 100
     }
-
-    /// 在人群中的百分位（假设 IQ 服从正态分布）
-    var percentile: Int {
-        let z = Double(estimatedIQ - 100) / 15.0
-        let cdf = 0.5 * (1.0 + erf(z / sqrt(2.0)))
-        return Int((cdf * 100).rounded())
+    var ravenEstimate: RavenIQEstimate? {
+        guard phase == .finished, !endedEarly else { return nil }
+        return RavenIQEstimate.make(score: score, total: questions.count, difficulty: sessionDifficulty)
     }
+    var scoredItemCount: Int { answers.count }
 
     /// 各分类的答对情况 (分类, 答对数, 总数)
     var categoryBreakdown: [(category: QuestionCategory, correct: Int, total: Int)] {
         var totals: [QuestionCategory: Int] = [:]
         var corrects: [QuestionCategory: Int] = [:]
-        for (index, question) in questions.enumerated() {
+        for (index, question) in questions.prefix(answers.count).enumerated() {
             totals[question.category, default: 0] += 1
             if let answer = answers[safe: index], answer == question.correctIndex {
                 corrects[question.category, default: 0] += 1
@@ -64,18 +89,6 @@ final class QuizViewModel: ObservableObject {
         }
         return testType.categories.map { category in
             (category, corrects[category] ?? 0, totals[category] ?? 0)
-        }
-    }
-
-    var iqComment: String {
-        switch estimatedIQ {
-        case ..<70: return "需要进一步提升，多练习会有进步！"
-        case 70..<85: return "低于平均水平，加油练习逻辑思维。"
-        case 85..<100: return "接近平均水平，再努力一点！"
-        case 100..<115: return "处于平均水平以上，表现不错！"
-        case 115..<130: return "高于平均水平，思维很敏捷！"
-        case 130...: return "非常优秀！属于人群中前 2% 的水平！"
-        default: return ""
         }
     }
 
@@ -88,32 +101,31 @@ final class QuizViewModel: ObservableObject {
         return UserDefaults.standard.integer(forKey: Self.legacyBestScoreKey(level))
     }
 
-    func bestIQ(for level: Difficulty) -> Int {
-        let typed = UserDefaults.standard.integer(forKey: Self.bestIQKey(testType, level))
-        if typed > 0 { return typed }
-        return UserDefaults.standard.integer(forKey: Self.legacyBestIQKey(level))
-    }
-
     private static func bestScoreKey(_ type: TestType, _ level: Difficulty) -> String {
         "bestScore_\(type.shortName)_\(level.rawValue)"
-    }
-
-    private static func bestIQKey(_ type: TestType, _ level: Difficulty) -> String {
-        "bestIQ_\(type.shortName)_\(level.rawValue)"
     }
 
     private static func legacyBestScoreKey(_ level: Difficulty) -> String {
         "bestScore_\(level.rawValue)"
     }
 
-    private static func legacyBestIQKey(_ level: Difficulty) -> String {
-        "bestIQ_\(level.rawValue)"
-    }
-
     // MARK: - 流程控制
 
     func start() {
-        let pool = QuestionLoader.load().filter {
+        bankError = nil
+        completedRecord = nil
+        recordSaved = false
+        saveError = nil
+        let bank: [Question]
+        do {
+            bank = try loader()
+            try QuestionLoader.validate(bank)
+        } catch {
+            reset()
+            bankError = error.localizedDescription
+            return
+        }
+        let pool = bank.filter {
             $0.testType == testType && $0.difficulty == difficulty
         }
         // 每个分类随机抽取 3 题，共 12 题
@@ -123,55 +135,117 @@ final class QuizViewModel: ObservableObject {
         currentIndex = 0
         score = 0
         answers = []
-        timeRemaining = secondsPerQuestion
+        reviewItems = []
+        endedEarly = false
+        sessionAge = age
+        sessionDifficulty = difficulty
+        beginQuestion()
         phase = .inProgress
     }
 
     func tick() {
         guard phase == .inProgress else { return }
-        timeRemaining -= 1
-        if timeRemaining <= 0 {
-            recordAnswer(nil) // 超时视为未答
+        let instant = now()
+        if let feedbackDeadline {
+            if instant >= feedbackDeadline { advance() }
+            return
+        }
+        timeRemaining = max(0, Int(ceil(questionDeadline - instant)))
+        if instant >= questionDeadline {
+            captureAnswer(nil)
+            advance()
         }
     }
 
-    func recordAnswer(_ index: Int?) {
-        guard phase == .inProgress, currentIndex < questions.count else { return }
-        answers.append(index)
-        if let index, questions[currentIndex].correctIndex == index {
-            score += 1
+    func recordAnswer(_ index: Int, questionToken: UUID) {
+        guard phase == .inProgress, questionToken == self.questionToken,
+              selectedIndex == nil, let question = currentQuestion,
+              question.options.indices.contains(index) else { return }
+        let instant = now()
+        // 提交时也检查截止时刻，不依赖 Timer 是否已及时刷新。
+        guard instant < questionDeadline else {
+            captureAnswer(nil)
+            advance()
+            return
         }
+        captureAnswer(index)
+        timeRemaining = max(0, Int(ceil(questionDeadline - instant)))
+        selectedIndex = index
+        feedbackDeadline = instant + 0.8
+    }
+
+    private func beginQuestion() {
+        questionToken = UUID()
+        selectedIndex = nil
+        feedbackDeadline = nil
+        timeRemaining = sessionDifficulty.secondsPerQuestion
+        questionStarted = now()
+        questionDeadline = questionStarted + Double(sessionDifficulty.secondsPerQuestion)
+    }
+
+    private func advance() {
+        selectedIndex = nil
+        feedbackDeadline = nil
         if currentIndex == questions.count - 1 {
             finish()
         } else {
             currentIndex += 1
-            timeRemaining = secondsPerQuestion
+            beginQuestion()
         }
     }
 
     func reset() {
         phase = .ready
+        selectedIndex = nil
+        feedbackDeadline = nil
+        questionToken = UUID()
+        completedRecord = nil
+        recordSaved = false
+        saveError = nil
+    }
+
+    func endAndSave() {
+        guard phase == .inProgress else { return }
+        if selectedIndex == nil, now() >= questionDeadline { captureAnswer(nil) }
+        guard !answers.isEmpty else { reset(); return }
+        endedEarly = answers.count < questions.count
+        finish()
+    }
+
+    private func captureAnswer(_ index: Int?) {
+        guard let question = currentQuestion, answers.count == currentIndex else { return }
+        answers.append(index)
+        if index == question.correctIndex { score += 1 }
+        reviewItems.append(.raven(question, selected: index,
+                                 elapsedSeconds: min(Double(sessionDifficulty.secondsPerQuestion), max(0, now() - questionStarted))))
     }
 
     private func finish() {
+        guard phase == .inProgress else { return }
         phase = .finished
-        let level = difficulty
+        selectedIndex = nil
+        feedbackDeadline = nil
         let record = TestRecord(
-            date: Date(),
-            testType: testType,
-            difficulty: level,
-            score: score,
-            total: questions.count,
-            iq: estimatedIQ,
-            percentile: percentile,
-            age: age
-        )
-        RecordStore.append(record)
-        if score > bestScore(for: level) {
-            UserDefaults.standard.set(score, forKey: Self.bestScoreKey(testType, level))
-        }
-        if estimatedIQ > bestIQ(for: level) {
-            UserDefaults.standard.set(estimatedIQ, forKey: Self.bestIQKey(testType, level))
+            date: Date(), testType: .raven, difficulty: sessionDifficulty,
+            score: score, total: answers.count, iq: nil, percentile: nil, age: sessionAge,
+            scoringVersion: RavenIQEstimate.currentBankVersion, ravenEstimate: ravenEstimate,
+            reviewItems: reviewItems, completion: endedEarly ? .endedEarly : .completed,
+            plannedItemCount: questions.count)
+        completedRecord = record
+        retrySave()
+    }
+
+    func retrySave() {
+        guard phase == .finished, !recordSaved, let record = completedRecord else { return }
+        do {
+            try saveRecord(record)
+            recordSaved = true
+            saveError = nil
+            if !endedEarly, score > bestScore(for: sessionDifficulty) {
+                UserDefaults.standard.set(score, forKey: Self.bestScoreKey(.raven, sessionDifficulty))
+            }
+        } catch {
+            saveError = "历史保存失败：\(error.localizedDescription)"
         }
     }
 }

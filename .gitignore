@@ -10,3 +10,7 @@ xcuserdata/
 
 # UI 测试 harness（xcodegen 生成）
 UITests/UITestHarness.xcodeproj/
+
+# Python 缓存（docs 下的分析脚本）
+__pycache__/
+*.pyc

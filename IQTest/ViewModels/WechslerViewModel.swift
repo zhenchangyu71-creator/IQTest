@@ -1,192 +1,367 @@
 import Foundation
 
-/// 韦氏标准施测流程：
-/// 10 个分测验按 WAIS 顺序施测；分测验内按难度递进；
-/// 同一分测验连续 3 次得 0 分提前进入下一分测验（停测规则）。
+/// 共享答题流程。完整练习不套用未验证的停测或年龄加分规则。
 @MainActor
-final class WechslerViewModel: ObservableObject {
-    enum Phase: Equatable {
-        case idle
-        case stimulus   // 数字广度：呈现数字阶段
-        case question
-        case finished
-    }
-
-    @Published private(set) var phase: Phase = .idle
-    @Published private(set) var currentSubtest: WechslerSubtest = .block
-    @Published private(set) var itemNumber = 0       // 分测验内第几题（1 起）
-    @Published private(set) var itemsInSubtest = 0
-    @Published private(set) var stimulusRemaining = 0
-    @Published private(set) var timeRemaining = 0
-    /// 当前题目的乱序选项（含得分）
-    @Published private(set) var presentedOptions: [Option] = []
-
+class WechslerViewModel: ObservableObject {
+    enum Phase: Equatable { case idle, briefing, stimulus, question, interrupted, finished, failed }
     struct Option: Identifiable {
         let id = UUID()
         let text: String
         let score: Int
     }
 
-    // MARK: - 结果
-
+    @Published private(set) var phase: Phase = .idle
+    @Published private(set) var currentSubtest: WechslerSubtest = .block
+    @Published private(set) var itemNumber = 0
+    @Published private(set) var itemsInSubtest = 0
+    @Published private(set) var stimulusRemaining = 0
+    @Published private(set) var timeRemaining = 0
+    @Published private(set) var presentedOptions: [Option] = []
+    @Published private(set) var errorMessage: String?
+    @Published private(set) var tutorialPassed = false
+    @Published private(set) var tutorialFeedback: String?
+    private(set) var completedTutorials: [WechslerSubtest] = []
+    var instructions: WechslerInstructions { .forSubtest(currentSubtest) }
+    private(set) var responses: [WechslerResponse] = []
+    private(set) var reviewItems: [RecordedItem] = []
+    private(set) var endedEarly = false
     private(set) var results: [WechslerScoring.SubtestResult] = []
-    private(set) var indexScores: [(domain: WechslerDomain, score: Int)] = []
-    private(set) var fsiq = 0
-    private(set) var percentileValue = 0
+    private(set) var sessionAge = AgeBand.age
+    private(set) var sessionQuestionSet: WechslerQuestionSet?
+    @Published private(set) var saveError: String?
+    private(set) var completedRecord: TestRecord?
+    private var recordSaved = false
+    private(set) var hasPriorPractice = false
+    private(set) var iqEstimate: WechslerIQEstimate?
+    /// 韦氏风格的量表分剖面（尺度分 / 指数分 / 全量表分），未经人群常模校准。
+    private(set) var profile: WechslerProfile?
+    private(set) var estimationNote: String?
+    /// 正式 FSIQ 始终不可用；实验性估算单独保存。
+    var fsiq: Int? { nil }
+    var rawScore: Int { responses.reduce(0) { $0 + $1.score } }
+    var maxRaw: Int {
+        let excluded = Set(responses.filter { $0.outcome == .interrupted }.map(\.itemID))
+        let recorded = Set(responses.map(\.itemID))
+        return items.filter { !excluded.contains($0.id) && (!endedEarly || recorded.contains($0.id)) }.reduce(0) { $0 + $1.maxScore }
+    }
+    var performancePercentage: Int { WechslerScoring.percentage(raw: rawScore, maxRaw: maxRaw) }
+    var timedOutCount: Int { responses.filter { $0.outcome == .timedOut }.count }
+    var interruptedCount: Int { responses.filter { $0.outcome == .interrupted }.count }
+    var interruptedItemExpired: Bool { pendingInterruption?.deadlineExpired == true }
+    var administration: WechslerAdministration {
+        WechslerAdministration(protocolVersion: WechslerInstructions.protocolVersion,
+                               completedTutorials: completedTutorials, hasPriorExposure: hasPriorPractice,
+                               interruptions: interruptions)
+    }
+    var itemCount: Int { items.count }
+    var currentItem: WechslerItem? { items.indices.contains(cursor) ? items[cursor] : nil }
+    var totalProgress: Double { items.isEmpty ? 0 : Double(responses.count) / Double(items.count) }
 
-    // MARK: - 内部状态
+    private var items: [WechslerItem] = []
+    private var cursor = 0
+    private var questionStarted: TimeInterval = 0
+    private var stimulusDeadline: TimeInterval = 0
+    private var questionDeadline: TimeInterval = 0
+    private var practiceSubtest: WechslerSubtest?
+    private var appIsActive = true
+    private var interruptions: [WechslerAdministration.Interruption] = []
+    private struct PendingInterruption {
+        let itemID: String
+        let stage: WechslerAdministration.Interruption.Stage
+        let elapsedSeconds: Double
+        let deadlineExpired: Bool
+        var inactiveSeconds: Double = 0
+        var inactiveSince: TimeInterval?
+    }
+    private var pendingInterruption: PendingInterruption?
+    private var optionsForArchive: [RecordedItem.Option] = []
+    private let loader: (WechslerQuestionSet) throws -> [WechslerItem]
+    private let now: () -> TimeInterval
+    private let saveRecord: @MainActor (TestRecord) throws -> Void
 
-    private var pool: [WechslerSubtest: [WechslerItem]] = [:]
-    private var raw: [WechslerSubtest: Int] = [:]
-    private var consecutiveFails = 0
-    private var administeredItems = 0
-    private var fullScoreItems = 0
-
-    var currentItem: WechslerItem? {
-        pool[currentSubtest]?[safe: itemNumber - 1]
+    private nonisolated static let clockOrigin = ContinuousClock.now
+    private nonisolated static func continuousTime() -> TimeInterval {
+        let elapsed = clockOrigin.duration(to: .now).components
+        return Double(elapsed.seconds) + Double(elapsed.attoseconds) / 1e18
     }
 
-    var totalProgress: Double {
-        let total = pool.values.reduce(0) { $0 + $1.count }
-        guard total > 0 else { return 0 }
-        let doneBeforeSubtest = WechslerSubtest.allCases
-            .prefix(while: { $0 != currentSubtest })
-            .reduce(0) { $0 + (pool[$1]?.count ?? 0) }
-        return Double(doneBeforeSubtest + itemNumber - 1) / Double(total)
+    init(loader: @escaping (WechslerQuestionSet) throws -> [WechslerItem] = WechslerLoader.loadValidated,
+         now: @escaping () -> TimeInterval = WechslerViewModel.continuousTime,
+         saveRecord: @escaping @MainActor (TestRecord) throws -> Void = RecordStore.append) {
+        self.loader = loader
+        self.now = now
+        self.saveRecord = saveRecord
     }
 
-    // MARK: - 流程控制
-
-    func start() {
-        let items = WechslerLoader.load()
-        guard !items.isEmpty else { return }
-        pool = Dictionary(grouping: items, by: { $0.subtest })
-        raw = Dictionary(uniqueKeysWithValues: WechslerSubtest.allCases.map { ($0, 0) })
-        results = []
-        indexScores = []
-        fsiq = 0
-        percentileValue = 0
-        consecutiveFails = 0
-        administeredItems = 0
-        fullScoreItems = 0
-        currentSubtest = WechslerSubtest.allCases[0]
-        itemNumber = 1
-        itemsInSubtest = pool[currentSubtest]?.count ?? 0
-        presentCurrentItem()
+    func start(practice subtest: WechslerSubtest? = nil, questionSet: WechslerQuestionSet = .a) {
+        reset()
+        do {
+            let sets = subtest == nil ? [questionSet] : WechslerQuestionSet.allCases
+            let loaded = try sets.flatMap { try loader($0) }
+            try WechslerLoader.validate(loaded)
+            practiceSubtest = subtest
+            sessionQuestionSet = subtest == nil ? questionSet : nil
+            if let subtest {
+                let pool = loaded.filter { $0.subtest == subtest }.sorted { $0.order < $1.order }
+                // 按实际题量分为三段；不将文件位置宣称为已校准的难度。
+                items = (0..<3).compactMap { segment in
+                    let lower = segment * pool.count / 3
+                    let upper = (segment + 1) * pool.count / 3
+                    return pool[lower..<upper].randomElement()
+                }
+            } else {
+                items = WechslerSubtest.allCases.flatMap { sub in loaded.filter { $0.subtest == sub } }
+            }
+            sessionAge = AgeBand.age
+            hasPriorPractice = WechslerSubtest.allCases.contains { PracticeStore.count(subtest: $0) > 0 }
+                || ((try? RecordStore.load())?.contains { $0.testType == .wechsler } ?? false)
+            presentCurrentItem()
+        } catch {
+            errorMessage = error.localizedDescription
+            phase = .failed
+        }
     }
 
     func reset() {
         phase = .idle
+        items = []
+        cursor = 0
+        responses = []
+        reviewItems = []
+        endedEarly = false
+        results = []
+        iqEstimate = nil
+        profile = nil
+        estimationNote = nil
+        presentedOptions = []
+        optionsForArchive = []
+        stimulusRemaining = 0
+        timeRemaining = 0
+        errorMessage = nil
+        tutorialPassed = false
+        tutorialFeedback = nil
+        completedTutorials = []
+        interruptions = []
+        pendingInterruption = nil
+        hasPriorPractice = false
+        sessionQuestionSet = nil
+        saveError = nil
+        completedRecord = nil
+        recordSaved = false
     }
 
+    func answerTutorial(_ answer: String) {
+        guard phase == .briefing, appIsActive, !tutorialPassed else { return }
+        let sample = instructions.sample
+        let correct = sample.requiresRecall
+            ? sample.recallScore(for: answer) == sample.maxScore
+            : answer == sample.correctAnswer
+        tutorialPassed = correct
+        tutorialFeedback = (correct ? "示例已完成。" : "可以再试一次。") + sample.explanation
+    }
+
+    func beginSubtest() {
+        guard phase == .briefing, tutorialPassed, appIsActive else { return }
+        completedTutorials.append(currentSubtest)
+        presentCurrentItem()
+    }
+
+    /// 失去前台时立即遮住项目并冻结推进；后台时长只记录，不补偿作答时间。
+    func setAppActive(_ active: Bool) {
+        guard active != appIsActive else { return }
+        appIsActive = active
+        let instant = now()
+        if active {
+            if let since = pendingInterruption?.inactiveSince {
+                pendingInterruption?.inactiveSeconds += max(0, instant - since)
+                pendingInterruption?.inactiveSince = nil
+            }
+        } else if phase == .stimulus || phase == .question, let item = currentItem {
+            pendingInterruption = PendingInterruption(
+                itemID: item.id, stage: phase == .stimulus ? .stimulus : .question,
+                elapsedSeconds: min(Double(item.subtest.timeLimit), max(0, instant - questionStarted)),
+                deadlineExpired: instant >= questionDeadline,
+                inactiveSince: instant)
+            presentedOptions = []
+            phase = .interrupted
+        } else if phase == .interrupted {
+            pendingInterruption?.inactiveSince = instant
+        }
+    }
+
+    func resumeAfterInterruption() {
+        guard appIsActive, phase == .interrupted, let pending = pendingInterruption else { return }
+        if !pending.deadlineExpired {
+            interruptions.append(.init(itemID: pending.itemID, stage: pending.stage,
+                                       inactiveSeconds: pending.inactiveSeconds))
+        }
+        pendingInterruption = nil
+        // 已曝光的项目不重播、不猜测缺失得分，后续题从确认继续时开始。
+        record(answer: nil, score: 0, outcome: pending.deadlineExpired ? .timedOut : .interrupted,
+               elapsedSeconds: pending.elapsedSeconds)
+    }
+
+    /// 基于单调时钟的截止时刻计时；中断交给独立阶段处理。
     func tick() {
-        switch phase {
-        case .stimulus:
-            stimulusRemaining -= 1
-            if stimulusRemaining <= 0 {
-                timeRemaining = currentSubtest.timeLimit
+        guard appIsActive, phase == .stimulus || phase == .question else { return }
+        let instant = now()
+        if instant >= questionDeadline {
+            record(answer: nil, score: 0, outcome: .timedOut)
+        } else if phase == .stimulus {
+            stimulusRemaining = max(0, Int(ceil(stimulusDeadline - instant)))
+            if instant >= stimulusDeadline {
+                timeRemaining = max(0, Int(ceil(questionDeadline - instant)))
                 phase = .question
             }
-        case .question:
-            timeRemaining -= 1
-            if timeRemaining <= 0 {
-                record(0) // 超时视为未通过
-            }
-        default:
-            break
-        }
-    }
-
-    func record(_ score: Int) {
-        guard phase == .question, let item = currentItem else { return }
-        phase = .idle // 防止重复提交
-        raw[item.subtest, default: 0] += score
-        administeredItems += 1
-        if score == item.subtest.maxPointsPerItem { fullScoreItems += 1 }
-        consecutiveFails = score == 0 ? consecutiveFails + 1 : 0
-
-        if consecutiveFails >= 3 || itemNumber >= itemsInSubtest {
-            advanceSubtest()
         } else {
-            itemNumber += 1
-            presentCurrentItem()
+            timeRemaining = max(0, Int(ceil(questionDeadline - instant)))
         }
     }
 
-    // MARK: - 私有
+    func choose(optionID: UUID, for itemID: String) {
+        guard phase == .question, let item = currentItem, item.id == itemID,
+              !item.requiresRecall, let option = presentedOptions.first(where: { $0.id == optionID }) else { return }
+        guard now() < questionDeadline else { tick(); return }
+        record(answer: option.text, score: option.score, outcome: .answered)
+    }
+
+    func submitRecall(_ answer: String, for itemID: String) {
+        guard phase == .question, let item = currentItem, item.id == itemID,
+              let score = item.recallScore(for: answer) else { return }
+        guard now() < questionDeadline else { tick(); return }
+        record(answer: answer, score: score, outcome: .answered)
+    }
+
+    func result(for domain: WechslerDomain) -> (raw: Int, maxRaw: Int) {
+        let relevant = results.filter { $0.subtest.domain == domain }
+        return (relevant.reduce(0) { $0 + $1.raw }, relevant.reduce(0) { $0 + $1.maxRaw })
+    }
+
+    func item(for response: WechslerResponse) -> WechslerItem? {
+        items.first { $0.id == response.itemID }
+    }
 
     private func presentCurrentItem() {
-        guard let item = currentItem else { advanceSubtest(); return }
-        presentedOptions = zip(item.options, item.optionScores)
-            .map { Option(text: $0.0, score: $0.1) }
-            .shuffled()
-        if item.presentation == "digits" {
-            stimulusRemaining = item.displaySeconds ?? 4
-            phase = .stimulus
-        } else {
-            timeRemaining = item.subtest.timeLimit
-            phase = .question
-        }
-    }
-
-    private func advanceSubtest() {
-        guard let index = WechslerSubtest.allCases.firstIndex(of: currentSubtest),
-              index + 1 < WechslerSubtest.allCases.count else {
-            finish()
+        guard let item = currentItem else { finish(); return }
+        currentSubtest = item.subtest
+        itemNumber = items.prefix(cursor + 1).filter { $0.subtest == item.subtest }.count
+        itemsInSubtest = items.filter { $0.subtest == item.subtest }.count
+        if !completedTutorials.contains(item.subtest) {
+            presentedOptions = []
+            timeRemaining = 0
+            stimulusRemaining = 0
+            tutorialPassed = false
+            tutorialFeedback = nil
+            phase = .briefing
             return
         }
-        currentSubtest = WechslerSubtest.allCases[index + 1]
-        itemNumber = 1
-        itemsInSubtest = pool[currentSubtest]?.count ?? 0
-        consecutiveFails = 0
-        if itemsInSubtest == 0 {
-            advanceSubtest()
+        presentedOptions = item.requiresRecall ? [] : zip(item.options, item.optionScores)
+            .map { Option(text: $0.0, score: $0.1) }.shuffled()
+        optionsForArchive = presentedOptions.map { .init(text: $0.text, score: $0.score) }
+        let instant = now()
+        stimulusDeadline = instant + Double(item.requiresRecall ? (item.displaySeconds ?? 4) : 0)
+        questionStarted = stimulusDeadline
+        questionDeadline = questionStarted + Double(item.subtest.timeLimit)
+        stimulusRemaining = item.requiresRecall ? (item.displaySeconds ?? 4) : 0
+        timeRemaining = item.subtest.timeLimit
+        phase = item.requiresRecall ? .stimulus : .question
+    }
+
+    private func captureResponse(answer: String?, score: Int, outcome: WechslerResponse.Outcome,
+                                 elapsedSeconds: Double? = nil) {
+        guard let item = currentItem else { return }
+        let elapsed = elapsedSeconds ?? min(Double(item.subtest.timeLimit), max(0, now() - questionStarted))
+        responses.append(WechslerResponse(itemID: item.id, subtest: item.subtest, answer: answer,
+                                          score: score, maxScore: item.maxScore, outcome: outcome, elapsedSeconds: elapsed))
+        let recordedOutcome: RecordedItem.Outcome
+        switch outcome {
+        case .answered: recordedOutcome = .answered
+        case .timedOut: recordedOutcome = .timedOut
+        case .interrupted: recordedOutcome = .interrupted
+        }
+        reviewItems.append(RecordedItem(id: item.id, group: item.subtest.rawValue, prompt: item.prompt,
+                                         stimulus: item.stimulus, recallRule: item.recallRule,
+                                         displaySeconds: item.requiresRecall ? (item.displaySeconds ?? 4) : nil,
+                                         options: optionsForArchive,
+                                         answer: answer, correctAnswer: item.expectedRecall ?? item.correctAnswer,
+                                         explanation: item.explanation, score: score, maxScore: item.maxScore,
+                                         outcome: recordedOutcome, elapsedSeconds: elapsed))
+    }
+
+    private func record(answer: String?, score: Int, outcome: WechslerResponse.Outcome,
+                        elapsedSeconds: Double? = nil) {
+        captureResponse(answer: answer, score: score, outcome: outcome, elapsedSeconds: elapsedSeconds)
+        cursor += 1
+        presentCurrentItem()
+    }
+
+    func endAndSave() {
+        guard [.briefing, .stimulus, .question, .interrupted].contains(phase) else { return }
+        if let pending = pendingInterruption {
+            let inactive = pending.inactiveSeconds + (pending.inactiveSince.map { max(0, now() - $0) } ?? 0)
+            if !pending.deadlineExpired {
+                interruptions.append(.init(itemID: pending.itemID, stage: pending.stage, inactiveSeconds: inactive))
+            }
+            captureResponse(answer: nil, score: 0, outcome: pending.deadlineExpired ? .timedOut : .interrupted,
+                            elapsedSeconds: pending.elapsedSeconds)
+            pendingInterruption = nil
+        } else if (phase == .stimulus || phase == .question), now() >= questionDeadline {
+            captureResponse(answer: nil, score: 0, outcome: .timedOut)
+        }
+        guard !responses.isEmpty else { reset(); return }
+        finish(endedEarly: responses.count < items.count)
+    }
+
+    private func finish(endedEarly: Bool = false) {
+        guard !items.isEmpty, endedEarly || responses.count == items.count else { return }
+        self.endedEarly = endedEarly
+        let answeredIDs = Set(responses.map(\.itemID))
+        let scoredItems = endedEarly ? items.filter { answeredIDs.contains($0.id) } : items
+        results = WechslerScoring.results(items: scoredItems, responses: responses).filter { $0.total > 0 }
+        if let practiceSubtest {
+            if interruptedCount == 0 && !endedEarly {
+                PracticeStore.recordAttempt(subtest: practiceSubtest, percentage: performancePercentage)
+            }
         } else {
-            presentCurrentItem()
+            if endedEarly {
+                estimationNote = "本次提前结束，仅报告已答题成绩，不生成 IQ 估算。"
+            } else {
+                do {
+                    let model = try WechslerIQModel.load(sessionQuestionSet ?? .a)
+                    iqEstimate = try WechslerIQEstimator.estimate(items: items, responses: responses, model: model)
+                    let ability = try WechslerIQEstimator.ability(items: items, responses: responses, model: model)
+                    profile = WechslerProfileScorer.make(ability: ability, flags: iqEstimate?.flags ?? [],
+                                                         modelVersion: model.version, bankVersion: model.bankVersion)
+                } catch {
+                    estimationNote = error.localizedDescription
+                }
+            }
+            let detail = WechslerDomain.allCases.map { domain in
+                let value = result(for: domain)
+                return "\(domain.shortName) \(value.raw)/\(value.maxRaw)"
+            }.joined(separator: " · ")
+            completedRecord = TestRecord(date: Date(), testType: .wechsler, difficulty: .medium,
+                                  score: rawScore, total: maxRaw, iq: nil, percentile: nil,
+                                  detail: detail, age: sessionAge,
+                                  scoringVersion: WechslerLoader.bankVersion, responses: responses, iqEstimate: iqEstimate,
+                                  wechslerProfile: profile,
+                                  administration: administration, reviewItems: reviewItems,
+                                  completion: endedEarly ? .endedEarly : .completed, plannedItemCount: items.count,
+                                  questionSet: sessionQuestionSet)
         }
-    }
-
-    private func finish() {
+        presentedOptions = []
         phase = .finished
-        let scaledOffset = AgeBand.current.wechslerScaledOffset
-        results = WechslerSubtest.allCases.map { subtest in
-            let maxRaw = (pool[subtest]?.count ?? 1) * subtest.maxPointsPerItem
-            let r = raw[subtest] ?? 0
-            let base = WechslerScoring.scaled(raw: r, maxRaw: maxRaw)
-            // 年龄常模：同表现下低龄被试得到更高的年龄校准量表分
-            let scaled = min(19, max(1, base + scaledOffset))
-            return WechslerScoring.SubtestResult(
-                subtest: subtest,
-                raw: r,
-                scaled: scaled
-            )
-        }
-        let avgAll = Double(results.map(\.scaled).reduce(0, +)) / Double(results.count)
-        fsiq = WechslerScoring.index(avgScaled: avgAll)
-        percentileValue = WechslerScoring.percentile(of: fsiq)
-        indexScores = WechslerDomain.allCases.map { domain in
-            let related = results.filter { domain.subtests.contains($0.subtest) }
-            let avg = Double(related.map(\.scaled).reduce(0, +)) / Double(related.count)
-            return (domain, WechslerScoring.index(avgScaled: avg))
-        }
-
-        let detail = indexScores.map { "\($0.domain.shortName) \($0.score)" }.joined(separator: " · ")
-        RecordStore.append(TestRecord(
-            date: Date(),
-            testType: .wechsler,
-            difficulty: .medium, // 标准流程不分难度
-            score: fullScoreItems,
-            total: administeredItems,
-            iq: fsiq,
-            percentile: percentileValue,
-            detail: detail,
-            age: AgeBand.age
-        ))
+        retrySave()
     }
-}
 
-private extension Array {
-    subscript(safe index: Int) -> Element? {
-        indices.contains(index) ? self[index] : nil
+    func retrySave() {
+        guard phase == .finished, !recordSaved, let record = completedRecord else { return }
+        do {
+            try saveRecord(record)
+            recordSaved = true
+            saveError = nil
+        } catch {
+            saveError = "历史保存失败：\(error.localizedDescription)"
+        }
     }
 }
