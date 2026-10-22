@@ -93,9 +93,11 @@ def measure(subjects):
     thetas, scaled_sums, fsiqs = [], [], []
     # 域内的尺度分之和（不是合成分——合成分已乘过斜率，再除一次会双重缩放）
     domain_scaled = {d: [] for d in ['verbal', 'perceptual', 'memory', 'speed']}
-    for _pid, responses, _true in subjects:
+    truths = []
+    for _pid, responses, true_theta in subjects:
         profile = core.profile(responses)
         thetas.append(profile['theta_center'])
+        truths.append(true_theta)
         scaled_sums.append(profile['sum_scaled'])
         fsiqs.append(profile['fsiq'])
         for domain in domain_scaled:
@@ -103,6 +105,9 @@ def measure(subjects):
             domain_scaled[domain].append(sum(profile['scaled'][s] for s in members))
     return {
         'thetaSD': core.mean_sd(thetas)[1],
+        # 可靠度用「与真实能力的相关」衡量，不是估计值的离散度：
+        # 模型误设时离散度会被放大，用离散度衡量会得出「误设反而更准」的反直觉结论。
+        'reliability': core.correlation(thetas, truths) if truths else None,
         'scaledSumSD': core.mean_sd(scaled_sums)[1],
         'compositeSD': core.mean_sd(fsiqs)[1],
         'domainScaledSD': {d: core.mean_sd(v)[1] for d, v in domain_scaled.items() if v},
@@ -136,6 +141,9 @@ def main():
     theta_sd = measured['thetaSD']
     # 能力估计被信息量不足压窄时，需要去衰减才能还原到量表定义的离散度。
     # 先验 N(0,1) 表示真实人群的能力离散度为 1 个 θ 单位。
+    # 去衰减用的是可靠度（与真实能力的相关）经先验尺度折算后的收缩量：
+    # 估计值的离散度被压窄，说明能力位置被压缩，需要按可靠度还原到先验尺度。
+    reliability = measured.get('reliability')
     attenuation = 1.0 / theta_sd if theta_sd > 0 else float('inf')
     scaled_sum_sd = measured['scaledSumSD']
     composite_sd = measured['compositeSD']

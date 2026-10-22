@@ -116,21 +116,31 @@ def standard_error(items, theta):
     return float('inf') if info <= 1e-9 else 1.0 / math.sqrt(info)
 
 
-def simulate(theta, rng):
+def scaled_parameter(item_id, scale, difficulty_offset=0.0):
+    """缩放区分度、平移难度，用于敏感性与误设代价分析。"""
+    parameter = PARAMS[item_id]
+    if scale == 1.0 and difficulty_offset == 0.0:
+        return parameter
+    return {'itemID': parameter['itemID'],
+            'discrimination': parameter['discrimination'] * scale,
+            'thresholds': [t + difficulty_offset for t in parameter['thresholds']]}
+
+
+def simulate(theta, rng, discrimination_scale=1.0, difficulty_offset=0.0):
     """按题目参数为能力 theta 的被试生成一次作答。"""
     responses = {}
     for item in BANK:
-        p = prob(item, PARAMS[item['id']], theta)
+        p = prob(item, scaled_parameter(item['id'], discrimination_scale, difficulty_offset), theta)
         options = list(p.keys())
         weights = [p[o] for o in options]
         responses[item['id']] = rng.choices(options, weights=weights)[0]
     return responses
 
 
-def profile(responses):
+def profile(responses, discrimination_scale=1.0):
     """与 Swift 端 WechslerProfileScorer 同一套流程。"""
     # 只纳入有作答的题目，便于分析不同题量下的表现。
-    evidence = [(it, PARAMS[it['id']], responses[it['id']])
+    evidence = [(it, scaled_parameter(it['id'], discrimination_scale), responses[it['id']])
                 for it in BANK if it['id'] in responses]
     indep = []
     for sub in SUBTESTS:
@@ -167,6 +177,19 @@ def mean_sd(values):
     return m, math.sqrt(var)
 
 
+def correlation(xs, ys):
+    """皮尔逊相关系数。"""
+    n = len(xs)
+    mean_x = sum(xs) / n
+    mean_y = sum(ys) / n
+    cov = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, ys))
+    var_x = sum((x - mean_x) ** 2 for x in xs)
+    var_y = sum((y - mean_y) ** 2 for y in ys)
+    if var_x <= 0 or var_y <= 0:
+        return 0.0
+    return cov / math.sqrt(var_x * var_y)
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('-')]
     count = int(args[0]) if args else 120
@@ -186,8 +209,13 @@ def main():
     _, sd_fsiq = mean_sd(fsiqs)
     mean_center, sd_center = mean_sd(centers)
     _, sd_true = mean_sd(true_thetas)
-    reliability = sd_center / sd_true
-    attenuation = 1 / reliability if reliability > 0 else float('inf')
+    # 两个量回答不同问题，不能混用：
+    #   reliability  估计值与真实能力的相关——衡量「测得准不准」
+    #   attenuation  估计值离散度 / 真实离散度——衡量「换算刻度要还原多少」
+    # 去衰减用后者：经验贝叶斯收缩把能力位置向中心压缩（这是设计如此，为了压噪），
+    # 换算成量表分时需要把这个压缩还原回来。
+    reliability = correlation(centers, true_thetas)
+    attenuation = sd_center / sd_true if sd_true > 0 else float('inf')
 
     domain_sums = {dom: [] for dom in ['verbal', 'perceptual', 'memory', 'speed']}
     for _, p in results:
@@ -234,7 +262,7 @@ def main():
     corr = (sum((t - sum(true_thetas) / count) * (c - mean_center)
                  for t, c in zip(true_thetas, centers))
             / count) / (sd_true * sd_center)
-    print(f'   估计中心与真实 θ 的相关      {corr:.4f}\n')
+    print(f'   估计中心与真实 θ 的相关      {corr:.4f}（这才是可靠度）\n')
 
     print('2) 尺度分之和的离散度（斜率 0.72 的推导前提）')
     print(f'   Σs 的标准差                  {sd_sum:.2f}（韦氏手册对应约 20.8）')

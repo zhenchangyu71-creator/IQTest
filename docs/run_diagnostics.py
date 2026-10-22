@@ -81,7 +81,9 @@ def measure():
         'difficultySD': round(sd_rate, 3),
         'difficultySpread': round(spread, 2),
         'parameterFingerprint': fingerprint,
-        'reliability': round(core.mean_sd(centers)[1] / core.mean_sd([t for t, _ in results])[1], 4),
+        # 可靠度用「估计值与真实能力的相关」衡量。估计值的离散度不是可靠度：
+        # 模型误设时离散度会被放大，用离散度衡量会得出「误设反而更准」的反直觉结论。
+        'reliability': round(core.correlation(centers, [t for t, _ in results]), 4),
         'subjects': SUBJECTS,
         'seed': SEED,
     }
