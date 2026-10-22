@@ -10,6 +10,9 @@ class WechslerViewModel: ObservableObject {
         let score: Int
     }
 
+    /// 完整练习时每个分测验抽多少题。题池比这个大，抽题时优先选没做过的。
+    static let itemsPerSubtest = 12
+
     @Published private(set) var phase: Phase = .idle
     @Published private(set) var currentSubtest: WechslerSubtest = .block
     @Published private(set) var itemNumber = 0
@@ -57,7 +60,8 @@ class WechslerViewModel: ObservableObject {
     var currentItem: WechslerItem? { items.indices.contains(cursor) ? items[cursor] : nil }
     var totalProgress: Double { items.isEmpty ? 0 : Double(responses.count) / Double(items.count) }
 
-    private var items: [WechslerItem] = []
+    /// 本轮要做的题目。测试需要读出题号以验证抽题轮换，因此保持只读公开。
+    private(set) var items: [WechslerItem] = []
     private var cursor = 0
     private var questionStarted: TimeInterval = 0
     private var stimulusDeadline: TimeInterval = 0
@@ -110,7 +114,16 @@ class WechslerViewModel: ObservableObject {
                     return pool[lower..<upper].randomElement()
                 }
             } else {
-                items = WechslerSubtest.allCases.flatMap { sub in loaded.filter { $0.subtest == sub } }
+                // 每个分测验从题池中抽取固定题量，优先没做过的题：
+                // 整轮都做同一批题会让第二次测试必然重复，练习效应直接混入复测分数。
+                let exposureKey = ItemExposureStore.bankKey("wechsler", questionSet.rawValue)
+                let seen = ItemExposureStore.seen(for: exposureKey)
+                items = WechslerSubtest.allCases.flatMap { sub -> [WechslerItem] in
+                    let pool = loaded.filter { $0.subtest == sub }.sorted { $0.order < $1.order }
+                    let unseen = pool.filter { !seen.contains($0.id) }
+                    let source = unseen.isEmpty ? pool : unseen
+                    return Array(source.prefix(WechslerViewModel.itemsPerSubtest))
+                }
             }
             sessionAge = AgeBand.age
             hasPriorPractice = WechslerSubtest.allCases.contains { PracticeStore.count(subtest: $0) > 0 }
@@ -315,6 +328,11 @@ class WechslerViewModel: ObservableObject {
     private func finish(endedEarly: Bool = false) {
         guard !items.isEmpty, endedEarly || responses.count == items.count else { return }
         self.endedEarly = endedEarly
+        // 只记录实际作答过的题：提前结束时未做的题不该被跳过。
+        if let set = sessionQuestionSet {
+            ItemExposureStore.markSeen(responses.map(\.itemID),
+                                       for: ItemExposureStore.bankKey("wechsler", set.rawValue))
+        }
         let answeredIDs = Set(responses.map(\.itemID))
         let scoredItems = endedEarly ? items.filter { answeredIDs.contains($0.id) } : items
         results = WechslerScoring.results(items: scoredItems, responses: responses).filter { $0.total > 0 }

@@ -152,7 +152,7 @@ struct WechslerResultView: View {
                         .font(.footnote).foregroundStyle(.secondary).padding(.top, 8)
                     Text("题目参数、能力分布与换算表都是初始假设，没有本应用题库的人群常模，也没有与正式韦氏的对照效度。因此百分位只表示本练习上的相对位置，不能解释为同龄人排名，区间也不包含未校准带来的系统偏差。")
                         .font(.footnote).foregroundStyle(.secondary)
-                    Text("换算斜率借用自韦氏官方示例报告，其前提是「尺度分之和的离散度与韦氏题库相同」。本项目每个分测验只有 12 题，能力估计被压窄，该前提并不成立：自检显示当前输出的合成分离散度约为 13 分而非 15 分，同样的能力差异在此会被低估。")
+                    Text("换算斜率借用自韦氏官方示例报告，其前提是「尺度分之和的离散度与韦氏题库相同」。本项目每个分测验只有 12 题，能力估计被压窄，该前提并不成立：自检显示当前输出的合成分离散度约为 17 分而非 15 分，能力差异的放大程度与韦氏并不一致。")
                         .font(.footnote).foregroundStyle(.secondary)
                     if let profile = vm.profile {
                         Text("模型版本：\(profile.modelVersion) · 校准状态：未校准")

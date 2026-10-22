@@ -47,11 +47,15 @@ struct WechslerIQModel: Codable {
         guard bankVersion == WechslerLoader.bankVersion, !version.isEmpty,
               Set(items.map(\.itemID)).count == items.count,
               Set(bank.map(\.id)).count == bank.count,
-              Set(items.map(\.itemID)) == Set(bank.map(\.id)) else {
+              // 模型必须覆盖本轮要做的每一道题：缺参数的那道题会被静默排除出估计。
+              // 模型可以比本轮题量大（题库全量 240 项，本轮只做其中一部分）。
+              Set(bank.map(\.id)).isSubset(of: Set(items.map(\.itemID))) else {
             throw WechslerIQEstimator.EstimationError.invalidModel("模型版本或题号与本题库不匹配")
         }
         let byID = Dictionary(uniqueKeysWithValues: bank.map { ($0.id, $0) })
-        for parameter in items {
+        // 只校验本轮用到的题目的参数。题库可以大于本轮题量，
+        // 未被抽到的题留到下一轮抽中时再校验。
+        for parameter in items where byID[parameter.itemID] != nil {
             guard let question = byID[parameter.itemID],
                   parameter.discrimination.isFinite, (0.1...3).contains(parameter.discrimination),
                   parameter.thresholds.count == (question.optionScores.contains(1) && question.maxScore == 2 ? 2 : 1),

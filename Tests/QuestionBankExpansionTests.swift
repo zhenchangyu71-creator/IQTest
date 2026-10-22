@@ -5,12 +5,12 @@ import XCTest
 final class QuestionBankExpansionTests: XCTestCase {
     func testExpandedRavenPoolCanSupplyEveryDifficultyAndCategory() throws {
         let bank = try QuestionLoader.loadValidated()
-        XCTAssertEqual(bank.count, 288)
-        XCTAssertEqual(Set(bank.map(\.id)).count, 288)
+        XCTAssertEqual(bank.count, 432)
+        XCTAssertEqual(Set(bank.map(\.id)).count, 432)
         XCTAssertEqual(Set(bank.map(\.prompt)).count, bank.count, "同一题干不能通过重复收录增加题量")
         for difficulty in Difficulty.allCases {
             for category in TestType.raven.categories {
-                XCTAssertEqual(bank.filter { $0.difficulty == difficulty && $0.category == category }.count, 24)
+                XCTAssertEqual(bank.filter { $0.difficulty == difficulty && $0.category == category }.count, 36)
             }
         }
     }
@@ -68,21 +68,21 @@ final class QuestionBankExpansionTests: XCTestCase {
         let record = try XCTUnwrap(records.first)
         XCTAssertEqual(records.count, 1)
         XCTAssertEqual(record.reviewItems?.count, 12)
-        XCTAssertEqual(record.ravenEstimate?.bankVersion, "raven-practice-2026-10-21-v2")
+        XCTAssertEqual(record.ravenEstimate?.bankVersion, "raven-practice-2026-10-22-v3")
         XCTAssertTrue(record.reviewItems?.allSatisfy { Int($0.id) ?? 0 >= 145 } ?? false)
     }
 
     func testQuestionSetsHaveDisjointStableIDsAndMatchingModels() throws {
         let a = try WechslerLoader.loadValidated(.a)
         let b = try WechslerLoader.loadValidated(.b)
-        XCTAssertEqual(a.count, 120)
-        XCTAssertEqual(b.count, 120)
+        XCTAssertEqual(a.count, 240)
+        XCTAssertEqual(b.count, 240)
         XCTAssertTrue(Set(a.map(\.id)).isDisjoint(with: b.map(\.id)))
         for set in WechslerQuestionSet.allCases {
             let bank = try WechslerLoader.loadValidated(set)
             try WechslerIQModel.load(set).validate(for: bank)
             for subtest in WechslerSubtest.allCases {
-                XCTAssertEqual(bank.filter { $0.subtest == subtest }.map(\.order), Array(1...12))
+                XCTAssertEqual(bank.filter { $0.subtest == subtest }.map(\.order), Array(1...24))
             }
         }
         XCTAssertThrowsError(try WechslerIQModel.load(.a).validate(for: b))
@@ -120,7 +120,7 @@ final class QuestionBankExpansionTests: XCTestCase {
         XCTAssertEqual(record.questionSet, .b)
         XCTAssertEqual(record.responses?.count, 120)
         XCTAssertEqual(record.reviewItems?.count, 120)
-        XCTAssertEqual(record.iqEstimate?.modelVersion, "irt-heuristic-form-b-v1")
+        XCTAssertEqual(record.iqEstimate?.modelVersion, "irt-heuristic-form-b-v2")
         let decoded = try JSONDecoder().decode(TestRecord.self, from: JSONEncoder().encode(record))
         XCTAssertEqual(decoded.questionSet, .b)
         XCTAssertEqual(decoded.reviewItems?.first?.id, "b-block-01")
@@ -145,10 +145,12 @@ final class QuestionBankExpansionTests: XCTestCase {
         XCTAssertEqual(vm.itemCount, 3)
         vm.answerTutorial(vm.instructions.sample.correctAnswer)
         vm.beginSubtest()
+        // 练习池按题量三等分，段边界随题池扩大而变化。
+        let segment = b.filter { $0.subtest == .block }.count / 3
         for section in 0..<3 {
             let item = try XCTUnwrap(vm.currentItem)
             XCTAssertTrue(item.id.hasPrefix("b-block-"))
-            XCTAssertTrue((section * 4 + 1...section * 4 + 4).contains(item.order))
+            XCTAssertTrue((section * segment + 1...section * segment + segment).contains(item.order))
             vm.choose(optionID: try XCTUnwrap(vm.presentedOptions.first { $0.score == 0 }).id, for: item.id)
         }
         XCTAssertEqual(vm.phase, .finished)

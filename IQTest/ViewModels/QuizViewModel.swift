@@ -128,9 +128,20 @@ final class QuizViewModel: ObservableObject {
         let pool = bank.filter {
             $0.testType == testType && $0.difficulty == difficulty
         }
-        // 每个分类随机抽取 3 题，共 12 题
-        questions = testType.categories.flatMap { category in
-            pool.filter { $0.category == category }.shuffled().prefix(3)
+        // 每个分类随机抽取 3 题，共 12 题。优先抽没做过的题：
+        // 重复出题会让复测分数混入练习效应，也让多次测量失去意义。
+        let exposureKey = ItemExposureStore.bankKey("raven", testType.rawValue, difficulty.rawValue)
+        let seen = ItemExposureStore.seen(for: exposureKey)
+        questions = testType.categories.flatMap { category -> [Question] in
+            let candidates = pool.filter { $0.category == category }
+            // 推理题的题号是整数，存进记录时统一转成字符串。
+            let unseen = candidates.filter { !seen.contains(String($0.id)) }
+            if unseen.isEmpty {
+                // 这一类已经全部做过，清空记录重新开始一轮。
+                ItemExposureStore.reset(for: exposureKey)
+                return candidates.shuffled().prefix(3).map { $0 }
+            }
+            return unseen.shuffled().prefix(3).map { $0 }
         }.shuffled()
         currentIndex = 0
         score = 0
@@ -225,6 +236,10 @@ final class QuizViewModel: ObservableObject {
         phase = .finished
         selectedIndex = nil
         feedbackDeadline = nil
+        // 只记录实际作答过的题：提前结束时未做的题不该被跳过。
+        ItemExposureStore.markSeen(reviewItems.map(\.id),
+                                   for: ItemExposureStore.bankKey("raven", testType.rawValue,
+                                                                  sessionDifficulty.rawValue))
         let record = TestRecord(
             date: Date(), testType: .raven, difficulty: sessionDifficulty,
             score: score, total: answers.count, iq: nil, percentile: nil, age: sessionAge,

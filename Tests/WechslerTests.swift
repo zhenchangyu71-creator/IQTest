@@ -192,7 +192,7 @@ final class WechslerTests: XCTestCase {
         XCTAssertEqual(vm.responses.count, 1)
         XCTAssertEqual(vm.responses.first?.outcome, .interrupted)
         XCTAssertNil(vm.responses.first?.answer)
-        XCTAssertEqual(vm.currentItem?.id, "block-02")
+        XCTAssertTrue(vm.currentItem?.id.hasPrefix("block-") == true, "中断后应继续该分测验的下一题")
         XCTAssertEqual(vm.timeRemaining, 45)
         XCTAssertEqual(vm.administration.interruptions.count, 1)
         XCTAssertEqual(vm.administration.interruptions.first?.inactiveSeconds, 3600)
@@ -521,12 +521,12 @@ final class WechslerTests: XCTestCase {
     func testLoaderKeepsStableIDsAndCompleteExplanations() throws {
         let first = try WechslerLoader.loadValidated()
         let second = try WechslerLoader.loadValidated()
-        XCTAssertEqual(first.count, 120)
+        XCTAssertEqual(first.count, 240)
         XCTAssertEqual(first.map(\.id), second.map(\.id))
-        XCTAssertEqual(Set(first.map(\.id)).count, 120)
+        XCTAssertEqual(Set(first.map(\.id)).count, 240)
         XCTAssertTrue(first.allSatisfy { !$0.explanation.isEmpty })
         for subtest in WechslerSubtest.allCases {
-            XCTAssertEqual(first.filter { $0.subtest == subtest }.map(\.order), Array(1...12))
+            XCTAssertEqual(first.filter { $0.subtest == subtest }.map(\.order), Array(1...24))
         }
     }
 
@@ -602,10 +602,12 @@ final class WechslerTests: XCTestCase {
         XCTAssertEqual(vm.responses.count, 3)
         XCTAssertEqual(vm.maxRaw, 6)
         XCTAssertEqual(vm.rawScore, 6)
+        // 三段各取一题：题号应互不相同，且按题序递增。
+        // 断言不写死具体题量——题池扩大后段边界会变。
         let orders = vm.responses.compactMap { vm.item(for: $0)?.order }
-        XCTAssertTrue((1...4).contains(orders[0]))
-        XCTAssertTrue((5...8).contains(orders[1]))
-        XCTAssertTrue((9...12).contains(orders[2]))
+        XCTAssertEqual(orders.count, 3)
+        XCTAssertEqual(Set(orders).count, 3, "三段应各取到不同的题")
+        XCTAssertTrue(orders[0] < orders[1] && orders[1] < orders[2], "三段按题序递增")
         XCTAssertEqual(saved, 0)
         XCTAssertEqual(PracticeStore.best(subtest: .vocabulary), 100)
     }

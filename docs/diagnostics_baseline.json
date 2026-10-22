@@ -1,11 +1,11 @@
 {
-  "compositeSD": 12.828,
-  "compositeMean": 98.717,
-  "difficultyMean": 82.11,
-  "difficultySD": 12.133,
-  "difficultySpread": 40.41,
-  "parameterFingerprint": "0dfe41a6d9fcb6db",
-  "reliability": 0.5613,
+  "compositeSD": 16.639,
+  "compositeMean": 98.8,
+  "difficultyMean": 81.559,
+  "difficultySD": 12.215,
+  "difficultySpread": 41.36,
+  "parameterFingerprint": "3f75baee8bc86341",
+  "reliability": 0.7162,
   "subjects": 60,
   "seed": 20261022
 }

@@ -21,8 +21,8 @@ struct WelcomeView: View {
                     .font(.largeTitle.bold())
 
                 Text(viewModel.testType == .raven
-                     ? "288 道题库 · 每轮 12 题 · 三种难度\n自编推理练习 · 实验性 IQ 估算"
-                     : "240 道题库 · A/B 两组各 120 题\n自编认知练习 · 实验性 IQ 估算")
+                     ? "432 道题库 · 每轮 12 题 · 三种难度\n自编推理练习 · 实验性 IQ 估算"
+                     : "480 道题库 · A/B 两组各 240 题\n自编认知练习 · 实验性 IQ 估算")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -191,7 +191,7 @@ struct WelcomeView: View {
                         }
                         .pickerStyle(.segmented)
                         .accessibilityIdentifier("questionSetPicker")
-                        Text("两组均为 10 个分测验，每组 120 题。题组尚未等值，分数不宜直接比较；单项练习会从两组题库抽题。")
+                        Text("两组均为 10 个分测验，每组 240 题，每次练习每组抽其中一部分，优先抽没做过的题。题组尚未等值，分数不宜直接比较；单项练习会从两组题库抽题。")
                             .font(.caption).foregroundStyle(.secondary)
                         Text("10 个分测验（固定练习顺序）")
                             .font(.headline)
@@ -252,7 +252,7 @@ struct WelcomeView: View {
 
                 VStack(spacing: 8) {
                     if viewModel.testType == .raven {
-                        Label("每轮 12 题，题目每次分层随机抽取", systemImage: "shuffle")
+                        Label("每轮 12 题，优先抽取没做过的题", systemImage: "shuffle")
                         Label("每题限时见所选难度，超时视为未答", systemImage: "clock")
                     } else {
                         Label("按固定顺序完成所选题组的 120 个项目", systemImage: "list.number")

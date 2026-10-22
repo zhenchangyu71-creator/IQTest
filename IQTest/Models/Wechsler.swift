@@ -180,7 +180,7 @@ struct WechslerItem: Codable, Identifiable {
 }
 
 enum WechslerLoader {
-    static let bankVersion = "practice-2026-10-21-v3"
+    static let bankVersion = "practice-2026-10-22-v4"
     static let scoringNotice = "本结果采用韦氏风格的量表分换算结构，但未经人群常模校准，也不是正式韦氏 IQ；年龄仅作记录、未参与换算，区间仅反映本次测量误差。"
 
     enum BankError: LocalizedError {

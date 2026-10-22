@@ -12,7 +12,7 @@ struct RavenIQEstimate: Codable {
     let confidenceUpper: Int?
 
     static let currentModelVersion = "raven-heuristic-v2"
-    static let currentBankVersion = "raven-practice-2026-10-21-v2"
+    static let currentBankVersion = "raven-practice-2026-10-22-v3"
     static let notice = "实验性 IQ 估算尚未经过人群常模或正式测验对照验证；未按年龄校准，误差范围未知。"
     /// 经验换算中「得分率上一个标准差」对应的 IQ 分量。
     static let scoreRateSD = 0.20
