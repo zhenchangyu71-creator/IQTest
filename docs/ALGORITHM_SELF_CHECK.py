@@ -129,7 +129,9 @@ def simulate(theta, rng):
 
 def profile(responses):
     """与 Swift 端 WechslerProfileScorer 同一套流程。"""
-    evidence = [(it, PARAMS[it['id']], responses[it['id']]) for it in BANK]
+    # 只纳入有作答的题目，便于分析不同题量下的表现。
+    evidence = [(it, PARAMS[it['id']], responses[it['id']])
+                for it in BANK if it['id'] in responses]
     indep = []
     for sub in SUBTESTS:
         subset = [e for e in evidence if e[0]['subtest'] == sub]

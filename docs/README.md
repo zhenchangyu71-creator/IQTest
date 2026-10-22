@@ -13,6 +13,7 @@
 | [HISTORY_AND_EXIT.md](HISTORY_AND_EXIT.md) | 完成状态、结束并保存、记录详情的展示规则 | 要改历史页展示时 |
 | [QUESTION_BANK_EXPANSION.md](QUESTION_BANK_EXPANSION.md) | 题库扩充与答案复核的逐项记录 | 改题库内容前先看这里 |
 | [COLLECTION_PLAN.md](COLLECTION_PLAN.md) | 真实样本采集方案：阶段、招募、知情同意、操作流程与分析计划 | 要开始收集数据时 |
+| [COLLECTION_INSTRUCTIONS.md](COLLECTION_INSTRUCTIONS.md) | 面向参与者的说明，可直接转发 | 招募被试时 |
 
 ## 建议阅读顺序
 
