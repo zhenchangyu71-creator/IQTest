@@ -51,6 +51,27 @@ final class RavenIQEstimateTests: XCTestCase {
         XCTAssertNil(RavenIQEstimate.make(score: 0, total: 0, difficulty: .medium))
     }
 
+    func testEstimateRisesWithScoreRateStaysInScaleAndIsNeverAgeAdjusted() throws {
+        // 得分率越高估算越高；全对不超过量表上限；估算不做年龄校正。
+        let low = try XCTUnwrap(RavenIQEstimate.make(score: 3, total: 12, difficulty: .medium))
+        let high = try XCTUnwrap(RavenIQEstimate.make(score: 9, total: 12, difficulty: .medium))
+        let perfect = try XCTUnwrap(RavenIQEstimate.make(score: 12, total: 12, difficulty: .medium))
+        XCTAssertGreaterThan(high.value, low.value)
+        XCTAssertGreaterThan(perfect.value, high.value)
+        XCTAssertTrue(RavenIQEstimate.valueRange.contains(perfect.value))
+        XCTAssertFalse(low.ageAdjusted)
+        XCTAssertFalse(high.ageAdjusted)
+        // 区间必须包住点估计，且不越出量表范围。
+        for estimate in [low, high, perfect] {
+            let lower = try XCTUnwrap(estimate.confidenceLower)
+            let upper = try XCTUnwrap(estimate.confidenceUpper)
+            XCTAssertLessThanOrEqual(lower, estimate.value)
+            XCTAssertGreaterThanOrEqual(upper, estimate.value)
+            XCTAssertTrue(RavenIQEstimate.valueRange.contains(lower))
+            XCTAssertTrue(RavenIQEstimate.valueRange.contains(upper))
+        }
+    }
+
     func testOlderRavenRecordsWithoutIntervalStillDecode() throws {
         let json = """
         {"value":100,"modelVersion":"raven-heuristic-v1","bankVersion":"old","ageAdjusted":false,"calibrationStatus":"heuristic"}

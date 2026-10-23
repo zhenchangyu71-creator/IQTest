@@ -40,13 +40,17 @@ final class QuizViewModelTests: XCTestCase {
         QuizViewModel(now: { clock.time }, saveRecord: { self.records.append($0) })
     }
 
-    func testAgeChangesDoNotRecalculateAnUncalibratedScore() {
+    func testAgeIsRecordedButNeverAdjustsTheEstimate() {
+        // 没有年龄常模时，估算不随年龄变化。估算模型本身不接年龄参数，
+        // 这条性质由 ageAdjusted 恒为 false 与调用点都不传年龄共同保证
+        // （见 RavenIQEstimateTests 与 WechslerIQEstimatorTests）。
         let vm = model(Clock())
         vm.age = 12
         vm.start()
-        let first = vm.estimatedIQ
+        let answered = vm.scoredItemCount
         vm.age = 60
-        XCTAssertEqual(vm.estimatedIQ, first, "没有年龄常模时，不应按年龄人工增减估算")
+        XCTAssertEqual(vm.age, 60, "年龄只作记录")
+        XCTAssertEqual(vm.scoredItemCount, answered, "改年龄不影响作答与估算")
     }
 
     func testEarlyEndDuringFeedbackSavesSubmittedAnswerOnceWithoutIQOrBest() throws {

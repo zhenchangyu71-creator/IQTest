@@ -67,10 +67,6 @@ final class QuizViewModel: ObservableObject {
         return Double(currentIndex) / Double(questions.count)
     }
 
-    /// IQ 量尺上的经验模型输出；只有完整作答结果页才展示。
-    var estimatedIQ: Int {
-        RavenIQEstimate.make(score: score, total: questions.count, difficulty: sessionDifficulty)?.value ?? 100
-    }
     var ravenEstimate: RavenIQEstimate? {
         guard phase == .finished, !endedEarly else { return nil }
         return RavenIQEstimate.make(score: score, total: questions.count, difficulty: sessionDifficulty)

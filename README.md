@@ -90,6 +90,8 @@ IQTest/
   Resources/WechslerIQModel.json    # A 组独立的启发式参数
   Resources/WechslerIQModelB.json   # B 组独立的启发式参数
   Services/ItemExposureStore.swift   # 已做题目记录，抽题时优先选没做过的
+  Services/PatternAnswerRules.swift  # 图形规律题答案键规则（读资源文件，与 Python 共用）
+  Models/Question.swift              # 瑞文题目模型（呈现时打乱选项顺序）
 tools/generate_wechsler_items.py      # 韦氏题库扩充生成器（固定种子，可复现）
 tools/generate_raven_items.py         # 瑞文题库扩充生成器
 tools/check_generator_consistency.py  # 核对题库与生成器是否还对得上
@@ -103,6 +105,8 @@ Tests/QuestionBankExpansionTests.swift # 新题组可达性、完整流程、参
 Tests/RecordArchiveTests.swift       # 落盘、迁移中断、损坏隔离与清理
 Tests/RecordSaveRetryTests.swift     # 保存失败与幂等重试
 Tests/HistoryExportTests.swift       # 筛选与 JSON 导出
+Tests/ExportIntegrityTests.swift     # 真实跑一遍练习后导出数据能否用于标定
+Tests/QuestionOptionOrderTests.swift  # 选项顺序打乱：答案位置不泄露
 Tests/WechslerProfileTests.swift     # 量表分换算、Pearson 基准、剖面一致性与编码兼容
 Tests/RavenIQEstimateTests.swift     # 瑞文估算与 Wilson 得分区间
 docs/                               # 文档索引见 docs/README.md
