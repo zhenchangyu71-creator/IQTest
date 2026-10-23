@@ -97,6 +97,15 @@ tools/generate_raven_items.py         # 瑞文题库扩充生成器
 tools/check_generator_consistency.py  # 核对题库与生成器是否还对得上
 tools/repair_raven_answer_keys.py     # 修瑞文题库中「答案键与解析不一致」的题
 tools/repair_raven_duplicate_prompts.py # 修瑞文题库中「去空白后相同」的重复题干
+docs/run_diagnostics.py           # 诊断门禁：标定与难度指标相对基线是否劣化
+docs/ALGORITHM_SELF_CHECK.py      # 合成自检：离散度、可靠性与标定建议
+docs/ITEM_DIFFICULTY_AUDIT.py     # 逐分测验难度与 A/B 参数关系
+docs/MEASUREMENT_PRECISION.py      # 测量精度与区分度敏感性
+docs/ALGORITHM_COMPARISON.py      # 几套换算方案的输出对比
+docs/calibration_export.py        # 历史导出 → 题目表/作答表/被试表
+docs/fit_item_parameters.py       # 题目难度与区分度拟合（当前最大的精度瓶颈）
+docs/calibrate_slopes.py          # 用真实作答重新标定合成分斜率
+docs/run_all.py                   # 一次跑完全部诊断与自检
 docs/COLLECTION_PLAN.md            # 真实样本采集方案与知情同意要点
   Services/RecordArchive.swift      # 逐条历史文件、迁移、异常隔离与原始备份
 Tests/WechslerTests.swift            # 计分、计时、校验、历史兼容测试

@@ -44,12 +44,20 @@
    （`python3 docs/run_diagnostics.py --update`）。各分测验还能扩多少，
    `tools/check_generator_consistency.py` 每次都会报告。细节见
    [题库扩充说明](QUESTION_BANK_EXPANSION.md)。
+   瑞文题库用 `python3 tools/generate_raven_items.py`（同样支持 `--check`），
+   它的生成器会跳过与现有题库重复的题干。
+   题库出问题时还有两个只报告不修改的检查：`tools/repair_raven_answer_keys.py --check`
+   （答案键与解析是否一致）与 `tools/repair_raven_duplicate_prompts.py --check`
+   （去掉空白后是否有重复题干）。
 7. **改了题目参数或换算公式之后，跑 `python3 docs/run_all.py`**（一次跑完全部诊断）。
    其中门禁 `run_diagnostics.py` 用固定种子、固定规模的合成被试算出关键指标，与基线文件比对，
    偏差超容差就以非零退出码失败——防止一次「顺手的小改动」悄悄改坏标定而无人察觉。
    结果是确定性的（同样的输入必得同样的数字），所以比对的是精确值而非统计噪声。
    检查项包括两种施测口径下的合成分离散度（题库全做完、真实一轮 120 题）、
    各分测验难度基准的均值与标准差，以及一个对任何题目参数改动都敏感的指纹。
+   入口还会跑 `docs/MEASUREMENT_PRECISION.py`（测量精度与区分度敏感性）、
+   `docs/ITEM_DIFFICULTY_AUDIT.py`（逐分测验难度）与 `docs/ALGORITHM_COMPARISON.py`
+   （几套换算方案的输出对比）。
    入口还会做一次一致性核对：`calibrate_slopes.py` 与 `ALGORITHM_SELF_CHECK.py` 是两套独立实现，
    **两个脚本都会真的跑起来**，在同一批合成被试上比较它们给出的建议斜率；
    只比一个手抄的常数是发现不了自检脚本自身被改坏的。
