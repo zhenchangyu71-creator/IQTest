@@ -35,6 +35,12 @@ def load_module(name, path):
     return module
 
 
+def _content_key(item):
+    """题目的内容指纹：题干与选项都相同才算同一道题。"""
+    strip = lambda text: ''.join(text.split())
+    return (strip(item['prompt']), tuple(strip(option) for option in item['options']))
+
+
 def substantive_difference(current, generated):
     """返回差异说明；没有实质差异返回 None。"""
     if current['prompt'] != generated['prompt']:
@@ -99,6 +105,23 @@ def main():
               '否则下次跑生成器会把修正覆盖回去。')
     else:
         print('\n题库与生成器一致。')
+
+    # 题库还能扩多少：生成器用不同种子能产出的题里，有多少还不在题库里。
+    # 这决定了「题池太小」这个问题能靠换种子解决，还是必须补写素材。
+    print('\n题池还能扩多少（生成器换种子能产出、但题库里还没有的题）：')
+    for group, bankfile, seed, prefix in groups:
+        bank = json.load(open(os.path.join(RESOURCES, bankfile), encoding='utf-8'))
+        by_subtest = {}
+        for item in bank:
+            by_subtest.setdefault(item['subtest'], set()).add(_content_key(item))
+        produced = generator.build_for_group(group, seed, batches=4)
+        detail = []
+        for subtest, items in sorted(produced.items()):
+            have = by_subtest.get(subtest, set())
+            new = {_content_key(item) for item in items} - have
+            detail.append(f'{subtest} {len(new)}')
+        print(f'  {group} 组：' + '，'.join(detail))
+    print('  词汇与常识的素材是固定列表，换种子没有用，要扩必须补写新题。')
     return 1 if failed else 0
 
 

@@ -919,8 +919,13 @@ def validate(items, subtest):
             assert option.strip(), f'存在空选项：{item["prompt"]}'
 
 
-def build_for_group(group, seed):
-    """为一个题组生成全部扩充题目。"""
+def build_for_group(group, seed, batches=1):
+    """为一个题组生成扩充题目。
+
+    batches > 1 时连续用同一个随机源产出多批：换种子就换一批新题，
+    用来把题池真正扩大。只跑一批时产出的正是题库里已有的那批——
+    生成器从头开始、种子固定，重复跑只会得到同样的题。
+    """
     rng = random.Random(seed)
     generated = {}
     # 积木与视觉拼图的题干模板由两个题组各取一半，两组因此不会遇到同一道题。
@@ -930,7 +935,10 @@ def build_for_group(group, seed):
                                ('arithmetic', gen_arithmetic),
                                ('block', lambda r, n: gen_block(r, n, offset)),
                                ('visualpuzzle', lambda r, n: gen_visualpuzzle(r, n, offset * 12))):
-        generated[subtest] = generator(rng, NEW_PER_SUBTEST)
+        items = []
+        for _ in range(batches):
+            items.extend(generator(rng, NEW_PER_SUBTEST))
+        generated[subtest] = items
     # 扩充语料是 (题干, 选项, 解析)，正确答案放在选项首位；这里补成语料统一的四元组。
     def to_entries(entries):
         return [(prompt, options, 0, explanation) for prompt, options, explanation in entries]
@@ -939,7 +947,10 @@ def build_for_group(group, seed):
     extra_information = to_entries(INFORMATION_A_EXTRA if group == 'A' else INFORMATION_B_EXTRA)
     for subtest, entries in HANDWRITTEN[group].items():
         if subtest == 'similarities':
-            generated[subtest] = similarity_items(rng, group, NEW_PER_SUBTEST)
+            items = []
+            for _ in range(batches):
+                items.extend(similarity_items(rng, group, NEW_PER_SUBTEST))
+            generated[subtest] = items
         elif subtest == 'vocabulary':
             generated[subtest] = hand_written_to_items(list(entries) + list(extra_vocabulary), subtest)
         elif subtest == 'information':
@@ -959,10 +970,20 @@ def build_for_group(group, seed):
                 item['_difficulty'] = round(base + difficulty_rng.uniform(-spread, spread), 2)
     return generated
 
+def content_key(item):
+    """题目的内容指纹：题干与选项都相同才算同一道题。"""
+    strip = lambda text: ''.join(text.split())
+    return (strip(item['prompt']), tuple(strip(option) for option in item['options']))
+
+
 def main():
     parser = argparse.ArgumentParser(description='生成韦氏题库扩充题目')
     parser.add_argument('--check', action='store_true', help='只校验，不写入题库')
+    parser.add_argument('--batches', type=int, default=1,
+                        help='每个分测验连续产出几批。换种子就换一批新题，'
+                             '用来真正扩大题池；只产一批时得到的是题库里已有的那批。')
     args = parser.parse_args()
+    batches = max(1, args.batches)
 
     groups = {
         'A': ('Wechsler.json', 'WechslerIQModel.json', SEED, 'irt-heuristic-v2'),
@@ -976,7 +997,20 @@ def main():
         bank = json.load(open(path, encoding='utf-8'))
         model = json.load(open(model_path, encoding='utf-8'))
         existing = {item['id'] for item in bank}
-        generated = build_for_group(group, seed)
+        generated = build_for_group(group, seed, batches)
+        # 按内容去重：只换种子不换逻辑，产出的往往正是题库里已有的那批题。
+        # 2026-10-23 查明题库每组 480 题里实际只有 443 道不同内容——
+        # 当初扩充时把原有题又追加了一遍。不去重就会继续追加同一批。
+        for subtest, items in list(generated.items()):
+            seen_content = {content_key(item) for item in bank if item['subtest'] == subtest}
+            unique = []
+            for item in items:
+                key = content_key(item)
+                if key in seen_content:
+                    continue
+                seen_content.add(key)
+                unique.append(item)
+            generated[subtest] = unique
         for subtest, items in generated.items():
             validate(items, subtest)
             prefix = 'b-' if group == 'B' else ''
@@ -998,6 +1032,8 @@ def main():
         before = len(plan[group][2])
         added = sum(len(items) for items in plan[group][4].values())
         print(f'   {group} 组：题库 {before} 题 → 追加后 {before + added} 题')
+    if batches > 1:
+        print(f'   （本次产出 {batches} 批，已按内容去掉与题库重复的题）')
 
     if args.check:
         return
