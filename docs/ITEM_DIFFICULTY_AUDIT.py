@@ -92,19 +92,24 @@ def main():
     model_b = json.load(open(os.path.join(core.ROOT, 'WechslerIQModelB.json')))
     params_a = {p['itemID']: p for p in model_a['items']}
     params_b = {p['itemID']: p for p in model_b['items']}
-    same, missing = 0, 0
+    same_thr, same_disc, paired, missing = 0, 0, 0, 0
     for item_id, pa in params_a.items():
         # B 组题号带 b- 前缀，按对应题号配对比较。
         pb = params_b.get('b-' + item_id)
         if pb is None:
             missing += 1
-        elif pa['thresholds'] == pb['thresholds'] and pa['discrimination'] == pb['discrimination']:
-            same += 1
+            continue
+        paired += 1
+        if pa['thresholds'] == pb['thresholds']:
+            same_thr += 1
+        if pa['discrimination'] == pb['discrimination']:
+            same_disc += 1
     print(f'   A 组参数 {len(params_a)} 项，B 组 {len(params_b)} 项，无法配对的 {missing} 项')
-    print(f'   按对应题号配对后，两组难度参数完全相同的有 {same} 项')
-    print('   即 B 组直接沿用 A 组的难度参数，而两组题目内容不同——')
-    print('   这意味着 B 组的「表面难度」被设成与 A 组一致。这不是题组等值的证据')
-    print('   （等值需要真实数据），反而是需要重点复核的对象。')
+    print(f'   按对应题号配对 {paired} 项：区分度相同 {same_disc} 项，难度阈值相同 {same_thr} 项')
+    print('   区分度全同，是因为两边都固定为 1.0（题目参数的已知瓶颈），不是刻意等值；')
+    print(f'   难度阈值则大多各自设定（{paired - same_thr} 项不同）。')
+    print('   两组题目内容不同、难度参数也不同，因此既不能当作等值，')
+    print('   也不能把两组分数的高低当作题组难度的证据。')
 
 
 if __name__ == '__main__':

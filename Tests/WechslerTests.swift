@@ -6,6 +6,12 @@ final class WechslerTests: XCTestCase {
     private final class Clock { var time: TimeInterval = 1000 }
     private var savedDefaults: [String: Any] = [:]
     private let keys = ["testTakerAge", "wechslerPracticeStats", "wechslerPracticePercentagesV2"]
+    /// 曝光记录存在 UserDefaults 里，会跨测试累积。抽题优先取没做过的题，
+    /// 累积后同一轮抽到的题量会缩水，测试结果随执行顺序漂移。
+    private let exposureKeys = [
+        ItemExposureStore.bankKey("wechsler", WechslerQuestionSet.a.rawValue),
+        ItemExposureStore.bankKey("wechsler", WechslerQuestionSet.b.rawValue)
+    ]
 
     override func setUp() async throws {
         try await super.setUp()
@@ -13,6 +19,7 @@ final class WechslerTests: XCTestCase {
             savedDefaults[key] = UserDefaults.standard.object(forKey: key)
             UserDefaults.standard.removeObject(forKey: key)
         }
+        for key in exposureKeys { ItemExposureStore.reset(for: key) }
     }
 
     override func tearDown() async throws {
@@ -20,6 +27,7 @@ final class WechslerTests: XCTestCase {
             if let value = savedDefaults[key] { UserDefaults.standard.set(value, forKey: key) }
             else { UserDefaults.standard.removeObject(forKey: key) }
         }
+        for key in exposureKeys { ItemExposureStore.reset(for: key) }
         savedDefaults = [:]
         try await super.tearDown()
     }
@@ -220,7 +228,8 @@ final class WechslerTests: XCTestCase {
         let roundTrip = try JSONDecoder().decode(TestRecord.self, from: JSONEncoder().encode(record))
         XCTAssertEqual(roundTrip.administration?.protocolVersion, WechslerInstructions.protocolVersion)
         XCTAssertEqual(roundTrip.administration?.completedTutorials.count, 10)
-        XCTAssertEqual(roundTrip.administration?.interruptions.first?.itemID, "block-01")
+        // 中断发生在第一个分测验的第一题，题号由抽题决定，只校验归属。
+        XCTAssertTrue(roundTrip.administration?.interruptions.first?.itemID.hasPrefix("block-") == true)
         XCTAssertEqual(roundTrip.responses?.first?.outcome, .interrupted)
     }
 
@@ -521,12 +530,12 @@ final class WechslerTests: XCTestCase {
     func testLoaderKeepsStableIDsAndCompleteExplanations() throws {
         let first = try WechslerLoader.loadValidated()
         let second = try WechslerLoader.loadValidated()
-        XCTAssertEqual(first.count, 240)
+        XCTAssertEqual(first.count, 480)
         XCTAssertEqual(first.map(\.id), second.map(\.id))
-        XCTAssertEqual(Set(first.map(\.id)).count, 240)
+        XCTAssertEqual(Set(first.map(\.id)).count, 480)
         XCTAssertTrue(first.allSatisfy { !$0.explanation.isEmpty })
         for subtest in WechslerSubtest.allCases {
-            XCTAssertEqual(first.filter { $0.subtest == subtest }.map(\.order), Array(1...24))
+            XCTAssertEqual(first.filter { $0.subtest == subtest }.map(\.order), Array(1...48))
         }
     }
 

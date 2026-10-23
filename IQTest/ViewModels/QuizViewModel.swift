@@ -136,12 +136,15 @@ final class QuizViewModel: ObservableObject {
             let candidates = pool.filter { $0.category == category }
             // 推理题的题号是整数，存进记录时统一转成字符串。
             let unseen = candidates.filter { !seen.contains(String($0.id)) }
-            if unseen.isEmpty {
-                // 这一类已经全部做过，清空记录重新开始一轮。
-                ItemExposureStore.reset(for: exposureKey)
-                return candidates.shuffled().prefix(3).map { $0 }
+            var picked = unseen.shuffled().prefix(3).map { $0 }
+            if picked.count < 3 {
+                // 未做过的题不够时用做过的题补足，保证每轮题量恒定。
+                // 否则同一轮的分母会随已做题数缩水，不同轮次的得分率无法比较。
+                let chosen = Set(picked.map(\.id))
+                let rest = candidates.filter { !chosen.contains($0.id) }
+                picked.append(contentsOf: rest.shuffled().prefix(3 - picked.count))
             }
-            return unseen.shuffled().prefix(3).map { $0 }
+            return picked
         }.shuffled()
         currentIndex = 0
         score = 0

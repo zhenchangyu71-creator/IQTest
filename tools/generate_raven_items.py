@@ -20,12 +20,49 @@ import argparse
 import json
 import os
 import random
+import re
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'IQTest', 'Resources')
 SEED = 20261022
 PER_COMBINATION = 12
 
 PATTERN_SYMBOLS = ['●', '○', '◆', '◇', '▲', '△', '★', '☆', '■', '□']
+
+# 每种 pattern 出题规则的「解析里哪个符号才是答案」。
+# 格式：(正则, 答案所在的捕获组, 从该捕获组到实际选项的变换)。
+PATTERN_ANSWER_RULES = [
+    (re.compile(r'(.)\s*与\s*(.)\s*交替出现，\1\s*之后应为\s*(.)'), 3, lambda s: s),
+    (re.compile(r'以\s*(.)\s*(.)\s*(.)\s*为一组循环，第三组第三位应为\s*(.)'), 4, lambda s: s),
+    (re.compile(r'以\s*(.)\s*(.)\s*(.)\s*(.)\s*为一组循环，第二组第二位应为\s*(.)'), 5, lambda s: s),
+    (re.compile(r'以\s*(.)\s*(.)\s*(.)\s*为一组循环，第三组第二位应为\s*(.)'), 4, lambda s: s),
+    (re.compile(r'(.)\s*(.)\s*(.)\s*(.)\s*之后回到\s*(.)'), 5, lambda s: s),
+    (re.compile(r'符号数量依次递增，第四组应有 4 个\s*(.)'), 1, lambda s: s * 4),
+]
+
+
+def expected_answer(item):
+    """从解析里取出这道题真正的答案；不是 pattern 类题目则返回 None。"""
+    for pattern, group, transform in PATTERN_ANSWER_RULES:
+        match = pattern.search(item.get('explanation', ''))
+        if match:
+            return transform(match.group(group))
+    return None
+
+
+def check_answer_key(item):
+    """答案键必须与解析给出的答案一致。
+
+    这一条曾真的错过：「交替」分支把答案写成了序列的第一项，
+    而解析说的是交替之后的另一项，于是正确答案被排除在选项之外——
+    用户无论怎么选都答不对，而题库校验（结构校验）完全看不出来。
+    """
+    expected = expected_answer(item)
+    if expected is None:
+        return
+    actual = item['options'][item['correctIndex']]
+    assert actual == expected, (
+        f"答案键与解析不一致：{item['prompt']} 解析说应为 {expected}，"
+        f"但 correctIndex 指向 {actual}")
 
 
 def make_item(category, difficulty, prompt, options, correct_index, explanation, next_id):
@@ -129,7 +166,8 @@ def gen_pattern(rng, difficulty, count, start_id):
         if style == '交替':
             a, b = rng.sample(PATTERN_SYMBOLS, 2)
             series = [a if i % 2 == 0 else b for i in range(6)]
-            answer = a
+            # 序列是 a b a b a b，问号是第六项，交替后应为 b 而不是 a。
+            answer = b
             explanation = f'{a} 与 {b} 交替出现，{a} 之后应为 {b}。'
             series = series[:5]
         elif style == '三循环':
@@ -315,6 +353,7 @@ def main():
         assert item['explanation'].strip()
         for option in item['options']:
             assert option.strip(), item['prompt']
+        check_answer_key(item)
 
     print(f'校验通过：新增 {len(generated)} 题，'
           f'题库 {len(bank)} → {len(bank) + len(generated)} 题')

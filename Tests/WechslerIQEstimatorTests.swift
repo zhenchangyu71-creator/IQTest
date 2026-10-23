@@ -77,7 +77,7 @@ final class WechslerIQEstimatorTests: XCTestCase {
         XCTAssertEqual(result.value, Int((100 + 15 * result.theta).rounded()))
         XCTAssertEqual(result.calibrationStatus, .heuristic)
         XCTAssertFalse(result.ageAdjusted)
-        XCTAssertEqual(result.answeredCount, 240)
+        XCTAssertEqual(result.answeredCount, 480)
         XCTAssertEqual(result.timedOutCount, 0)
         XCTAssertEqual(result.flags, [.ceiling])
         let reordered = try WechslerIQEstimator.estimate(items: bank, responses: responses.reversed(), model: model)
@@ -105,10 +105,10 @@ final class WechslerIQEstimatorTests: XCTestCase {
                              outcome: .answered, elapsedSeconds: 1)
         }
         let result = try WechslerIQEstimator.estimate(items: bank, responses: responses, model: WechslerIQModel.load())
-        // 题库扩充后独立细网格积分约为 -5.63；要点是不得截在 -5 内。
+        // 题库扩充到每分测验 48 题后独立细网格积分约为 -6.21；要点是不得截在 -5 内。
         XCTAssertLessThan(result.theta, -5.0, "能力估计被截断在 -5")
-        XCTAssertEqual(result.theta, -5.631183, accuracy: 0.01)
-        XCTAssertEqual(result.value, 16)
+        XCTAssertEqual(result.theta, -6.207249, accuracy: 0.01)
+        XCTAssertEqual(result.value, 7)
     }
 
     func testMissingDuplicateAndForgedResponsesAreRejected() throws {
@@ -139,12 +139,12 @@ final class WechslerIQEstimatorTests: XCTestCase {
             return WechslerResponse(itemID: item.id, subtest: item.subtest, answer: nil, score: 0,
                                      maxScore: item.maxScore, outcome: .timedOut, elapsedSeconds: Double(item.subtest.timeLimit))
         }
-        // 超时门槛是全部项目的 20%：题库 240 题时为 48 题。
-        for index in 0..<48 { responses[index] = timeout(index) }
+        // 超时门槛是全部项目的 20%：题库 480 题时为 96 题。
+        for index in 0..<96 { responses[index] = timeout(index) }
         let result = try WechslerIQEstimator.estimate(items: bank, responses: responses, model: model)
-        XCTAssertEqual(result.timedOutCount, 48)
+        XCTAssertEqual(result.timedOutCount, 96)
         XCTAssertTrue(result.flags.contains(.timeouts))
-        responses[48] = timeout(48)
+        responses[96] = timeout(96)
         XCTAssertThrowsError(try WechslerIQEstimator.estimate(items: bank, responses: responses, model: model))
     }
 

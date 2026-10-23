@@ -23,6 +23,22 @@ final class WechslerProfileTests: XCTestCase {
         XCTAssertEqual(IQScale.inverseNormalCDF(0.975), 1.959964, accuracy: 1e-4)
     }
 
+    func testInverseNormalCDFMeetsItsStatedAccuracy() {
+        // 往返断言只检验「近似 CDF 与自身的自洽」，看不出真实精度。
+        // 这里拿标准正态分位数的已知值来卡：尾部密度最小，是误差最容易放大的地方。
+        let known: [(Double, Double)] = [
+            (0.001, -3.090232306167826),
+            (0.025, -1.959963984540054),
+            (0.5, 0.0),
+            (0.975, 1.959963984540053),
+            (0.999, 3.090232306167801),
+            (0.99999, 4.264890793922911)
+        ]
+        for (p, expected) in known {
+            XCTAssertEqual(IQScale.inverseNormalCDF(p), expected, accuracy: 1e-9, "p=\(p)")
+        }
+    }
+
     func testPercentileConversionsMatchPearsonSample() {
         // 尺度分：s=11→P63、s=14→P91、s=7→P16、s=6→P9。
         XCTAssertEqual(IQScale.percentile(fromScaled: 11), 63, accuracy: 1.0)
@@ -67,15 +83,29 @@ final class WechslerProfileTests: XCTestCase {
     }
 
     func testStandardNineMapping() {
-        XCTAssertEqual(IQScale.standardNine(fromScaled: 1), 1)
-        XCTAssertEqual(IQScale.standardNine(fromScaled: 4), 2)
-        XCTAssertEqual(IQScale.standardNine(fromScaled: 5), 3)
-        XCTAssertEqual(IQScale.standardNine(fromScaled: 7), 4)
-        XCTAssertEqual(IQScale.standardNine(fromScaled: 9), 5)
+        // 标准九分是标准正态的九个区间，切点 z = ±0.25 / ±0.75 / ±1.25 / ±1.75。
+        // 尺度分 Mean 10 / SD 3 换算成 z 后落在哪一档，就显示哪一档九分。
+        XCTAssertEqual(IQScale.standardNine(fromScaled: 1), 1)   // z = -3.00
+        XCTAssertEqual(IQScale.standardNine(fromScaled: 4), 1)   // z = -2.00
+        XCTAssertEqual(IQScale.standardNine(fromScaled: 5), 2)   // z = -1.67
+        XCTAssertEqual(IQScale.standardNine(fromScaled: 7), 3)   // z = -1.00
+        XCTAssertEqual(IQScale.standardNine(fromScaled: 9), 4)   // z = -0.33
+        XCTAssertEqual(IQScale.standardNine(fromScaled: 10), 5)  // z =  0.00
         XCTAssertEqual(IQScale.standardNine(fromScaled: 12), 6)
         XCTAssertEqual(IQScale.standardNine(fromScaled: 13), 7)
         XCTAssertEqual(IQScale.standardNine(fromScaled: 15), 8)
         XCTAssertEqual(IQScale.standardNine(fromScaled: 19), 9)
+    }
+
+    func testStandardNineMatchesTheNormalQuantileBands() {
+        // 用百分位反查：尺度分落在哪个百分位区间，就该显示哪一档九分。
+        // 这条约束把实现钉在量表的正态刻度上，而不是钉在某串整数边界上。
+        let cuts = [4.01, 10.56, 22.66, 40.13, 59.87, 77.34, 89.44, 95.99]
+        for scaled in 1...19 {
+            let percentile = IQScale.percentile(fromScaled: Double(scaled))
+            let expected = cuts.firstIndex { percentile < $0 }.map { $0 + 1 } ?? 9
+            XCTAssertEqual(IQScale.standardNine(fromScaled: scaled), expected, "尺度分 \(scaled)")
+        }
     }
 
     // MARK: - 尺度分之和到合成分
@@ -224,11 +254,41 @@ final class WechslerProfileTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(profile.fullScale.standardError, WechslerProfileScorer.fullScaleSEMFloor)
         for index in profile.indices {
             XCTAssertGreaterThanOrEqual(index.standardError, WechslerProfileScorer.indexSEMFloor)
-            if let lower = index.confidenceLower, let upper = index.confidenceUpper {
+            if index.score == WechslerProfileScorer.compositeRange.upperBound
+                || index.score == WechslerProfileScorer.compositeRange.lowerBound {
+                // 分数被量表边界截断时，区间在该侧塌成零宽（如 145–145），
+                // 读起来像估计极其精确。此时应整段标为不可估计。
+                XCTAssertNil(index.confidenceLower, "分数触到量表边界时不应给出退化的区间")
+                XCTAssertNil(index.confidenceUpper, "分数触到量表边界时不应给出退化的区间")
+            } else if let lower = index.confidenceLower, let upper = index.confidenceUpper {
                 XCTAssertLessThan(lower, index.score)
                 XCTAssertGreaterThan(upper, index.score)
+            } else {
+                XCTFail("分数未触及量表边界时应给出 95% 区间")
             }
         }
+    }
+
+    func testSaturatedScoresReportNoConfidenceIntervalInsteadOfAZeroWidthOne() throws {
+        let bank = try WechslerLoader.loadValidated()
+        let model = try WechslerIQModel.load()
+        let responses = bank.map { item in
+            WechslerResponse(itemID: item.id, subtest: item.subtest, answer: item.correctAnswer,
+                             score: item.maxScore, maxScore: item.maxScore, outcome: .answered, elapsedSeconds: 1)
+        }
+        let ability = try WechslerIQEstimator.ability(items: bank, responses: responses, model: model)
+        let profile = WechslerProfileScorer.make(ability: ability, flags: [.ceiling],
+                                                 modelVersion: model.version, bankVersion: model.bankVersion)
+        // 至少有一个领域指数分会撞到量表上限；撞到上限的那一项不能给出零宽区间。
+        let saturated = profile.indices.filter {
+            $0.score == WechslerProfileScorer.compositeRange.upperBound
+        }
+        XCTAssertFalse(saturated.isEmpty, "全部答对应至少有一个领域指数分触及量表上限")
+        for index in saturated {
+            XCTAssertNil(index.confidenceLower)
+            XCTAssertNil(index.confidenceUpper)
+        }
+        XCTAssertTrue(profile.intervalUnavailable, "区间不可给出时应如实标记")
     }
 
     func testProfileIsIndependentOfResponseOrder() throws {
@@ -275,17 +335,22 @@ final class WechslerProfileTests: XCTestCase {
                                                  modelVersion: model.version, bankVersion: model.bankVersion)
         XCTAssertEqual(profile.fullScale.score, WechslerProfileScorer.compositeRange.lowerBound)
         for index in profile.indices {
-            if let lower = index.confidenceLower {
+            if index.score == WechslerProfileScorer.compositeRange.lowerBound
+                || index.score == WechslerProfileScorer.compositeRange.upperBound {
+                XCTAssertNil(index.confidenceLower, "分数触到量表边界时不应给出退化的区间")
+                XCTAssertNil(index.confidenceUpper, "分数触到量表边界时不应给出退化的区间")
+            } else if let lower = index.confidenceLower, let upper = index.confidenceUpper {
                 XCTAssertGreaterThanOrEqual(lower, WechslerProfileScorer.compositeRange.lowerBound)
-            }
-            if let upper = index.confidenceUpper {
                 XCTAssertLessThanOrEqual(upper, WechslerProfileScorer.compositeRange.upperBound)
+                XCTAssertLessThan(lower, index.score)
+                XCTAssertGreaterThan(upper, index.score)
+            } else {
+                XCTFail("分数未触及量表边界时应给出 95% 区间")
             }
         }
-        if let lower = profile.fullScale.confidenceLower, let upper = profile.fullScale.confidenceUpper {
-            XCTAssertGreaterThanOrEqual(lower, WechslerProfileScorer.compositeRange.lowerBound)
-            XCTAssertLessThanOrEqual(upper, WechslerProfileScorer.compositeRange.upperBound)
-        }
+        // 全量表分已触到量表下端，区间同样不可估计。
+        XCTAssertNil(profile.fullScale.confidenceLower)
+        XCTAssertNil(profile.fullScale.confidenceUpper)
     }
 
     func testPerfectRunDoesNotSaturateTheScale() throws {

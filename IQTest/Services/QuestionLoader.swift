@@ -28,7 +28,9 @@ enum QuestionLoader {
 
     static func validate(_ bank: [Question]) throws {
         guard Set(bank.map(\.id)).count == bank.count else { throw BankError.invalid("存在重复题号") }
-        let prompts = bank.map { $0.prompt.trimmingCharacters(in: .whitespacesAndNewlines) }
+        // 题干去掉所有空白后比较：只去首尾的话，「X Y X Y X ？」与「X Y X Y X ？」
+        // 会被当成两道不同的题，而它们其实是同一道题的两份副本——同一轮会同时抽到。
+        let prompts = bank.map { $0.prompt.split(whereSeparator: { $0.isWhitespace }).joined() }
         guard Set(prompts).count == bank.count else { throw BankError.invalid("存在重复题干") }
         for item in bank {
             let text = [item.prompt, item.explanation] + item.options

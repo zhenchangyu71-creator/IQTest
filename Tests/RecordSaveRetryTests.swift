@@ -5,6 +5,22 @@ import XCTest
 final class RecordSaveRetryTests: XCTestCase {
     private enum Failure: Error { case disk }
 
+    /// 曝光记录存在 UserDefaults 里，会跨测试累积，使抽到的题随执行顺序漂移。
+    private let exposureKeys = [
+        ItemExposureStore.bankKey("wechsler", WechslerQuestionSet.a.rawValue),
+        ItemExposureStore.bankKey("wechsler", WechslerQuestionSet.b.rawValue)
+    ]
+
+    override func setUp() {
+        super.setUp()
+        for key in exposureKeys { ItemExposureStore.reset(for: key) }
+    }
+
+    override func tearDown() {
+        for key in exposureKeys { ItemExposureStore.reset(for: key) }
+        super.tearDown()
+    }
+
     func testRavenRetryPreservesOneFrozenRecordWithoutRescoring() throws {
         var attempts: [TestRecord] = []
         let vm = QuizViewModel(saveRecord: { record in

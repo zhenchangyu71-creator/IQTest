@@ -11,6 +11,11 @@ final class QuizViewModelTests: XCTestCase {
          "bestScore_\(level.rawValue)", "bestIQ_\(level.rawValue)"]
     }
 
+    /// 曝光记录存在 UserDefaults 里，会跨测试累积，使抽到的题随执行顺序漂移。
+    private let exposureKeys = Difficulty.allCases.map {
+        ItemExposureStore.bankKey("raven", TestType.raven.rawValue, $0.rawValue)
+    }
+
     override func setUp() async throws {
         try await super.setUp()
         records = []
@@ -18,6 +23,7 @@ final class QuizViewModelTests: XCTestCase {
             savedDefaults[key] = UserDefaults.standard.object(forKey: key)
             UserDefaults.standard.removeObject(forKey: key)
         }
+        for key in exposureKeys { ItemExposureStore.reset(for: key) }
     }
 
     override func tearDown() async throws {
@@ -25,6 +31,7 @@ final class QuizViewModelTests: XCTestCase {
             if let value = savedDefaults[key] { UserDefaults.standard.set(value, forKey: key) }
             else { UserDefaults.standard.removeObject(forKey: key) }
         }
+        for key in exposureKeys { ItemExposureStore.reset(for: key) }
         savedDefaults = [:]
         try await super.tearDown()
     }

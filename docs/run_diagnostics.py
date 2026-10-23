@@ -27,29 +27,63 @@ BASELINE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'diagno
 SUBJECTS = 60
 SEED = 20261022
 
-# 允许相对基线的漂移。数值取略大于「更换合成被试规模」带来的波动，
-# 以免小改动被误报；但任何有实质影响的参数或换算改动都会超出。
+# 允许相对基线的漂移。能力抽样用固定网格后，同一代码每次运行结果完全一致，
+# 这里的容差只需容纳「等价重写」带来的浮点级差异，同时仍要能抓住
+# 斜率或题目参数的小幅改动——斜率变动 2% 会让合成分离散度变动约 0.3 分。
 TOLERANCE = {
-    'compositeSD': 0.6,
+    'compositeSD': 0.3,
+    'adminCompositeSD': 0.15,
     'difficultyMean': 0.4,
     'difficultySD': 0.4,
     'compositeMean': 1.5,
 }
+
+# 真实施测情形：每分测验抽 12 题、一轮共 120 题，与生产环境的抽题量一致。
+ADMIN_PER_SUBTEST = 12
+
+# 能力抽样用固定网格，每个能力点重复若干次后取平均。
+# 换成随机抽 60 个 θ 时，θ 的实现标准差会在 0.88–0.93 之间摆动，
+# 让同一个量给出相差 5% 以上的离散度——而斜率改动带来的变化往往只有 2–4%，
+# 那样门禁既会误报，也抓不住真正的漂移。固定网格把能力这一维的噪声消掉，
+# 剩下的只是题目抽样的抖动（同一网格下由种子固定，重复运行结果完全一致）。
+GRID_REPEATS = 5
+
+
+def measure_grid(rng, per_subtest):
+    """固定能力网格下的作答与换算结果。per_subtest 为 0 表示全部题目作答。"""
+    results = []
+    for theta in core.theta_grid():
+        runs = [core.profile(core.simulate(theta, rng, per_subtest=per_subtest))
+                for _ in range(GRID_REPEATS)]
+        results.append((theta, {
+            'theta_center': sum(r['theta_center'] for r in runs) / len(runs),
+            'scaled': {sub: sum(r['scaled'][sub] for r in runs) / len(runs)
+                       for sub in runs[0]['scaled']},
+            'fsiq': sum(r['fsiq'] for r in runs) / len(runs),
+            'indices': {dom: sum(r['indices'][dom] for r in runs) / len(runs)
+                        for dom in runs[0]['indices']},
+            'sum_scaled': sum(r['sum_scaled'] for r in runs) / len(runs),
+        }))
+    return results
 
 
 def measure():
     """跑一遍固定样本，得出关键指标。"""
     import random
     rng = random.Random(SEED)
-    results = []
-    for _ in range(SUBJECTS):
-        theta = rng.gauss(0.0, 1.0)
-        results.append((theta, core.profile(core.simulate(theta, rng))))
+    results = measure_grid(rng, 0)
 
     centers = [p['theta_center'] for _, p in results]
     fsiqs = [p['fsiq'] for _, p in results]
     _, sd_composite = core.mean_sd(fsiqs)
     mean_composite = core.mean_sd(fsiqs)[0]
+    # 固定网格的实现标准差正好是 1，离散度无需再归一化。
+
+    # 真实施测口径：使用者每轮只做 120 题，这才是他们实际看到的输出离散度。
+    # 用独立种子，避免与上面那组共享随机序列而互相耦合。
+    admin_rng = random.Random(SEED + 1)
+    admin_fsiqs = [p['fsiq'] for _, p in measure_grid(admin_rng, ADMIN_PER_SUBTEST)]
+    _, sd_admin = core.mean_sd(admin_fsiqs)
 
     # θ=0 时各分测验的预期得分率，用于难度整齐度
     baseline_rates = {}
@@ -76,6 +110,7 @@ def measure():
 
     return {
         'compositeSD': round(sd_composite, 3),
+        'adminCompositeSD': round(sd_admin, 3),
         'compositeMean': round(mean_composite, 3),
         'difficultyMean': round(mean_rate, 3),
         'difficultySD': round(sd_rate, 3),
@@ -84,7 +119,8 @@ def measure():
         # 可靠度用「估计值与真实能力的相关」衡量。估计值的离散度不是可靠度：
         # 模型误设时离散度会被放大，用离散度衡量会得出「误设反而更准」的反直觉结论。
         'reliability': round(core.correlation(centers, [t for t, _ in results]), 4),
-        'subjects': SUBJECTS,
+        'gridPoints': len(core.theta_grid()),
+        'gridRepeats': GRID_REPEATS,
         'seed': SEED,
     }
 

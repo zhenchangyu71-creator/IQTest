@@ -83,6 +83,36 @@ final class ItemExposureTests: XCTestCase {
         XCTAssertFalse(vm.items.isEmpty)
     }
 
+    func testWechslerRoundKeepsTwelveItemsPerSubtestWhenUnseenItemsRunShort() throws {
+        // 未做过的题不够时必须用做过的题补足：题量一变，分母就变了，
+        // 不同轮次的得分率无法比较。
+        let bank = try WechslerLoader.loadValidated(.a)
+        let blockIDs = bank.filter { $0.subtest == .block }.map(\.id)
+        ItemExposureStore.markSeen(Array(blockIDs.dropLast(4)), for: wechslerKey)
+
+        let vm = WechslerViewModel()
+        vm.start(questionSet: .a)
+        XCTAssertEqual(vm.items.count, 120)
+        for subtest in WechslerSubtest.allCases {
+            XCTAssertEqual(vm.items.filter { $0.subtest == subtest }.count, 12, subtest.rawValue)
+        }
+    }
+
+    func testRavenRoundKeepsTwelveItemsWhenUnseenItemsRunShort() throws {
+        // 同一约束在瑞文侧同样成立：某一类只剩两道没做过的题时，
+        // 这一轮仍然是 12 题，而不是 11 题。
+        let bank = try QuestionLoader.loadValidated()
+        let category = TestType.raven.categories[0]
+        let ids = bank.filter { $0.difficulty == .medium && $0.category == category }.map { String($0.id) }
+        ItemExposureStore.markSeen(Array(ids.dropLast(2)), for: ravenKey)
+
+        let vm = QuizViewModel()
+        vm.testType = .raven
+        vm.difficulty = .medium
+        vm.start()
+        XCTAssertEqual(vm.questions.count, 12)
+    }
+
     func testWechslerPoolIsLargeEnoughForRotation() throws {
         // 每个分测验的题池必须大于单轮题量，否则轮换无从谈起。
         let bank = try WechslerLoader.loadValidated(.a)

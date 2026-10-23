@@ -4462,5 +4462,4517 @@
     ],
     "explanation": "一年通常分四个季度，每季三个月。",
     "id": "information-24"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：▽=3、☆=1、△=7、★=2。那么 ☆ ☆ ▽ 代表：",
+    "options": [
+      "1 3 1",
+      "3 1 1",
+      "1 1 3",
+      "1 2 3"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，☆=1、☆=1、▽=3 → 1 1 3。",
+    "id": "coding-25"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：■=5、◆=6、◎=8、▲=1。那么 ◎ ▲ ■ 代表：",
+    "options": [
+      "1 8 5",
+      "5 1 8",
+      "8 1 5",
+      "8 5 1"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，◎=8、▲=1、■=5 → 8 1 5。",
+    "id": "coding-26"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：◎=9、☆=8、◆=3、▽=6。那么 ◆ ◆ ▽ 代表：",
+    "options": [
+      "6 3 3",
+      "3 3 6",
+      "3 6 3",
+      "8 3 6"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，◆=3、◆=3、▽=6 → 3 3 6。",
+    "id": "coding-27"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：◎=1、○=9、☆=8、★=6。那么 ★ ○ ★ 代表：",
+    "options": [
+      "6 4 6",
+      "6 6 9",
+      "6 9 6",
+      "9 6 6"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，★=6、○=9、★=6 → 6 9 6。",
+    "id": "coding-28"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：▽=7、●=6、△=4、☆=3。那么 ● △ ● 代表：",
+    "options": [
+      "6 6 4",
+      "6 4 6",
+      "6 5 6",
+      "4 6 6"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，●=6、△=4、●=6 → 6 4 6。",
+    "id": "coding-29"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：■=4、◆=2、△=7、★=3。那么 ■ ◆ ★ 代表：",
+    "options": [
+      "2 4 3",
+      "4 2 3",
+      "3 2 4",
+      "4 3 2"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，■=4、◆=2、★=3 → 4 2 3。",
+    "id": "coding-30"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：★=8、△=7、◆=5、◎=3。那么 △ ◎ ◆ 代表：",
+    "options": [
+      "3 7 5",
+      "7 5 3",
+      "5 3 7",
+      "7 3 5"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，△=7、◎=3、◆=5 → 7 3 5。",
+    "id": "coding-31"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：☆=8、★=3、●=7、▲=4。那么 ★ ▲ ● 代表：",
+    "options": [
+      "7 4 3",
+      "4 3 7",
+      "3 7 4",
+      "3 4 7"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，★=3、▲=4、●=7 → 3 4 7。",
+    "id": "coding-32"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：◆=4、○=9、★=5、▽=2。那么 ○ ○ ★ 代表：",
+    "options": [
+      "5 9 9",
+      "9 9 5",
+      "3 9 5",
+      "9 5 9"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，○=9、○=9、★=5 → 9 9 5。",
+    "id": "coding-33"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：△=5、▽=3、◎=2、★=4。那么 ◎ ★ ★ 代表：",
+    "options": [
+      "4 2 4",
+      "4 4 2",
+      "2 4 4",
+      "4 4 4"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，◎=2、★=4、★=4 → 2 4 4。",
+    "id": "coding-34"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：▽=5、◆=3、▲=1、△=8。那么 △ ▲ ▽ 代表：",
+    "options": [
+      "5 1 8",
+      "1 8 5",
+      "8 5 1",
+      "8 1 5"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，△=8、▲=1、▽=5 → 8 1 5。",
+    "id": "coding-35"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：☆=4、◆=9、△=1、★=2。那么 ◆ △ ◆ 代表：",
+    "options": [
+      "9 8 9",
+      "1 9 9",
+      "9 1 9",
+      "9 9 1"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，◆=9、△=1、◆=9 → 9 1 9。",
+    "id": "coding-36"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：■=4、◇=5、▽=7、◆=8。那么 ◇ ◇ ◇ 代表：",
+    "options": [
+      "5 5 4",
+      "5 6 5",
+      "5 5 5",
+      "6 5 5"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，◇=5、◇=5、◇=5 → 5 5 5。",
+    "id": "coding-37"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：◇=3、▲=6、△=2、■=1。那么 ▲ ◇ ◇ 代表：",
+    "options": [
+      "3 3 6",
+      "6 3 3",
+      "3 6 3",
+      "3 3 3"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，▲=6、◇=3、◇=3 → 6 3 3。",
+    "id": "coding-38"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：◇=9、○=7、●=3、■=2。那么 ■ ● ○ 代表：",
+    "options": [
+      "3 2 7",
+      "7 3 2",
+      "2 3 7",
+      "2 7 3"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，■=2、●=3、○=7 → 2 3 7。",
+    "id": "coding-39"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：□=7、▲=3、■=1、◎=6。那么 ◎ □ □ 代表：",
+    "options": [
+      "7 6 7",
+      "6 7 7",
+      "6 7 8",
+      "7 7 6"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，◎=6、□=7、□=7 → 6 7 7。",
+    "id": "coding-40"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：▽=9、□=2、△=8、◎=5。那么 △ ▽ ▽ 代表：",
+    "options": [
+      "9 9 8",
+      "9 8 9",
+      "8 9 9",
+      "5 9 9"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，△=8、▽=9、▽=9 → 8 9 9。",
+    "id": "coding-41"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：■=2、△=3、◎=1、●=6。那么 △ ■ △ 代表：",
+    "options": [
+      "2 3 3",
+      "3 2 3",
+      "3 2 1",
+      "3 3 2"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，△=3、■=2、△=3 → 3 2 3。",
+    "id": "coding-42"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：▲=6、●=9、◇=2、◎=7。那么 ◇ ◎ ◎ 代表：",
+    "options": [
+      "2 7 7",
+      "2 6 7",
+      "7 2 7",
+      "7 7 2"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，◇=2、◎=7、◎=7 → 2 7 7。",
+    "id": "coding-43"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：◆=4、★=5、▲=6、△=8。那么 ★ △ △ 代表：",
+    "options": [
+      "5 8 8",
+      "8 5 8",
+      "9 8 8",
+      "8 8 5"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，★=5、△=8、△=8 → 5 8 8。",
+    "id": "coding-44"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：○=1、△=4、◆=5、▲=7。那么 ▲ ○ ○ 代表：",
+    "options": [
+      "7 4 1",
+      "7 1 1",
+      "1 7 1",
+      "1 1 7"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，▲=7、○=1、○=1 → 7 1 1。",
+    "id": "coding-45"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：□=3、☆=4、▽=6、★=7。那么 ▽ □ ▽ 代表：",
+    "options": [
+      "2 3 6",
+      "6 6 3",
+      "6 3 6",
+      "3 6 6"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，▽=6、□=3、▽=6 → 6 3 6。",
+    "id": "coding-46"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：☆=9、□=2、○=1、★=6。那么 ☆ ○ ☆ 代表：",
+    "options": [
+      "1 9 9",
+      "9 1 9",
+      "9 9 1",
+      "9 4 9"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，☆=9、○=1、☆=9 → 9 1 9。",
+    "id": "coding-47"
+  },
+  {
+    "subtest": "coding",
+    "prompt": "密码：★=6、◎=9、●=1、◆=2。那么 ◎ ◆ ◎ 代表：",
+    "options": [
+      "9 9 2",
+      "2 9 9",
+      "8 2 9",
+      "9 2 9"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐个按题干映射替换并保持顺序，◎=9、◆=2、◎=9 → 9 2 9。",
+    "id": "coding-48"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ○。下面哪一组含有 ○？",
+    "options": [
+      "□ ■",
+      "□ ◆",
+      "◎ □",
+      "□ ○"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐一核对目标 ○，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-25"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ▲。下面哪一组含有 ▲？",
+    "options": [
+      "▽ ◇",
+      "▽ ☆",
+      "★ ◇",
+      "▲ ▽"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐一核对目标 ▲，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-26"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ◇。下面哪一组含有 ◇？",
+    "options": [
+      "▲ □",
+      "◇ ☆",
+      "□ ▲",
+      "△ ▽"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ◇，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-27"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ☆。下面哪一组含有 ☆？",
+    "options": [
+      "☆ ◇",
+      "■ □",
+      "◆ ▲",
+      "◎ ◇"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ☆，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-28"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ○。下面哪一组含有 ○？",
+    "options": [
+      "● □",
+      "○ ▽",
+      "☆ □",
+      "▲ ☆"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ○，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-29"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ■。下面哪一组含有 ■？",
+    "options": [
+      "▽ ◎",
+      "△ ■",
+      "○ △",
+      "▲ ○"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ■，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-30"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ◇。下面哪一组含有 ◇？",
+    "options": [
+      "▲ □",
+      "△ ◇",
+      "▽ ◎",
+      "☆ ▽"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ◇，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-31"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 △。下面哪一组含有 △？",
+    "options": [
+      "★ ◆",
+      "○ ◆",
+      "△ ●",
+      "■ ▽"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐一核对目标 △，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-32"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ★。下面哪一组含有 ★？",
+    "options": [
+      "□ ▽",
+      "△ ★",
+      "◇ ▽",
+      "○ □"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ★，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-33"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 □。下面哪一组含有 □？",
+    "options": [
+      "△ ☆",
+      "☆ ◇",
+      "◎ ▲",
+      "□ △"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐一核对目标 □，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-34"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ●。下面哪一组含有 ●？",
+    "options": [
+      "▲ △",
+      "▲ ▽",
+      "▽ ☆",
+      "● ▽"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐一核对目标 ●，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-35"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 □。下面哪一组含有 □？",
+    "options": [
+      "☆ □",
+      "◎ ★",
+      "◇ ▽",
+      "○ △"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 □，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-36"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ▽。下面哪一组含有 ▽？",
+    "options": [
+      "◆ ☆",
+      "◇ ○",
+      "◎ □",
+      "▽ ☆"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐一核对目标 ▽，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-37"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ○。下面哪一组含有 ○？",
+    "options": [
+      "☆ ○",
+      "● △",
+      "◎ ◆",
+      "□ ●"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ○，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-38"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ○。下面哪一组含有 ○？",
+    "options": [
+      "☆ △",
+      "★ ▲",
+      "△ ◆",
+      "△ ○"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐一核对目标 ○，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-39"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ●。下面哪一组含有 ●？",
+    "options": [
+      "◆ ○",
+      "■ ▽",
+      "● ★",
+      "☆ ■"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐一核对目标 ●，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-40"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ◆。下面哪一组含有 ◆？",
+    "options": [
+      "☆ ●",
+      "● □",
+      "□ ☆",
+      "☆ ◆"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐一核对目标 ◆，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-41"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ●。下面哪一组含有 ●？",
+    "options": [
+      "▲ ●",
+      "◆ ■",
+      "◇ ○",
+      "▽ □"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ●，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-42"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ▽。下面哪一组含有 ▽？",
+    "options": [
+      "◇ □",
+      "☆ ◇",
+      "◆ ▽",
+      "☆ □"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐一核对目标 ▽，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-43"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ◆。下面哪一组含有 ◆？",
+    "options": [
+      "□ ◆",
+      "□ ▲",
+      "○ □",
+      "○ ☆"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ◆，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-44"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ◎。下面哪一组含有 ◎？",
+    "options": [
+      "○ ▽",
+      "◆ ★",
+      "□ ◎",
+      "☆ ▲"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "逐一核对目标 ◎，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-45"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ★。下面哪一组含有 ★？",
+    "options": [
+      "★ ◎",
+      "○ ◎",
+      "▽ ●",
+      "● □"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ★，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-46"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ■。下面哪一组含有 ■？",
+    "options": [
+      "△ ●",
+      "△ ◎",
+      "△ ★",
+      "▽ ■"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "逐一核对目标 ■，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-47"
+  },
+  {
+    "subtest": "symbolsearch",
+    "prompt": "目标符号 ◎。下面哪一组含有 ◎？",
+    "options": [
+      "☆ ◇",
+      "◇ ◎",
+      "▽ ▲",
+      "◇ ▲"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "逐一核对目标 ◎，只有得分选项含有完全相同的符号。",
+    "id": "symbolsearch-48"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相同顺序】回忆。",
+    "options": [
+      "5 3 5 6 8 4",
+      "8 3 4 6 5 5",
+      "4 3 5 6 5 8",
+      "8 3 5 6 5 4"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按相同顺序回忆，应输入：835654。",
+    "presentation": "digits",
+    "stimulus": "8 3 5 6 5 4",
+    "displaySeconds": 4,
+    "recallRule": "forward",
+    "id": "digitspan-25"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相反顺序】回忆。",
+    "options": [
+      "7 3 6",
+      "6 7 3",
+      "7 6 3",
+      "3 6 7"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按相反顺序回忆，应输入：763。",
+    "presentation": "digits",
+    "stimulus": "3 6 7",
+    "displaySeconds": 4,
+    "recallRule": "backward",
+    "id": "digitspan-26"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【从小到大】回忆。",
+    "options": [
+      "1 5 2",
+      "2 1 5",
+      "1 2 5",
+      "5 2 1"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按从小到大回忆，应输入：125。",
+    "presentation": "digits",
+    "stimulus": "1 2 5",
+    "displaySeconds": 5,
+    "recallRule": "ascending",
+    "id": "digitspan-27"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相同顺序】回忆。",
+    "options": [
+      "8 9 3 7 7",
+      "7 9 3 7 8",
+      "7 9 7 8 3",
+      "7 9 3 8 7"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按相同顺序回忆，应输入：79387。",
+    "presentation": "digits",
+    "stimulus": "7 9 3 8 7",
+    "displaySeconds": 5,
+    "recallRule": "forward",
+    "id": "digitspan-28"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相反顺序】回忆。",
+    "options": [
+      "2 8 3 9",
+      "2 3 8 9",
+      "8 2 3 9",
+      "9 8 3 2"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按相反顺序回忆，应输入：2839。",
+    "presentation": "digits",
+    "stimulus": "9 3 8 2",
+    "displaySeconds": 6,
+    "recallRule": "backward",
+    "id": "digitspan-29"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【从小到大】回忆。",
+    "options": [
+      "2 0 0",
+      "0 0 2",
+      "0 2 0",
+      "5 0 2"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按从小到大回忆，应输入：002。",
+    "presentation": "digits",
+    "stimulus": "2 0 0",
+    "displaySeconds": 5,
+    "recallRule": "ascending",
+    "id": "digitspan-30"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相同顺序】回忆。",
+    "options": [
+      "1 4 3",
+      "4 3 1",
+      "3 1 4",
+      "3 4 1"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按相同顺序回忆，应输入：341。",
+    "presentation": "digits",
+    "stimulus": "3 4 1",
+    "displaySeconds": 4,
+    "recallRule": "forward",
+    "id": "digitspan-31"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相反顺序】回忆。",
+    "options": [
+      "3 1 4 2",
+      "3 4 1 2",
+      "4 3 1 2",
+      "2 4 1 3"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按相反顺序回忆，应输入：3412。",
+    "presentation": "digits",
+    "stimulus": "2 1 4 3",
+    "displaySeconds": 4,
+    "recallRule": "backward",
+    "id": "digitspan-32"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【从小到大】回忆。",
+    "options": [
+      "2 2 3 7 8",
+      "8 2 3 7 2",
+      "3 2 2 7 8",
+      "2 8 3 7 2"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按从小到大回忆，应输入：22378。",
+    "presentation": "digits",
+    "stimulus": "8 3 2 2 7",
+    "displaySeconds": 5,
+    "recallRule": "ascending",
+    "id": "digitspan-33"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相同顺序】回忆。",
+    "options": [
+      "0 8 2 6 0",
+      "0 8 0 2 6",
+      "0 8 0 6 2",
+      "0 6 0 8 2"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按相同顺序回忆，应输入：08062。",
+    "presentation": "digits",
+    "stimulus": "0 8 0 6 2",
+    "displaySeconds": 6,
+    "recallRule": "forward",
+    "id": "digitspan-34"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相反顺序】回忆。",
+    "options": [
+      "2 9 5 7",
+      "2 9 7 5",
+      "7 9 5 2",
+      "2 7 5 9"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按相反顺序回忆，应输入：2957。",
+    "presentation": "digits",
+    "stimulus": "7 5 9 2",
+    "displaySeconds": 6,
+    "recallRule": "backward",
+    "id": "digitspan-35"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【从小到大】回忆。",
+    "options": [
+      "5 6 9 7",
+      "6 5 7 9",
+      "5 6 7 9",
+      "9 6 7 5"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按从小到大回忆，应输入：5679。",
+    "presentation": "digits",
+    "stimulus": "7 6 9 5",
+    "displaySeconds": 4,
+    "recallRule": "ascending",
+    "id": "digitspan-36"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相同顺序】回忆。",
+    "options": [
+      "6 6 2 9 1",
+      "9 6 2 6 1",
+      "9 1 2 6 6",
+      "1 6 2 6 9"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按相同顺序回忆，应输入：96261。",
+    "presentation": "digits",
+    "stimulus": "9 6 2 6 1",
+    "displaySeconds": 4,
+    "recallRule": "forward",
+    "id": "digitspan-37"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相反顺序】回忆。",
+    "options": [
+      "6 4 8 4",
+      "6 4 4 8",
+      "4 8 6 4",
+      "6 8 4 4"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按相反顺序回忆，应输入：6844。",
+    "presentation": "digits",
+    "stimulus": "4 4 8 6",
+    "displaySeconds": 5,
+    "recallRule": "backward",
+    "id": "digitspan-38"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【从小到大】回忆。",
+    "options": [
+      "2 7 5 8 9",
+      "8 5 7 2 9",
+      "2 5 8 7 9",
+      "2 5 7 8 9"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按从小到大回忆，应输入：25789。",
+    "presentation": "digits",
+    "stimulus": "9 5 7 2 8",
+    "displaySeconds": 6,
+    "recallRule": "ascending",
+    "id": "digitspan-39"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相同顺序】回忆。",
+    "options": [
+      "0 3 1 9",
+      "9 0 1 3",
+      "9 3 1 0",
+      "9 1 3 0"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按相同顺序回忆，应输入：9310。",
+    "presentation": "digits",
+    "stimulus": "9 3 1 0",
+    "displaySeconds": 4,
+    "recallRule": "forward",
+    "id": "digitspan-40"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相反顺序】回忆。",
+    "options": [
+      "9 8 6 9 2",
+      "9 9 6 8 2",
+      "9 2 6 9 8",
+      "9 8 2 9 6"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按相反顺序回忆，应输入：98692。",
+    "presentation": "digits",
+    "stimulus": "2 9 6 8 9",
+    "displaySeconds": 4,
+    "recallRule": "backward",
+    "id": "digitspan-41"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【从小到大】回忆。",
+    "options": [
+      "4 2 3 0",
+      "0 4 3 2",
+      "3 2 0 4",
+      "0 2 3 4"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按从小到大回忆，应输入：0234。",
+    "presentation": "digits",
+    "stimulus": "4 2 0 3",
+    "displaySeconds": 6,
+    "recallRule": "ascending",
+    "id": "digitspan-42"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相同顺序】回忆。",
+    "options": [
+      "1 8 1",
+      "1 1 8",
+      "8 1 1",
+      "1 9 1"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按相同顺序回忆，应输入：181。",
+    "presentation": "digits",
+    "stimulus": "1 8 1",
+    "displaySeconds": 4,
+    "recallRule": "forward",
+    "id": "digitspan-43"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相反顺序】回忆。",
+    "options": [
+      "1 7 7 8 4",
+      "1 4 7 8 7",
+      "1 7 4 8 7",
+      "4 1 7 8 7"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按相反顺序回忆，应输入：14787。",
+    "presentation": "digits",
+    "stimulus": "7 8 7 4 1",
+    "displaySeconds": 6,
+    "recallRule": "backward",
+    "id": "digitspan-44"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【从小到大】回忆。",
+    "options": [
+      "4 5 5 6 6",
+      "6 5 5 4 6",
+      "5 5 4 6 6",
+      "4 6 5 6 5"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按从小到大回忆，应输入：45566。",
+    "presentation": "digits",
+    "stimulus": "6 5 4 5 6",
+    "displaySeconds": 6,
+    "recallRule": "ascending",
+    "id": "digitspan-45"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相同顺序】回忆。",
+    "options": [
+      "3 4 4 2 6 1 3",
+      "6 4 4 3 2 1 3",
+      "3 4 4 6 2 1 3",
+      "3 4 4 6 3 1 2"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按相同顺序回忆，应输入：3446213。",
+    "presentation": "digits",
+    "stimulus": "3 4 4 6 2 1 3",
+    "displaySeconds": 4,
+    "recallRule": "forward",
+    "id": "digitspan-46"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【相反顺序】回忆。",
+    "options": [
+      "6 0 9 6 8",
+      "8 0 9 6 6",
+      "6 6 9 0 8",
+      "0 6 9 6 8"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按相反顺序回忆，应输入：60968。",
+    "presentation": "digits",
+    "stimulus": "8 6 9 0 6",
+    "displaySeconds": 5,
+    "recallRule": "backward",
+    "id": "digitspan-47"
+  },
+  {
+    "subtest": "digitspan",
+    "prompt": "请记住下面的数字，随后请按【从小到大】回忆。",
+    "options": [
+      "0 2 2 7 7",
+      "7 2 2 0 7",
+      "0 7 2 7 2",
+      "0 2 7 2 7"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按从小到大回忆，应输入：02277。",
+    "presentation": "digits",
+    "stimulus": "7 7 2 2 0",
+    "displaySeconds": 4,
+    "recallRule": "ascending",
+    "id": "digitspan-48"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ● ▲ ◇，第二行 ◆ ● ▲，第三行 ■ ◆ ？",
+    "options": [
+      "◆",
+      "▲",
+      "●",
+      "■"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "主对角线上的符号都是 ●，第三行第三位应为 ●。",
+    "id": "matrix-25"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ☆ ● ●，第二行 ● ☆ ●，第三行 ● ● ？",
+    "options": [
+      "▲",
+      "■",
+      "☆",
+      "●"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "☆ 在每行从左到右依次移动一格，第三行应落在第三格。",
+    "id": "matrix-26"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◇ ☆ ○，第二行 ☆ ○ ◇，第三行 ○ ◇ ？",
+    "options": [
+      "■",
+      "●",
+      "☆",
+      "▲"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "每行整体左移一位，第一行为 ◇ ☆ ○，第三行第三位应为 ☆。",
+    "id": "matrix-27"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◇ ■ ☆，第二行 ▲ ◇ ■，第三行 ○ ▲ ？",
+    "options": [
+      "▲",
+      "●",
+      "◇",
+      "■"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "主对角线上的符号都是 ◇，第三行第三位应为 ◇。",
+    "id": "matrix-28"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◇ ■ ■，第二行 ■ ◇ ■，第三行 ■ ■ ？",
+    "options": [
+      "◇",
+      "▲",
+      "■",
+      "●"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "◇ 在每行从左到右依次移动一格，第三行应落在第三格。",
+    "id": "matrix-29"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◆ ● ▲，第二行 ● ▲ ◆，第三行 ▲ ◆ ？",
+    "options": [
+      "●",
+      "◆",
+      "▲",
+      "■"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "每行整体左移一位，第一行为 ◆ ● ▲，第三行第三位应为 ●。",
+    "id": "matrix-30"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ■ ◇ ☆，第二行 ★ ■ ◇，第三行 ◆ ★ ？",
+    "options": [
+      "●",
+      "▲",
+      "◆",
+      "■"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "主对角线上的符号都是 ■，第三行第三位应为 ■。",
+    "id": "matrix-31"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ○ ◇ ◇，第二行 ◇ ○ ◇，第三行 ◇ ◇ ？",
+    "options": [
+      "■",
+      "●",
+      "○",
+      "▲"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "○ 在每行从左到右依次移动一格，第三行应落在第三格。",
+    "id": "matrix-32"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ▲ ★ ○，第二行 ★ ○ ▲，第三行 ○ ▲ ？",
+    "options": [
+      "●",
+      "★",
+      "■",
+      "▲"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "每行整体左移一位，第一行为 ▲ ★ ○，第三行第三位应为 ★。",
+    "id": "matrix-33"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◇ ★ ■，第二行 ● ◇ ★，第三行 ◆ ● ？",
+    "options": [
+      "●",
+      "▲",
+      "■",
+      "◇"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "主对角线上的符号都是 ◇，第三行第三位应为 ◇。",
+    "id": "matrix-34"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ☆ ◆ ◆，第二行 ◆ ☆ ◆，第三行 ◆ ◆ ？",
+    "options": [
+      "■",
+      "●",
+      "▲",
+      "☆"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "☆ 在每行从左到右依次移动一格，第三行应落在第三格。",
+    "id": "matrix-35"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ● ☆ ○，第二行 ☆ ○ ●，第三行 ○ ● ？",
+    "options": [
+      "▲",
+      "■",
+      "☆",
+      "●"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "每行整体左移一位，第一行为 ● ☆ ○，第三行第三位应为 ☆。",
+    "id": "matrix-36"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◇ ★ ▲，第二行 ☆ ◇ ★，第三行 ○ ☆ ？",
+    "options": [
+      "●",
+      "◇",
+      "■",
+      "▲"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "主对角线上的符号都是 ◇，第三行第三位应为 ◇。",
+    "id": "matrix-37"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◆ ★ ★，第二行 ★ ◆ ★，第三行 ★ ★ ？",
+    "options": [
+      "●",
+      "◆",
+      "▲",
+      "■"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "◆ 在每行从左到右依次移动一格，第三行应落在第三格。",
+    "id": "matrix-38"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ■ ● ☆，第二行 ● ☆ ■，第三行 ☆ ■ ？",
+    "options": [
+      "◆",
+      "●",
+      "▲",
+      "■"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "每行整体左移一位，第一行为 ■ ● ☆，第三行第三位应为 ●。",
+    "id": "matrix-39"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◆ ● ◇，第二行 ○ ◆ ●，第三行 ☆ ○ ？",
+    "options": [
+      "■",
+      "◆",
+      "●",
+      "▲"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "主对角线上的符号都是 ◆，第三行第三位应为 ◆。",
+    "id": "matrix-40"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◇ ☆ ☆，第二行 ☆ ◇ ☆，第三行 ☆ ☆ ？",
+    "options": [
+      "▲",
+      "■",
+      "●",
+      "◇"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "◇ 在每行从左到右依次移动一格，第三行应落在第三格。",
+    "id": "matrix-41"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◆ ○ ☆，第二行 ○ ☆ ◆，第三行 ☆ ◆ ？",
+    "options": [
+      "●",
+      "■",
+      "○",
+      "▲"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "每行整体左移一位，第一行为 ◆ ○ ☆，第三行第三位应为 ○。",
+    "id": "matrix-42"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ■ ◆ ☆，第二行 ★ ■ ◆，第三行 ○ ★ ？",
+    "options": [
+      "●",
+      "◆",
+      "■",
+      "▲"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "主对角线上的符号都是 ■，第三行第三位应为 ■。",
+    "id": "matrix-43"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◇ ■ ■，第二行 ■ ◇ ■，第三行 ■ ■ ？",
+    "options": [
+      "▲",
+      "■",
+      "◇",
+      "●"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "◇ 在每行从左到右依次移动一格，第三行应落在第三格。",
+    "id": "matrix-44"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ◆ ☆ ○，第二行 ☆ ○ ◆，第三行 ○ ◆ ？",
+    "options": [
+      "☆",
+      "●",
+      "▲",
+      "■"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "每行整体左移一位，第一行为 ◆ ☆ ○，第三行第三位应为 ☆。",
+    "id": "matrix-45"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ☆ ◇ ○，第二行 ● ☆ ◇，第三行 ★ ● ？",
+    "options": [
+      "●",
+      "▲",
+      "■",
+      "☆"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "主对角线上的符号都是 ☆，第三行第三位应为 ☆。",
+    "id": "matrix-46"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ● ★ ★，第二行 ★ ● ★，第三行 ★ ★ ？",
+    "options": [
+      "■",
+      "▲",
+      "◆",
+      "●"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "● 在每行从左到右依次移动一格，第三行应落在第三格。",
+    "id": "matrix-47"
+  },
+  {
+    "subtest": "matrix",
+    "prompt": "矩阵：第一行 ★ ◇ ▲，第二行 ◇ ▲ ★，第三行 ▲ ★ ？",
+    "options": [
+      "▲",
+      "■",
+      "◇",
+      "●"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "每行整体左移一位，第一行为 ★ ◇ ▲，第三行第三位应为 ◇。",
+    "id": "matrix-48"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "心算：34 + 9 = ？",
+    "options": [
+      "41",
+      "43",
+      "53",
+      "45"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "34+9=43。",
+    "id": "arithmetic-25"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "心算：34 − 6 = ？",
+    "options": [
+      "38",
+      "25",
+      "29",
+      "28"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "34−6=28。",
+    "id": "arithmetic-26"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每 14 个一组，共有 9 组，一共有多少个？",
+    "options": [
+      "126",
+      "116",
+      "124",
+      "128"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "14×9=126。",
+    "id": "arithmetic-27"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每本笔记本 4 元，买 36 本一共要付多少元？",
+    "options": [
+      "144 元",
+      "147 元",
+      "134 元",
+      "145 元"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "4×36=144 元。",
+    "id": "arithmetic-28"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "把 35 个苹果平均分给 7 个小朋友，每人分到几个？",
+    "options": [
+      "15 人",
+      "2 人",
+      "5 人",
+      "7 人"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "35÷7=5。",
+    "id": "arithmetic-29"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "原有 34 元，用掉 8 元，还剩多少元？",
+    "options": [
+      "26 元",
+      "25 元",
+      "16 元",
+      "27 元"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "34−8=26 元。",
+    "id": "arithmetic-30"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "一盒有 3 支笔，13 盒一共有多少支？",
+    "options": [
+      "37 支",
+      "41 支",
+      "39 支",
+      "49 支"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "3×13=39 支。",
+    "id": "arithmetic-31"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每排坐 8 人，坐了 12 排，一共坐了多少人？",
+    "options": [
+      "96 人",
+      "94 人",
+      "95 人",
+      "93 人"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "8×12=96 人。",
+    "id": "arithmetic-32"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "心算：20 + 16 = ？",
+    "options": [
+      "46",
+      "33",
+      "38",
+      "36"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "20+16=36。",
+    "id": "arithmetic-33"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "心算：48 − 15 = ？",
+    "options": [
+      "43",
+      "33",
+      "36",
+      "23"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "48−15=33。",
+    "id": "arithmetic-34"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每 18 个一组，共有 11 组，一共有多少个？",
+    "options": [
+      "200",
+      "188",
+      "198",
+      "195"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "18×11=198。",
+    "id": "arithmetic-35"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每本笔记本 15 元，买 3 本一共要付多少元？",
+    "options": [
+      "44 元",
+      "55 元",
+      "35 元",
+      "45 元"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "15×3=45 元。",
+    "id": "arithmetic-36"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "把 44 个苹果平均分给 2 个小朋友，每人分到几个？",
+    "options": [
+      "19 人",
+      "25 人",
+      "22 人",
+      "23 人"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "44÷2=22。",
+    "id": "arithmetic-37"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "原有 39 元，用掉 8 元，还剩多少元？",
+    "options": [
+      "31 元",
+      "29 元",
+      "30 元",
+      "28 元"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "39−8=31 元。",
+    "id": "arithmetic-38"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "一盒有 3 支笔，50 盒一共有多少支？",
+    "options": [
+      "148 支",
+      "150 支",
+      "160 支",
+      "147 支"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "3×50=150 支。",
+    "id": "arithmetic-39"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每排坐 5 人，坐了 40 排，一共坐了多少人？",
+    "options": [
+      "203 人",
+      "210 人",
+      "200 人",
+      "198 人"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "5×40=200 人。",
+    "id": "arithmetic-40"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "心算：38 + 14 = ？",
+    "options": [
+      "51",
+      "55",
+      "52",
+      "42"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "38+14=52。",
+    "id": "arithmetic-41"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "心算：22 − 4 = ？",
+    "options": [
+      "18",
+      "16",
+      "17",
+      "20"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "22−4=18。",
+    "id": "arithmetic-42"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每 2 个一组，共有 39 组，一共有多少个？",
+    "options": [
+      "78",
+      "80",
+      "88",
+      "81"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "2×39=78。",
+    "id": "arithmetic-43"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每本笔记本 4 元，买 5 本一共要付多少元？",
+    "options": [
+      "30 元",
+      "17 元",
+      "10 元",
+      "20 元"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "4×5=20 元。",
+    "id": "arithmetic-44"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "把 42 个苹果平均分给 3 个小朋友，每人分到几个？",
+    "options": [
+      "16 人",
+      "11 人",
+      "4 人",
+      "14 人"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "42÷3=14。",
+    "id": "arithmetic-45"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "原有 51 元，用掉 7 元，还剩多少元？",
+    "options": [
+      "42 元",
+      "47 元",
+      "44 元",
+      "45 元"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "51−7=44 元。",
+    "id": "arithmetic-46"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "一盒有 10 支笔，12 盒一共有多少支？",
+    "options": [
+      "120 支",
+      "121 支",
+      "118 支",
+      "117 支"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "10×12=120 支。",
+    "id": "arithmetic-47"
+  },
+  {
+    "subtest": "arithmetic",
+    "prompt": "每排坐 2 人，坐了 48 排，一共坐了多少人？",
+    "options": [
+      "99 人",
+      "97 人",
+      "93 人",
+      "96 人"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "2×48=96 人。",
+    "id": "arithmetic-48"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 4 个相同的小正方体，可以拼成：",
+    "options": [
+      "一个五边形",
+      "一个大圆锥",
+      "一个大圆球",
+      "一层 2×2 的长方形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "4 个小正方体可排成 2×2 的长方形；其他选项需要的块数或形状都对不上。",
+    "id": "block-25"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 2×3 的长方形由 6 个小正方体拼成，从上面看是：",
+    "options": [
+      "一个大圆锥",
+      "一个 2×3 的长方形",
+      "一个八边形",
+      "一个六边形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "这 6 个小正方体排成的是 2×3 的长方形。",
+    "id": "block-26"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 8 个相同的小正方体，最少能拼成几个边长为 2 的大正方体？",
+    "options": [
+      "一个大圆锥",
+      "2 个边长为 2 的大正方体",
+      "一个六边形",
+      "一个八边形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "每个边长为 2 的大正方体需要 4 个小正方体，8 ÷ 4 = 2。",
+    "id": "block-27"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 3×3 的长方形由 9 个小正方体拼成，那么一层 4×3 的长方形需要多少个小正方体？",
+    "options": [
+      "12 个小正方体",
+      "一个大圆锥",
+      "一个六边形",
+      "一个大圆球"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "一层 4×3 的长方形需要 4×3 = 12 个小方块。",
+    "id": "block-28"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 12 个相同的小正方体，能拼成几层、每层几块的平板？",
+    "options": [
+      "一个八边形",
+      "一个五边形",
+      "1 层，每层 3×4",
+      "一个大圆球"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "12 个小正方体恰好排成一层，每层 3×4 块。",
+    "id": "block-29"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一个 4×4 的长方形可以拆成多少个边长为 1 的小正方体？",
+    "options": [
+      "16 个边长为 1 的小正方体",
+      "一个大圆球",
+      "一个大圆锥",
+      "一个圆柱体"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "每个小正方体边长为 1，4×4 = 16 个。",
+    "id": "block-30"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 4 个相同的小正方体拼成一层平板，从上面看是什么形状？",
+    "options": [
+      "一个六边形",
+      "一个五边形",
+      "一个大圆锥",
+      "长方形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "4 个小方块排成一层，俯视是 2×2 的长方形。",
+    "id": "block-31"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 2×3 的长方形由 6 个小正方体拼成，抽出其中一排，还剩多少个？",
+    "options": [
+      "一个六边形",
+      "一个圆柱体",
+      "一个八边形",
+      "3 个小正方体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "一排有 3 个，6 − 3 = 3 个。",
+    "id": "block-32"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 8 个相同的小正方体，可以拼成：",
+    "options": [
+      "一个八边形",
+      "一个大圆锥",
+      "一层 2×4 的长方形",
+      "一个圆柱体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "8 个小正方体可排成 2×4 的长方形；其他选项需要的块数或形状都对不上。",
+    "id": "block-33"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 3×3 的长方形由 9 个小正方体拼成，从上面看是：",
+    "options": [
+      "一个八边形",
+      "一个大圆锥",
+      "一个 3×3 的长方形",
+      "一个大圆球"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "这 9 个小正方体排成的是 3×3 的长方形。",
+    "id": "block-34"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 12 个相同的小正方体，最少能拼成几个边长为 2 的大正方体？",
+    "options": [
+      "一个五边形",
+      "一个圆柱体",
+      "一个大圆球",
+      "3 个边长为 2 的大正方体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "每个边长为 2 的大正方体需要 4 个小正方体，12 ÷ 4 = 3。",
+    "id": "block-35"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 4×4 的长方形由 16 个小正方体拼成，那么一层 5×4 的长方形需要多少个小正方体？",
+    "options": [
+      "一个大圆锥",
+      "20 个小正方体",
+      "一个八边形",
+      "一个五边形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "一层 5×4 的长方形需要 5×4 = 20 个小方块。",
+    "id": "block-36"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 4 个相同的小正方体，能拼成几层、每层几块的平板？",
+    "options": [
+      "一个五边形",
+      "一个六边形",
+      "一个大圆球",
+      "1 层，每层 2×2"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "4 个小正方体恰好排成一层，每层 2×2 块。",
+    "id": "block-37"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一个 2×3 的长方形可以拆成多少个边长为 1 的小正方体？",
+    "options": [
+      "一个大圆锥",
+      "一个五边形",
+      "一个八边形",
+      "6 个边长为 1 的小正方体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "每个小正方体边长为 1，2×3 = 6 个。",
+    "id": "block-38"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 8 个相同的小正方体拼成一层平板，从上面看是什么形状？",
+    "options": [
+      "一个大圆球",
+      "一个大圆锥",
+      "长方形",
+      "一个圆柱体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "8 个小方块排成一层，俯视是 2×4 的长方形。",
+    "id": "block-39"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 3×3 的长方形由 9 个小正方体拼成，抽出其中一排，还剩多少个？",
+    "options": [
+      "一个八边形",
+      "6 个小正方体",
+      "一个五边形",
+      "一个六边形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "一排有 3 个，9 − 3 = 6 个。",
+    "id": "block-40"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 12 个相同的小正方体，可以拼成：",
+    "options": [
+      "一层 3×4 的长方形",
+      "一个五边形",
+      "一个六边形",
+      "一个圆柱体"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "12 个小正方体可排成 3×4 的长方形；其他选项需要的块数或形状都对不上。",
+    "id": "block-41"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 4×4 的长方形由 16 个小正方体拼成，从上面看是：",
+    "options": [
+      "一个大圆球",
+      "一个圆柱体",
+      "一个 4×4 的长方形",
+      "一个五边形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "这 16 个小正方体排成的是 4×4 的长方形。",
+    "id": "block-42"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 4 个相同的小正方体，最少能拼成几个边长为 2 的大正方体？",
+    "options": [
+      "一个六边形",
+      "一个八边形",
+      "一个大圆球",
+      "1 个边长为 2 的大正方体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "每个边长为 2 的大正方体需要 4 个小正方体，4 ÷ 4 = 1。",
+    "id": "block-43"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 2×3 的长方形由 6 个小正方体拼成，那么一层 3×3 的长方形需要多少个小正方体？",
+    "options": [
+      "9 个小正方体",
+      "一个六边形",
+      "一个五边形",
+      "一个八边形"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "一层 3×3 的长方形需要 3×3 = 9 个小方块。",
+    "id": "block-44"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 8 个相同的小正方体，能拼成几层、每层几块的平板？",
+    "options": [
+      "一个八边形",
+      "1 层，每层 2×4",
+      "一个大圆锥",
+      "一个六边形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "8 个小正方体恰好排成一层，每层 2×4 块。",
+    "id": "block-45"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一个 3×3 的长方形可以拆成多少个边长为 1 的小正方体？",
+    "options": [
+      "9 个边长为 1 的小正方体",
+      "一个大圆球",
+      "一个五边形",
+      "一个圆柱体"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "每个小正方体边长为 1，3×3 = 9 个。",
+    "id": "block-46"
+  },
+  {
+    "subtest": "block",
+    "prompt": "用 12 个相同的小正方体拼成一层平板，从上面看是什么形状？",
+    "options": [
+      "一个大圆球",
+      "一个八边形",
+      "长方形",
+      "一个六边形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "12 个小方块排成一层，俯视是 3×4 的长方形。",
+    "id": "block-47"
+  },
+  {
+    "subtest": "block",
+    "prompt": "一层 4×4 的长方形由 16 个小正方体拼成，抽出其中一排，还剩多少个？",
+    "options": [
+      "一个大圆球",
+      "一个圆柱体",
+      "一个八边形",
+      "12 个小正方体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "一排有 4 个，16 − 4 = 12 个。",
+    "id": "block-48"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全相同的半圆，可以拼成：",
+    "options": [
+      "一个圆",
+      "一个正方形",
+      "一个椭圆",
+      "一个三角形"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，两个完全相同的半圆，可以拼成的结果是一个圆。",
+    "id": "visualpuzzle-25"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个正方形沿对角线剪开，得到两个：",
+    "options": [
+      "圆形",
+      "长方形",
+      "梯形",
+      "等腰直角三角形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按几何关系，一个正方形沿对角线剪开，得到两个的结果是等腰直角三角形。",
+    "id": "visualpuzzle-26"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全一样的等腰直角三角形，可以拼成一个：",
+    "options": [
+      "正方形",
+      "球",
+      "五边形",
+      "椭圆"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，两个完全一样的等腰直角三角形，可以拼成一个的结果是正方形。",
+    "id": "visualpuzzle-27"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "三个相同的直角三角形，可以拼成一个：",
+    "options": [
+      "五边形",
+      "球",
+      "长方形",
+      "圆锥"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按几何关系，三个相同的直角三角形，可以拼成一个的结果是长方形。",
+    "id": "visualpuzzle-28"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个长方形沿中线对折，得到两个：",
+    "options": [
+      "圆形",
+      "三角形",
+      "完全相同的小长方形",
+      "梯形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按几何关系，一个长方形沿中线对折，得到两个的结果是完全相同的小长方形。",
+    "id": "visualpuzzle-29"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个平行四边形沿对角线剪开，得到两个：",
+    "options": [
+      "正方形",
+      "圆形",
+      "梯形",
+      "完全相同的三角形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按几何关系，一个平行四边形沿对角线剪开，得到两个的结果是完全相同的三角形。",
+    "id": "visualpuzzle-30"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "四个完全相同的正方形，可以拼成一个：",
+    "options": [
+      "五边形",
+      "大正方形",
+      "圆柱",
+      "球"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，四个完全相同的正方形，可以拼成一个的结果是大正方形。",
+    "id": "visualpuzzle-31"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个圆形沿直径对折，得到两个：",
+    "options": [
+      "完全相同的半圆",
+      "三角形",
+      "正方形",
+      "梯形"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，一个圆形沿直径对折，得到两个的结果是完全相同的半圆。",
+    "id": "visualpuzzle-32"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全相同的直角三角形，可以拼成一个：",
+    "options": [
+      "圆",
+      "长方形",
+      "正方形",
+      "梯形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，两个完全相同的直角三角形，可以拼成一个的结果是长方形。",
+    "id": "visualpuzzle-33"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个圆形沿半径剪开，得到两个：",
+    "options": [
+      "三角形",
+      "扇形",
+      "长方形",
+      "正方形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，一个圆形沿半径剪开，得到两个的结果是扇形。",
+    "id": "visualpuzzle-34"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "三个完全相同的正方形，可以拼成一个：",
+    "options": [
+      "梯形",
+      "圆形",
+      "长方形",
+      "三角形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按几何关系，三个完全相同的正方形，可以拼成一个的结果是长方形。",
+    "id": "visualpuzzle-35"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个圆沿两条半径剪开，得到四个：",
+    "options": [
+      "扇形",
+      "长方形",
+      "三角形",
+      "正方形"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，一个圆沿两条半径剪开，得到四个的结果是扇形。",
+    "id": "visualpuzzle-36"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全相同的梯形，可以拼成一个：",
+    "options": [
+      "圆",
+      "三角形",
+      "平行四边形",
+      "长方形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按几何关系，两个完全相同的梯形，可以拼成一个的结果是平行四边形。",
+    "id": "visualpuzzle-37"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全相同的等边三角形，可以拼成一个：",
+    "options": [
+      "正方形",
+      "圆",
+      "梯形",
+      "菱形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按几何关系，两个完全相同的等边三角形，可以拼成一个的结果是菱形。",
+    "id": "visualpuzzle-38"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个正方形沿水平中线剪开，得到两个：",
+    "options": [
+      "梯形",
+      "三角形",
+      "完全相同的小长方形",
+      "圆"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按几何关系，一个正方形沿水平中线剪开，得到两个的结果是完全相同的小长方形。",
+    "id": "visualpuzzle-39"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全相同的月牙形，可以拼成一个：",
+    "options": [
+      "梯形",
+      "菱形",
+      "圆",
+      "椭圆"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按几何关系，两个完全相同的月牙形，可以拼成一个的结果是圆。",
+    "id": "visualpuzzle-40"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个梯形的两腰向外翻折，可以拼成一个：",
+    "options": [
+      "梯形",
+      "三角形",
+      "圆形",
+      "长方形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按几何关系，一个梯形的两腰向外翻折，可以拼成一个的结果是长方形。",
+    "id": "visualpuzzle-41"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "四个完全相同的等腰直角三角形，可以拼成一个：",
+    "options": [
+      "圆",
+      "长方形",
+      "正方形",
+      "菱形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按几何关系，四个完全相同的等腰直角三角形，可以拼成一个的结果是正方形。",
+    "id": "visualpuzzle-42"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全相同的直角梯形，可以拼成一个：",
+    "options": [
+      "长方形",
+      "梯形",
+      "三角形",
+      "圆"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，两个完全相同的直角梯形，可以拼成一个的结果是长方形。",
+    "id": "visualpuzzle-43"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个六边形沿对角线分成两个：",
+    "options": [
+      "三角形",
+      "完全相同的梯形",
+      "正方形",
+      "长方形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，一个六边形沿对角线分成两个的结果是完全相同的梯形。",
+    "id": "visualpuzzle-44"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全相同的正五边形，可以拼成一个：",
+    "options": [
+      "十边形",
+      "长方形",
+      "圆形",
+      "三角形"
+    ],
+    "optionScores": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，两个完全相同的正五边形，可以拼成一个的结果是十边形。",
+    "id": "visualpuzzle-45"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "一个正方形对角线剪开后，把两个三角形重新拼回去，得到：",
+    "options": [
+      "三角形",
+      "正方形",
+      "长方形",
+      "菱形"
+    ],
+    "optionScores": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "explanation": "按几何关系，一个正方形对角线剪开后，把两个三角形重新拼回去，得到的结果是正方形。",
+    "id": "visualpuzzle-46"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "三个完全相同的扇形（圆心角 120 度），可以拼成一个：",
+    "options": [
+      "长方形",
+      "扇形",
+      "圆",
+      "半圆"
+    ],
+    "optionScores": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "explanation": "按几何关系，三个完全相同的扇形（圆心角 120 度），可以拼成一个的结果是圆。",
+    "id": "visualpuzzle-47"
+  },
+  {
+    "subtest": "visualpuzzle",
+    "prompt": "两个完全相同的直角梯形，可以拼成一个：",
+    "options": [
+      "圆",
+      "三角形",
+      "梯形",
+      "长方形"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "按几何关系，两个完全相同的直角梯形，可以拼成一个的结果是长方形。",
+    "id": "visualpuzzle-48"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "温顺 : 羊 ＝ 洁白 : ？",
+    "options": [
+      "说的是事物的一种特质",
+      "说的是一种性质",
+      "性质可以描述事物",
+      "羊",
+      "两者都具体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "温顺 与 羊 构成属性与主体关系，同理 洁白 应对应「羊」；选「说的是事物的一种特质」只说到了关系类型，不够具体。",
+    "id": "similarities-25"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "门 : 房子 ＝ 树叶 : ？",
+    "options": [
+      "前者依赖后者",
+      "两者相关联",
+      "一个有整体含义",
+      "房子",
+      "二者不能单独存在"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "门 与 房子 构成部分与整体关系，同理 树叶 应对应「房子」；选「二者不能单独存在」只说到了关系类型，不够具体。",
+    "id": "similarities-26"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "甘甜 : 蜂蜜 ＝ 勤劳 : ？",
+    "options": [
+      "说的是事物的一种特质",
+      "蜂蜜",
+      "性质可以描述事物",
+      "说的是一种性质",
+      "两者都具体"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "甘甜 与 蜂蜜 构成属性与主体关系，同理 勤劳 应对应「蜂蜜」；选「说的是事物的一种特质」只说到了关系类型，不够具体。",
+    "id": "similarities-27"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "灵活 : 猫 ＝ 勇猛 : ？",
+    "options": [
+      "两者都具体",
+      "特质与主体一一对应",
+      "说的是一种性质",
+      "性质可以描述事物",
+      "猫"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      0,
+      2
+    ],
+    "explanation": "灵活 与 猫 构成属性与主体关系，同理 勇猛 应对应「猫」；选「特质与主体一一对应」只说到了关系类型，不够具体。",
+    "id": "similarities-28"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "宽 : 窄 ＝ 快 : ？",
+    "options": [
+      "意思相反",
+      "用词不同",
+      "描述的是相反的两个方向",
+      "程度不同",
+      "窄"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      0,
+      2
+    ],
+    "explanation": "宽 与 窄 构成反义关系，同理 快 应对应「窄」；选「描述的是相反的两个方向」只说到了关系类型，不够具体。",
+    "id": "similarities-29"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "手指 : 手 ＝ 琴弦 : ？",
+    "options": [
+      "二者不能单独存在",
+      "手",
+      "前者依赖后者",
+      "两者相关联",
+      "一个有整体含义"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "手指 与 手 构成部分与整体关系，同理 琴弦 应对应「手」；选「二者不能单独存在」只说到了关系类型，不够具体。",
+    "id": "similarities-30"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "温度计 : 测温 ＝ 雨伞 : ？",
+    "options": [
+      "都对应一种具体的用途",
+      "都和手有关",
+      "测温",
+      "用途各不相同",
+      "都需要手来操作"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "温度计 与 测温 构成对象与用途关系，同理 雨伞 应对应「测温」；选「都对应一种具体的用途」只说到了关系类型，不够具体。",
+    "id": "similarities-31"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "月亮 : 天体 ＝ 长江 : ？",
+    "options": [
+      "都属于同一类别",
+      "都比较大",
+      "都是可以观察的",
+      "都出现在日常生活中",
+      "天体"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      0,
+      2
+    ],
+    "explanation": "月亮 与 天体 构成种属关系，同理 长江 应对应「天体」；选「都出现在日常生活中」只说到了关系类型，不够具体。",
+    "id": "similarities-32"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "明亮 : 昏暗 ＝ 白天 : ？",
+    "options": [
+      "用词不同",
+      "描述的是相反的两个方向",
+      "程度不同",
+      "意思相反",
+      "昏暗"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      0,
+      2
+    ],
+    "explanation": "明亮 与 昏暗 构成反义关系，同理 白天 应对应「昏暗」；选「描述的是相反的两个方向」只说到了关系类型，不够具体。",
+    "id": "similarities-33"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "快 : 慢 ＝ 白天 : ？",
+    "options": [
+      "用词不同",
+      "意思相反",
+      "慢",
+      "程度不同",
+      "两者不能同时成立"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "快 与 慢 构成反义关系，同理 白天 应对应「慢」；选「两者不能同时成立」只说到了关系类型，不够具体。",
+    "id": "similarities-34"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "聪明 : 乌鸦 ＝ 凶猛 : ？",
+    "options": [
+      "两者都具体",
+      "性质可以描述事物",
+      "乌鸦",
+      "说的是一种性质",
+      "说的是事物的一种特质"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "聪明 与 乌鸦 构成属性与主体关系，同理 凶猛 应对应「乌鸦」；选「说的是事物的一种特质」只说到了关系类型，不够具体。",
+    "id": "similarities-35"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "长江 : 河流 ＝ 橡树 : ？",
+    "options": [
+      "都出现在日常生活中",
+      "都是可以观察的",
+      "河流",
+      "都属于同一类别",
+      "都比较大"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "长江 与 河流 构成种属关系，同理 橡树 应对应「河流」；选「都出现在日常生活中」只说到了关系类型，不够具体。",
+    "id": "similarities-36"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "白天 : 夜晚 ＝ 干燥 : ？",
+    "options": [
+      "夜晚",
+      "用词不同",
+      "程度不同",
+      "意思相反",
+      "描述的是相反的两个方向"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "explanation": "白天 与 夜晚 构成反义关系，同理 干燥 应对应「夜晚」；选「描述的是相反的两个方向」只说到了关系类型，不够具体。",
+    "id": "similarities-37"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "沉重 : 轻盈 ＝ 快 : ？",
+    "options": [
+      "轻盈",
+      "用词不同",
+      "两者不能同时成立",
+      "意思相反",
+      "程度不同"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "explanation": "沉重 与 轻盈 构成反义关系，同理 快 应对应「轻盈」；选「两者不能同时成立」只说到了关系类型，不够具体。",
+    "id": "similarities-38"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "度量 : 尺子 ＝ 开罐 : ？",
+    "options": [
+      "用途明确",
+      "两者一一对应",
+      "有特定用途",
+      "尺子",
+      "说的是物品的用途"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "度量 与 尺子 构成功能与对象关系，同理 开罐 应对应「尺子」；选「说的是物品的用途」只说到了关系类型，不够具体。",
+    "id": "similarities-39"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "开始 : 结束 ＝ 明亮 : ？",
+    "options": [
+      "意思相反",
+      "结束",
+      "程度不同",
+      "用词不同",
+      "两者不能同时成立"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "开始 与 结束 构成反义关系，同理 明亮 应对应「结束」；选「两者不能同时成立」只说到了关系类型，不够具体。",
+    "id": "similarities-40"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "坚硬 : 钻石 ＝ 聪明 : ？",
+    "options": [
+      "说的是一种性质",
+      "两者都具体",
+      "钻石",
+      "性质可以描述事物",
+      "说的是事物的一种特质"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "坚硬 与 钻石 构成属性与主体关系，同理 聪明 应对应「钻石」；选「说的是事物的一种特质」只说到了关系类型，不够具体。",
+    "id": "similarities-41"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "三角形 : 几何图形 ＝ 蜜蜂 : ？",
+    "options": [
+      "都是可以观察的",
+      "都比较大",
+      "都出现在日常生活中",
+      "几何图形",
+      "都属于同一类别"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "三角形 与 几何图形 构成种属关系，同理 蜜蜂 应对应「几何图形」；选「都出现在日常生活中」只说到了关系类型，不够具体。",
+    "id": "similarities-42"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "长寿 : 乌龟 ＝ 聪明 : ？",
+    "options": [
+      "说的是一种性质",
+      "两者都具体",
+      "说的是事物的一种特质",
+      "性质可以描述事物",
+      "乌龟"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      0,
+      2
+    ],
+    "explanation": "长寿 与 乌龟 构成属性与主体关系，同理 聪明 应对应「乌龟」；选「说的是事物的一种特质」只说到了关系类型，不够具体。",
+    "id": "similarities-43"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "洁白 : 雪花 ＝ 甘甜 : ？",
+    "options": [
+      "说的是一种性质",
+      "雪花",
+      "性质可以描述事物",
+      "特质与主体一一对应",
+      "两者都具体"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "洁白 与 雪花 构成属性与主体关系，同理 甘甜 应对应「雪花」；选「特质与主体一一对应」只说到了关系类型，不够具体。",
+    "id": "similarities-44"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "保温 : 棉衣 ＝ 录音 : ？",
+    "options": [
+      "用途明确",
+      "棉衣",
+      "说的是物品的用途",
+      "两者一一对应",
+      "有特定用途"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "保温 与 棉衣 构成功能与对象关系，同理 录音 应对应「棉衣」；选「说的是物品的用途」只说到了关系类型，不够具体。",
+    "id": "similarities-45"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "橡树 : 树木 ＝ 青蛙 : ？",
+    "options": [
+      "都属于同一类别",
+      "都是可以观察的",
+      "都出现在日常生活中",
+      "树木",
+      "都比较大"
+    ],
+    "optionScores": [
+      0,
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "橡树 与 树木 构成种属关系，同理 青蛙 应对应「树木」；选「都出现在日常生活中」只说到了关系类型，不够具体。",
+    "id": "similarities-46"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "鲸鱼 : 哺乳动物 ＝ 蜜蜂 : ？",
+    "options": [
+      "哺乳动物",
+      "都比较大",
+      "都属于同一类别",
+      "都是可以观察的",
+      "都属于某一个更大的类别"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "explanation": "鲸鱼 与 哺乳动物 构成种属关系，同理 蜜蜂 应对应「哺乳动物」；选「都属于某一个更大的类别」只说到了关系类型，不够具体。",
+    "id": "similarities-47"
+  },
+  {
+    "subtest": "similarities",
+    "prompt": "花瓣 : 花 ＝ 骨头 : ？",
+    "options": [
+      "二者不能单独存在",
+      "一个有整体含义",
+      "花",
+      "两者相关联",
+      "前者依赖后者"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "花瓣 与 花 构成部分与整体关系，同理 骨头 应对应「花」；选「二者不能单独存在」只说到了关系类型，不够具体。",
+    "id": "similarities-48"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「慷慨」最接近的意思是：",
+    "options": [
+      "乐于给予、大方",
+      "计较得失、小气",
+      "犹豫不决",
+      "爱讲道理",
+      "愿意付出"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "慷慨指待人宽厚、愿意给予。",
+    "id": "vocabulary-25"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「沉思」最接近的意思是：",
+    "options": [
+      "深入地思考",
+      "大声说话",
+      "来回走动",
+      "迅速做完",
+      "想事情"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "沉思指深入、反复地思考。",
+    "id": "vocabulary-26"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「坚固」最接近的意思是：",
+    "options": [
+      "结实而牢固",
+      "颜色很鲜艳",
+      "位置很偏远",
+      "价格很昂贵",
+      "结实"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "坚固指结构牢靠、不易损坏。",
+    "id": "vocabulary-27"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「陌生」最接近的意思是：",
+    "options": [
+      "不熟悉、不认识",
+      "十分遥远",
+      "非常安静",
+      "格外珍贵",
+      "没见过"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "陌生指不熟悉、没见过或不了解。",
+    "id": "vocabulary-28"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「敏捷」最接近的意思是：",
+    "options": [
+      "动作快而灵活",
+      "身材很高大",
+      "性情很温和",
+      "思路很迟缓",
+      "动作快"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "敏捷形容动作轻快、反应灵敏。",
+    "id": "vocabulary-29"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「宁静」最接近的意思是：",
+    "options": [
+      "安静而平和",
+      "喧闹而拥挤",
+      "紧张而急促",
+      "整洁而有序",
+      "安静"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "宁静指安静、不喧闹。",
+    "id": "vocabulary-30"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「陡峭」最接近的意思是：",
+    "options": [
+      "坡度很大",
+      "路面很平坦",
+      "树木很茂密",
+      "道路很长",
+      "坡很斜"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "陡峭形容坡度大、落差急。",
+    "id": "vocabulary-31"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「准确」最接近的意思是：",
+    "options": [
+      "精确而没有偏差",
+      "速度很快",
+      "数量很多",
+      "声音很响亮",
+      "没有偏差"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "准确指与实际完全相符，没有误差。",
+    "id": "vocabulary-32"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「疲倦」最接近的意思是：",
+    "options": [
+      "因劳累而感到疲乏",
+      "因兴奋而睡不着",
+      "因困惑而说不出话",
+      "因寒冷而发抖",
+      "感到累"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "疲倦指因过度劳累而疲乏无力。",
+    "id": "vocabulary-33"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「清晰」最接近的意思是：",
+    "options": [
+      "清楚而明白",
+      "颜色很暗淡",
+      "声音很嘈杂",
+      "价格很昂贵",
+      "清楚"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "清晰指清楚、不含糊。",
+    "id": "vocabulary-34"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「谨慎」最接近的意思是：",
+    "options": [
+      "做事小心、考虑周全",
+      "行动迅速果断",
+      "态度冷漠疏远",
+      "喜欢高谈阔论",
+      "做事小心"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "谨慎指小心谨慎、避免冒进。",
+    "id": "vocabulary-35"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「微弱」最接近的意思是：",
+    "options": [
+      "轻微而弱",
+      "强烈而持久",
+      "尖锐刺耳",
+      "沉重缓慢",
+      "很轻"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "微弱指强度小、不明显。",
+    "id": "vocabulary-36"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「诚恳」最接近的意思是：",
+    "options": [
+      "真诚而实在",
+      "善于言辞",
+      "情绪激动",
+      "心不在焉",
+      "态度认真"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "诚恳指真诚恳切、待人实在。",
+    "id": "vocabulary-37"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「匆忙」最接近的意思是：",
+    "options": [
+      "急促而不从容",
+      "慢慢地行走",
+      "仔细地思量",
+      "耐心地等待",
+      "动作很快"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "匆忙形容动作急促、时间紧张。",
+    "id": "vocabulary-38"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「繁荣」最接近的意思是：",
+    "options": [
+      "兴旺发达",
+      "日渐衰败",
+      "勉强维持",
+      "刚起步的状态",
+      "发展得不错"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "繁荣指经济或事业兴旺发达。",
+    "id": "vocabulary-39"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「犹豫」最接近的意思是：",
+    "options": [
+      "难以决断",
+      "毫不犹豫",
+      "反复无常",
+      "急于行动",
+      "拿不定主意"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "犹豫指拿不定主意、迟迟不决。",
+    "id": "vocabulary-40"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「狡猾」最接近的意思是：",
+    "options": [
+      "诡诈而不好对付",
+      "坦诚而直率",
+      "迟钝而反应慢",
+      "温和而克制",
+      "不好对付"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "狡猾指为人机巧、诡诈不易对付。",
+    "id": "vocabulary-41"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「朴素」最接近的意思是：",
+    "options": [
+      "简洁而不华丽",
+      "华美而昂贵",
+      "张扬而显眼",
+      "古老而陈旧",
+      "不讲究外表"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "朴素指质朴、不加装饰。",
+    "id": "vocabulary-42"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「珍贵」最接近的意思是：",
+    "options": [
+      "极为宝贵",
+      "毫无价值",
+      "数量很多",
+      "容易得到",
+      "很有价值"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "珍贵指非常宝贵、稀有难得。",
+    "id": "vocabulary-43"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「勇敢」最接近的意思是：",
+    "options": [
+      "敢于面对困难",
+      "遇事退缩",
+      "考虑太多而不行动",
+      "脾气暴躁",
+      "不害怕"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "勇敢指有胆量、不怕困难。",
+    "id": "vocabulary-44"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「冷静」最接近的意思是：",
+    "options": [
+      "沉着而不激动",
+      "情绪激烈",
+      "心神不定",
+      "反应迟缓",
+      "不动声色"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "冷静指沉着镇定、不易激动。",
+    "id": "vocabulary-45"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「潮湿」最接近的意思是：",
+    "options": [
+      "含水分而发黏",
+      "非常干燥",
+      "非常寒冷",
+      "空气不流通",
+      "有点湿"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "潮湿指含水分多、不干燥。",
+    "id": "vocabulary-46"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「广阔」最接近的意思是：",
+    "options": [
+      "面积大而开阔",
+      "狭窄而局促",
+      "杂乱而拥挤",
+      "深远难以测量",
+      "范围不小"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "广阔指面积大、空间开阔。",
+    "id": "vocabulary-47"
+  },
+  {
+    "subtest": "vocabulary",
+    "prompt": "「疑惑」最接近的意思是：",
+    "options": [
+      "心里不十分确定",
+      "完全清楚明白",
+      "坚决而肯定",
+      "疲倦而困倦",
+      "不太确定"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    "explanation": "疑惑指心里疑惑、不十分相信或明白。",
+    "id": "vocabulary-48"
+  },
+  {
+    "subtest": "information",
+    "prompt": "通常按春、夏、秋、冬划分，一年有几个季节？",
+    "options": [
+      "两个",
+      "三个",
+      "四个",
+      "六个"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "通常按春、夏、秋、冬划分四季。",
+    "id": "information-25"
+  },
+  {
+    "subtest": "information",
+    "prompt": "水的化学式是：",
+    "options": [
+      "CO2",
+      "H2O",
+      "O2",
+      "NaCl"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "水由两个氢原子与一个氧原子组成，化学式为 H2O。",
+    "id": "information-26"
+  },
+  {
+    "subtest": "information",
+    "prompt": "一个星期有几天？",
+    "options": [
+      "五天",
+      "六天",
+      "七天",
+      "十天"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "一个星期七天。",
+    "id": "information-27"
+  },
+  {
+    "subtest": "information",
+    "prompt": "一天有多少个小时？",
+    "options": [
+      "十二个",
+      "二十四个",
+      "三十六个",
+      "六十个"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "一天二十四小时。",
+    "id": "information-28"
+  },
+  {
+    "subtest": "information",
+    "prompt": "一年有几个月？",
+    "options": [
+      "十个月",
+      "十一个月",
+      "十二个月",
+      "六个月"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "一年十二个月。",
+    "id": "information-29"
+  },
+  {
+    "subtest": "information",
+    "prompt": "三角形有几个角？",
+    "options": [
+      "两个",
+      "三个",
+      "四个",
+      "五个"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "三角形有三个角与三条边。",
+    "id": "information-30"
+  },
+  {
+    "subtest": "information",
+    "prompt": "人的心脏有几个？",
+    "options": [
+      "一个",
+      "两个",
+      "三个",
+      "四个"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "人只有一个心脏。",
+    "id": "information-31"
+  },
+  {
+    "subtest": "information",
+    "prompt": "血液中负责运输氧气的是哪一种细胞？",
+    "options": [
+      "白细胞",
+      "红细胞",
+      "血小板",
+      "淋巴细胞"
+    ],
+    "optionScores": [
+      0,
+      2,
+      0,
+      0
+    ],
+    "explanation": "红细胞含血红蛋白，负责运输氧气。",
+    "id": "information-32"
+  },
+  {
+    "subtest": "information",
+    "prompt": "世界最高峰是：",
+    "options": [
+      "珠穆朗玛峰",
+      "乞力马扎罗山",
+      "阿尔卑斯山",
+      "安第斯山"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "珠穆朗玛峰海拔约 8848 米，是世界最高峰。",
+    "id": "information-33"
+  },
+  {
+    "subtest": "information",
+    "prompt": "光在真空中的传播速度大约是每秒：",
+    "options": [
+      "三十万公里",
+      "三百公里",
+      "三万公里",
+      "三百万公里"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "光速约为每秒 30 万公里，这是宇宙中最快的速度。",
+    "id": "information-34"
+  },
+  {
+    "subtest": "information",
+    "prompt": "地球有几颗天然卫星？",
+    "options": [
+      "一颗",
+      "两颗",
+      "三颗",
+      "无数颗"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "地球只有一颗天然卫星，即月球。",
+    "id": "information-35"
+  },
+  {
+    "subtest": "information",
+    "prompt": "一年通常分为几个季度？",
+    "options": [
+      "两个",
+      "三个",
+      "四个",
+      "十二个"
+    ],
+    "optionScores": [
+      0,
+      0,
+      2,
+      0
+    ],
+    "explanation": "一年通常分四个季度，每季三个月。",
+    "id": "information-36"
+  },
+  {
+    "subtest": "information",
+    "prompt": "一个世纪有多少年？",
+    "options": [
+      "十年",
+      "五十年",
+      "一百年",
+      "一千年"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "一个世纪是一百年。",
+    "id": "information-37"
+  },
+  {
+    "subtest": "information",
+    "prompt": "人的血液中负责止血的是什么？",
+    "options": [
+      "白细胞",
+      "红细胞",
+      "血小板",
+      "血浆"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "血小板参与凝血，负责止血。",
+    "id": "information-38"
+  },
+  {
+    "subtest": "information",
+    "prompt": "人体面积最大的器官是：",
+    "options": [
+      "肝脏",
+      "皮肤",
+      "肺",
+      "大脑"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "皮肤是人体面积最大的器官。",
+    "id": "information-39"
+  },
+  {
+    "subtest": "information",
+    "prompt": "太阳系中离太阳最近的行星是：",
+    "options": [
+      "金星",
+      "水星",
+      "地球",
+      "火星"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "水星是离太阳最近的行星。",
+    "id": "information-40"
+  },
+  {
+    "subtest": "information",
+    "prompt": "光年是什么的单位？",
+    "options": [
+      "时间",
+      "距离",
+      "亮度",
+      "质量"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "光年是长度单位，表示光一年走过的距离。",
+    "id": "information-41"
+  },
+  {
+    "subtest": "information",
+    "prompt": "水在常温下有哪几种状态？",
+    "options": [
+      "固态、液态、气态",
+      "只有液态",
+      "只有气态",
+      "固态、气态"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "水有固态（冰）、液态、气态（水蒸气）三种状态。",
+    "id": "information-42"
+  },
+  {
+    "subtest": "information",
+    "prompt": "人的主要呼吸器官是：",
+    "options": [
+      "肺",
+      "心脏",
+      "肝",
+      "胃"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "肺是人体进行气体交换的器官。",
+    "id": "information-43"
+  },
+  {
+    "subtest": "information",
+    "prompt": "一年中通常有几天？",
+    "options": [
+      "360 天",
+      "365 天（闰年 366）",
+      "350 天",
+      "370 天"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "平年 365 天，闰年 366 天。",
+    "id": "information-44"
+  },
+  {
+    "subtest": "information",
+    "prompt": "最小的质数是：",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "5"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "2 是最小的质数。",
+    "id": "information-45"
+  },
+  {
+    "subtest": "information",
+    "prompt": "圆周率约等于：",
+    "options": [
+      "3.14",
+      "2.72",
+      "1.41",
+      "1.73"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "圆周率约等于 3.14159。",
+    "id": "information-46"
+  },
+  {
+    "subtest": "information",
+    "prompt": "地球围绕什么天体公转？",
+    "options": [
+      "月球",
+      "太阳",
+      "火星",
+      "北极星"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "地球绕太阳公转一圈约 365 天。",
+    "id": "information-47"
+  },
+  {
+    "subtest": "information",
+    "prompt": "一年中白昼最短的节气（北半球）是：",
+    "options": [
+      "夏至",
+      "冬至",
+      "春分",
+      "秋分"
+    ],
+    "optionScores": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "explanation": "冬至时北半球白昼最短、黑夜最长。",
+    "id": "information-48"
   }
 ]

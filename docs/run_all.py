@@ -26,30 +26,45 @@ STEPS = [
 # 两个独立实现给出的建议斜率应当一致：自检脚本与标定脚本各写了一套流程，
 # 一旦漂移，说明其中之一改坏了。这里用合成被试做交叉核对。
 CONSISTENCY_SUBJECTS = 30
-CONSISTENCY_TOLERANCE = 0.08
+CONSISTENCY_TOLERANCE = 0.02
+
+
+def _run_json(script, *args):
+    """跑一个脚本并解析它的 JSON 输出，失败时返回 None。"""
+    result = subprocess.run(
+        [sys.executable, os.path.join(HERE, script), *args],
+        cwd=HERE, capture_output=True, text=True)
+    if result.returncode != 0:
+        return None
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return None
 
 
 def cross_check():
-    """核对标定脚本与自检脚本的建议斜率是否一致。"""
-    result = subprocess.run(
-        [sys.executable, os.path.join(HERE, 'calibrate_slopes.py'),
-         '--synthetic', str(CONSISTENCY_SUBJECTS), '--json'],
-        cwd=HERE, capture_output=True, text=True)
-    if result.returncode != 0:
-        return False, f'标定脚本运行失败：{(result.stderr or "").strip()[:200]}'
-    try:
-        calibration = json.loads(result.stdout)
-    except json.JSONDecodeError:
-        return False, '标定脚本的 JSON 输出无法解析'
-    # 自检脚本在同一批合成被试上给出的全量表分斜率。
-    reference = 0.506
+    """核对标定脚本与自检脚本的建议斜率是否一致。
+
+    两个脚本必须都真的跑起来再比。拿一个写死的常数当「自检脚本的值」，
+    只会发现标定脚本的改动，发现不了自检脚本自己的改动——那正是最该被发现的情况。
+    两者用同一随机种子生成同一批合成被试，结果应当一致。
+    """
+    calibration = _run_json('calibrate_slopes.py', '--synthetic',
+                             str(CONSISTENCY_SUBJECTS), '--json')
+    if calibration is None:
+        return False, '标定脚本运行失败或输出无法解析'
+    self_check = _run_json('ALGORITHM_SELF_CHECK.py',
+                            str(CONSISTENCY_SUBJECTS), '--json')
+    if self_check is None:
+        return False, '自检脚本运行失败或输出无法解析'
     suggested = calibration['suggestedFullScaleSlope']
+    reference = self_check['suggestedFullScaleSlope']
     delta = abs(suggested - reference) / reference
     if delta > CONSISTENCY_TOLERANCE:
-        return False, (f'标定脚本建议全量表分斜率 {suggested:.3f}，'
-                       f'与自检脚本的 {reference:.3f} 相差 {delta * 100:.1f}%，超出容差')
-    return True, (f'标定脚本建议全量表分斜率 {suggested:.3f}，'
-                  f'与自检脚本的 {reference:.3f} 一致（相差 {delta * 100:.1f}%）')
+        return False, (f'标定脚本建议全量表分斜率 {suggested:.4f}，'
+                       f'自检脚本为 {reference:.4f}，相差 {delta * 100:.2f}%，超出容差')
+    return True, (f'两个独立实现在同一批合成被试上一致：'
+                  f'全量表分斜率 {suggested:.4f}（相差 {delta * 100:.2f}%）')
 
 
 def main():

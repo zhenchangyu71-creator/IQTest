@@ -91,7 +91,7 @@ enum IQScale {
         return 0.5 * (1.0 + sign * (1.0 - polynomial * exp(-x * x)))
     }
 
-    /// 标准正态分位数，Acklam 有理逼近并做一步 Halley 修正，误差约 1e-15。
+    /// 标准正态分位数，Acklam 有理逼近并做一步 Halley 修正，误差约 1e-13。
     static func inverseNormalCDF(_ p: Double) -> Double {
         guard p > 0, p < 1 else {
             if p <= 0 { return -.infinity }
@@ -122,7 +122,9 @@ enum IQScale {
                 / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1)
         }
         // 一步 Halley 修正，把逼近误差压到双精度极限。
-        let error = normalCDF(z) - p
+        // 残差必须用精确的 erf 算：若改用上面那个近似 CDF，尾部的密度极小，
+        // 残差里的误差会被除以密度放大两个数量级（z 误差可达 2e-4）。
+        let error = 0.5 * (1.0 + erf(z * 0.7071067811865476)) - p
         let density = exp(-0.5 * z * z) / sqrt(2 * Double.pi)
         guard density > 0 else { return z }
         let u = error / density
@@ -141,22 +143,27 @@ enum IQScale {
         100 * normalCDF((scaled - scaledMean) / scaledSD)
     }
 
-    /// 百分位对应的合成分。
+    /// 百分位对应的合成分。百分位先夹到 0…100；
+    /// 端点 0 与 100 对应 ±∞——正态分布的尾巴无限延伸，这是定义使然，不是缺陷。
     static func composite(fromPercentile percentile: Double) -> Double {
         compositeMean + compositeSD * inverseNormalCDF(min(max(percentile, 0), 100) / 100)
     }
 
     /// 尺度分降维为标准九分（stanine），切点为 ±0.25 / ±0.75 / ±1.25 / ±1.75。
+    ///
+    /// 切点定义在标准正态的 z 值上，因此先把尺度分换算成 z 再分档，
+    /// 不直接手写整数边界——手写边界容易整体错位一档，把低分段显示得偏高。
     static func standardNine(fromScaled scaled: Int) -> Int {
-        switch scaled {
-        case ...3: return 1
-        case 4: return 2
-        case 5...6: return 3
-        case 7: return 4
-        case 8...10: return 5
-        case 11...12: return 6
-        case 13: return 7
-        case 14...15: return 8
+        let z = (Double(scaled) - scaledMean) / scaledSD
+        switch z {
+        case ..<(-1.75): return 1
+        case ..<(-1.25): return 2
+        case ..<(-0.75): return 3
+        case ..<(-0.25): return 4
+        case ..<0.25: return 5
+        case ..<0.75: return 6
+        case ..<1.25: return 7
+        case ..<1.75: return 8
         default: return 9
         }
     }

@@ -108,6 +108,8 @@ def measure(subjects):
         # 可靠度用「与真实能力的相关」衡量，不是估计值的离散度：
         # 模型误设时离散度会被放大，用离散度衡量会得出「误设反而更准」的反直觉结论。
         'reliability': core.correlation(thetas, truths) if truths else None,
+        # 合成被试有真值时，θ 的实现标准差未必正好是 1，反推斜率前要按它归一化。
+        'trueThetaSD': core.mean_sd(truths)[1] if truths else None,
         'scaledSumSD': core.mean_sd(scaled_sums)[1],
         'compositeSD': core.mean_sd(fsiqs)[1],
         'domainScaledSD': {d: core.mean_sd(v)[1] for d, v in domain_scaled.items() if v},
@@ -139,26 +141,38 @@ def main():
 
     measured = measure(subjects)
     theta_sd = measured['thetaSD']
-    # 能力估计被信息量不足压窄时，需要去衰减才能还原到量表定义的离散度。
-    # 先验 N(0,1) 表示真实人群的能力离散度为 1 个 θ 单位。
-    # 去衰减用的是可靠度（与真实能力的相关）经先验尺度折算后的收缩量：
-    # 估计值的离散度被压窄，说明能力位置被压缩，需要按可靠度还原到先验尺度。
     reliability = measured.get('reliability')
-    attenuation = 1.0 / theta_sd if theta_sd > 0 else float('inf')
     scaled_sum_sd = measured['scaledSumSD']
     composite_sd = measured['compositeSD']
 
-    suggested_full_scale = TARGET_SD / (scaled_sum_sd * attenuation)
+    # 标定的目标是让合成分的标准差等于 15，也就是「刻度」对齐韦氏的量表定义。
+    # 反推方式是：目标 SD ÷ 尺度分之和在真实能力分布下的离散度。
+    #
+    # 合成被试有真值：θ 的实现标准差未必正好是 1（有限样本的抽样波动），
+    # 先按它归一化——这一支与 ALGORITHM_SELF_CHECK.py 是同一个口径，
+    # 两者的结果可以直接对照。
+    # 真实作答没有真值，只能采用先验假设「真实人群的能力标准差为 1」：
+    # 这个假设未经任何常模验证，脚本会把它写在输出里。
+    true_theta_sd = measured.get('trueThetaSD')
+    if true_theta_sd:
+        normalization = true_theta_sd
+        basis = f'合成被试的 θ 实现标准差 {normalization:.3f}'
+    else:
+        normalization = 1.0
+        basis = '先验假设真实人群的能力标准差为 1.000（未经常模验证）'
+
+    suggested_full_scale = TARGET_SD * normalization / scaled_sum_sd
     suggested_index = {}
     for domain, sd in measured['domainScaledSD'].items():
-        suggested_index[domain] = TARGET_SD / (sd * attenuation)
+        suggested_index[domain] = TARGET_SD * normalization / sd
     mean_index = sum(suggested_index.values()) / len(suggested_index)
 
     if as_json:
         print(json.dumps({
             'source': source,
             'thetaSD': round(theta_sd, 4),
-            'attenuation': round(attenuation, 4),
+            'normalization': round(normalization, 4),
+            'normalizationBasis': basis,
             'scaledSumSD': round(scaled_sum_sd, 3),
             'compositeSD': round(composite_sd, 3),
             'targetCompositeSD': TARGET_SD,
@@ -172,9 +186,9 @@ def main():
 
     print(f'标定来源：{source}\n')
     print('实测结果')
-    print(f'   能力参数的标准差            {theta_sd:.3f}（先验假设真实人群为 1.000）')
-    print(f'   去衰减因子 1/r              {attenuation:.3f}')
-    print(f'   尺度分之和的标准差          {scaled_sum_sd:.2f}（去衰减后 {scaled_sum_sd * attenuation:.2f}）')
+    print(f'   能力参数的标准差            {theta_sd:.3f}（收缩压窄后的估计值离散度）')
+    print(f'   归一化依据                  {basis}')
+    print(f'   尺度分之和的标准差          {scaled_sum_sd:.2f}（归一化后 {scaled_sum_sd / normalization:.2f}）')
     print(f'   当前合成分的标准差          {composite_sd:.2f}（目标 {TARGET_SD:.0f}）')
     print()
     print('建议的换算斜率')

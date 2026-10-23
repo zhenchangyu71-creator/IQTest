@@ -48,7 +48,7 @@ struct WechslerIQModel: Codable {
               Set(items.map(\.itemID)).count == items.count,
               Set(bank.map(\.id)).count == bank.count,
               // 模型必须覆盖本轮要做的每一道题：缺参数的那道题会被静默排除出估计。
-              // 模型可以比本轮题量大（题库全量 240 项，本轮只做其中一部分）。
+              // 模型可以比本轮题量大（题库全量 480 项，本轮只做其中一部分）。
               Set(bank.map(\.id)).isSubset(of: Set(items.map(\.itemID))) else {
             throw WechslerIQEstimator.EstimationError.invalidModel("模型版本或题号与本题库不匹配")
         }
@@ -147,7 +147,15 @@ enum WechslerIQEstimator {
             let slope = sigmoid(parameter.discrimination * (theta - threshold))
             let probability = guessing + (1 - guessing) * slope
             guard probability > 0, probability < 1 else { return 0 }
-            // dp/dtheta = a(p - c)(1 - p)
+            // 导数写成 a(p - c)(1 - p)。3PL 的严格导数是 a(p - c)(1 - p)/(1 - c)，
+            // 这里少除了 (1 - c)：信息被低估、标准误被高估，区间因此偏宽。
+            //
+            // 这是**有意保留的保守近似**，不是笔误：按严格公式，尺度分标准误会小约四分之一，
+            // 指数分的 95% 区间半宽中位从 9.1 分降到 6.8 分，而「领域之间存在显著差异」
+            // 的判定会从 19 对涨到 34 对——合成被试的一维能力本不该有那么多领域差异，
+            // 多出来的多半是假阳性。区间偏宽不会让人高估自己的测量精度，差异多报会。
+            //
+            // 待题目参数用真实样本拟合后，再按标准公式重标定区间与显著性。
             let derivative = parameter.discrimination * (probability - guessing) * (1 - probability)
             return derivative * derivative / (probability * (1 - probability))
         }

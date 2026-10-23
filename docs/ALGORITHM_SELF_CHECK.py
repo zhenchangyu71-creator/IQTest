@@ -76,6 +76,10 @@ def fisher(item, param, theta):
         if not (0 < p < 1):
             return 0.0
         d = a * (p - c) * (1 - p)
+        # 与 Swift 端同一套保守近似：3PL 的严格导数是 a(p-c)(1-p)/(1-c)，
+        # 这里少除了 (1-c)，信息被低估、标准误被高估、区间偏宽。
+        # 换成严格公式会让「领域差异显著」的判定明显变多，故暂不采用，
+        # 详见 docs/WECHSLER_STYLE_SCORING.md 的「标准误与区间」。
         return d * d / (p * (1 - p))
 
     if len(param['thresholds']) == 2:
@@ -126,9 +130,24 @@ def scaled_parameter(item_id, scale, difficulty_offset=0.0):
             'thresholds': [t + difficulty_offset for t in parameter['thresholds']]}
 
 
-def simulate(theta, rng, discrimination_scale=1.0, difficulty_offset=0.0):
-    """按题目参数为能力 theta 的被试生成一次作答。"""
+def simulate(theta, rng, discrimination_scale=1.0, difficulty_offset=0.0, per_subtest=0):
+    """按题目参数为能力 theta 的被试生成一次作答。
+
+    per_subtest > 0 时，每个分测验只随机取该数量的题作答，模拟真实一轮练习
+    （每分测验 12 题）的施测情形；0 表示对全部题目作答——那是上界情形，
+    用来检验斜率与参数是否自洽，不是使用者实际会遇到的输出。
+    """
     responses = {}
+    if per_subtest > 0:
+        for sub in SUBTESTS:
+            pool = [it for it in BANK if it['subtest'] == sub]
+            for item in rng.sample(pool, per_subtest):
+                p = prob(item, scaled_parameter(item['id'], discrimination_scale, difficulty_offset), theta)
+                options = list(p.keys())
+                weights = [p[o] for o in options]
+                responses[item['id']] = rng.choices(options, weights=weights)[0]
+        return responses
+    # 默认路径保持原有的随机消耗顺序，既有基线才继续有效。
     for item in BANK:
         p = prob(item, scaled_parameter(item['id'], discrimination_scale, difficulty_offset), theta)
         options = list(p.keys())
@@ -177,6 +196,20 @@ def mean_sd(values):
     return m, math.sqrt(var)
 
 
+def theta_grid(count=21, half=2.5):
+    """固定的能力网格：等距、关于 0 对称，缩放到实现标准差正好为 1。
+
+    用固定网格代替随机抽样，去掉「抽到哪些 θ」带来的波动：
+    60 个随机 θ 的实现标准差在 0.88–0.93 之间摆动，会让同一个量给出
+    相差 5% 以上的离散度，而斜率改动带来的变化往往只有 2–4%。
+    网格把能力这一维的噪声固定下来，剩下的只是题目抽样的抖动。
+    """
+    step = 2 * half / (count - 1)
+    raw = [-half + step * i for i in range(count)]
+    _, sd = mean_sd(raw)
+    return [value / sd for value in raw]
+
+
 def correlation(xs, ys):
     """皮尔逊相关系数。"""
     n = len(xs)
@@ -191,15 +224,50 @@ def correlation(xs, ys):
 
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith('-')]
-    count = int(args[0]) if args else 120
     as_json = '--json' in sys.argv
+    per_subtest = 0
+    grid_repeats = 0
+    positional = []
+    skip_next = False
+    for index, arg in enumerate(sys.argv[1:]):
+        if skip_next:
+            skip_next = False
+            continue
+        if arg == '--per-subtest' and index + 2 <= len(sys.argv):
+            per_subtest = int(sys.argv[index + 2])
+            skip_next = True
+            continue
+        if arg == '--grid' and index + 2 <= len(sys.argv):
+            grid_repeats = int(sys.argv[index + 2])
+            skip_next = True
+            continue
+        if arg.startswith('-'):
+            continue
+        positional.append(arg)
+    count = int(positional[0]) if positional else 120
     rng = random.Random(20261022)
 
-    results = []
-    for _ in range(count):
-        theta = rng.gauss(0.0, 1.0)
-        results.append((theta, profile(simulate(theta, rng))))
+    if grid_repeats > 0:
+        # 固定能力网格，每个能力点重复若干次后取平均：
+        # 离散度只反映能力点之间的差异，不掺入同一能力下的抖动。
+        results = []
+        for theta in theta_grid():
+            runs = [profile(simulate(theta, rng, per_subtest=per_subtest))
+                    for _ in range(grid_repeats)]
+            results.append((theta, {
+                'theta_center': sum(r['theta_center'] for r in runs) / len(runs),
+                'scaled': {sub: sum(r['scaled'][sub] for r in runs) / len(runs)
+                           for sub in runs[0]['scaled']},
+                'fsiq': sum(r['fsiq'] for r in runs) / len(runs),
+                'indices': {dom: sum(r['indices'][dom] for r in runs) / len(runs)
+                            for dom in runs[0]['indices']},
+                'sum_scaled': sum(r['sum_scaled'] for r in runs) / len(runs),
+            }))
+    else:
+        results = []
+        for _ in range(count):
+            theta = rng.gauss(0.0, 1.0)
+            results.append((theta, profile(simulate(theta, rng, per_subtest=per_subtest))))
 
     true_thetas = [t for t, _ in results]
     centers = [p['theta_center'] for _, p in results]
@@ -227,67 +295,97 @@ def main():
     for dom, values in domain_sums.items():
         _, sd = mean_sd(values)
         domain_sd[dom] = sd
-        domain_slope[dom] = 15 / (sd * attenuation)
+        # 反推斜率前先把离散度归一化到「真实能力标准差为 1」的情形：
+        # 尺度分之和的离散度正比于能力估计的离散度，样本里的能力离散度
+        # 小于构造值时要按比例还原，否则斜率会被算小。
+        domain_slope[dom] = 15 * sd_true / sd if sd > 0 else float('inf')
+    suggested_full_scale_slope = 15 * sd_true / sd_sum if sd_sum > 0 else float('inf')
 
     if as_json:
         print(json.dumps({
             'subjects': count,
-            'thetaTrueSD': sd_true,
+            'gridRepeats': grid_repeats,
+            'perSubtest': per_subtest,
+            'setting': 'admin' if per_subtest > 0 else 'all-items',
+            'thetaTrueSD': round(sd_true, 4),
+            'compositeSDRaw': round(sd_fsiq, 3),
+            'compositeSD': round(sd_fsiq / sd_true, 3) if sd_true > 0 else None,
             'estimatedCenterMean': mean_center,
             'estimatedCenterSD': sd_center,
             'reliability': reliability,
             'attenuation': attenuation,
             'scaledScoreSD': 3 * sd_center,
-            'scaledSumSD': sd_sum,
-            'compositeMean': mean_sd(fsiqs)[0],
-            'compositeSD': sd_fsiq,
+            'scaledSumSD': round(sd_sum, 3),
+            'scaledSumSDNormalized': round(sd_sum / sd_true, 3) if sd_true > 0 else None,
+            'compositeMean': round(mean_sd(fsiqs)[0], 3),
             'targetCompositeSD': 15,
-            'inCalibration': 13 <= sd_fsiq <= 17,
+            'inCalibration': (13 <= sd_fsiq / sd_true <= 17) if sd_true > 0 else None,
             'domainScaledSumSD': domain_sd,
-            'suggestedFullScaleSlope': 15 / (sd_sum * attenuation),
-            'suggestedIndexSlope': sum(domain_slope.values()) / len(domain_slope),
-            'suggestedIndexSlopeByDomain': domain_slope,
+            'domainScaledSumSDNormalized': {dom: round(value / sd_true, 3)
+                                            for dom, value in domain_sd.items()} if sd_true > 0 else None,
+            'suggestedFullScaleSlope': round(suggested_full_scale_slope, 4),
+            'suggestedIndexSlope': round(sum(domain_slope.values()) / len(domain_slope), 4),
+            'suggestedIndexSlopeByDomain': {dom: round(value, 4) for dom, value in domain_slope.items()},
             'currentFullScaleSlope': FULL_SCALE_SLOPE,
             'currentIndexSlope': INDEX_SLOPE,
             'note': '合成数据来自模型自身，只验证算法与标定的自洽性，不构成对真实人群的效度证据。',
         }, ensure_ascii=False, indent=2))
         return
 
-    print(f'合成被试数：{count}（能力 θ ~ N(0,1)）\n')
+    if grid_repeats > 0:
+        print(f'能力抽样：固定网格 21 点，每点 {grid_repeats} 次取平均'
+              f'（网格的实现标准差为 1，无需再做归一化）')
+    else:
+        print(f'合成被试数：{count}（能力 θ ~ N(0,1)）')
+    if per_subtest > 0:
+        print(f'施测情形：每分测验 {per_subtest} 题，共 {per_subtest * len(SUBTESTS)} 题——真实一轮练习的情形')
+        print('           下面的离散度是使用者实际会遇到的量。')
+    else:
+        print('施测情形：全部题目作答——这是上界，用来检验斜率与参数是否自洽，')
+        print('           不是使用者实际会遇到的量（那要用 --per-subtest 12 复算）。')
+    print()
 
     print('1) 能力参数还原')
     print(f'   真实 θ 的标准差            {sd_true:.3f}（按构造应为 1.000）')
     print(f'   估计中心的均值              {mean_center:+.3f}')
     print(f'   估计中心的标准差            {sd_center:.3f}（收缩会压窄，估计值应略小于 1）')
-    corr = (sum((t - sum(true_thetas) / count) * (c - mean_center)
-                 for t, c in zip(true_thetas, centers))
-            / count) / (sd_true * sd_center)
-    print(f'   估计中心与真实 θ 的相关      {corr:.4f}（这才是可靠度）\n')
+    print(f'   估计中心与真实 θ 的相关      {correlation(centers, true_thetas):.4f}（这才是可靠度）\n')
+
+    # 有限样本里真实 θ 的实现标准差不会正好等于 1（抽样波动，120 个样本约 0.90），
+    # 直接用样本标准差会把这份波动算进离散度。下面统一按 θ 的实现标准差归一化，
+    # 得到的才是「真实人群能力标准差为 1 时」输出的离散度。
+    norm = (lambda value: value / sd_true) if sd_true > 0 else (lambda value: float('nan'))
 
     print('2) 尺度分之和的离散度（斜率 0.72 的推导前提）')
-    print(f'   Σs 的标准差                  {sd_sum:.2f}（韦氏手册对应约 20.8）')
-    print(f'   若按 0.72 折算，合成分标准差  {FULL_SCALE_SLOPE * sd_sum:.2f}（目标 15）\n')
+    if grid_repeats > 0:
+        print(f'   真实 θ 的标准差                {sd_true:.3f}（固定网格，构造值 1.000）')
+    else:
+        print(f'   真实 θ 的样本标准差            {sd_true:.3f}（构造值 1.000，有限样本的抽样波动）')
+    print(f'   Σs 的标准差（原始）             {sd_sum:.2f}')
+    print(f'   Σs 的标准差（归一化）           {norm(sd_sum):.2f}（韦氏手册对应约 20.8）')
+    print(f'   若按 0.72 折算，合成分标准差     {FULL_SCALE_SLOPE * norm(sd_sum):.2f}（目标 15）\n')
 
     print('3) 合成分的分布')
     mean_fsiq, _ = mean_sd(fsiqs)
-    print(f'   全量表分均值                 {mean_fsiq:.2f}（目标 100）')
-    print(f'   全量表分标准差               {sd_fsiq:.2f}（目标 15）')
-    verdict = '一致' if 13 <= sd_fsiq <= 17 else '偏离目标，需重新标定斜率'
+    print(f'   全量表分均值                   {mean_fsiq:.2f}（目标 100）')
+    print(f'   全量表分标准差（原始）           {sd_fsiq:.2f}')
+    print(f'   全量表分标准差（归一化）         {norm(sd_fsiq):.2f}（目标 15）')
+    verdict = '一致' if 13 <= norm(sd_fsiq) <= 17 else '偏离目标，需重新标定斜率'
     print(f'   结论：{verdict}\n')
 
     print('4) 各领域指数分的离散度')
     for dom in ['verbal', 'perceptual', 'memory', 'speed']:
-        print(f'   {dom:11s} Σs 标准差 {domain_sd[dom]:6.2f}   折算出的指数分标准差 {INDEX_SLOPE * domain_sd[dom]:6.2f}')
+        print(f'   {dom:11s} Σs 标准差 {norm(domain_sd[dom]):6.2f}   折算出的指数分标准差 {INDEX_SLOPE * norm(domain_sd[dom]):6.2f}')
 
     print('\n5) 若改用本题库自己的数据标定（尚未实施的方案）')
     print(f'   能力估计的可靠性相关 r       {reliability:.3f}')
-    print(f'   当前尺度分的实际标准差        {3 * sd_center:.2f}（量表定义应为 3.00）')
-    print(f'   去衰减因子 1/r                {attenuation:.3f}')
-    print(f'   去衰减后 Σs（十个分测验）标准差 {sd_sum * attenuation:.2f}')
-    print(f'   → 建议的全量表分斜率         {15 / (sd_sum * attenuation):.3f}（当前借用 0.72）')
+    print(f'   能力估计的离散度（相对真实值）  {attenuation:.3f}（收缩把位置向中心压）')
+    print(f'   归一化后尺度分的实际标准差      {3 * norm(sd_center):.2f}（量表定义应为 3.00）')
+    print(f'   归一化后 Σs（十个分测验）标准差 {norm(sd_sum):.2f}')
+    print(f'   → 建议的全量表分斜率          {suggested_full_scale_slope:.3f}（当前借用 0.72）')
     for dom in ['verbal', 'perceptual', 'memory', 'speed']:
         print(f'   → {dom:11s} 指数分斜率 {domain_slope[dom]:.3f}（当前借用 2.75）')
-    print(f'   → 指数分斜率建议取各域平均    {sum(domain_slope.values()) / len(domain_slope):.3f}')
+    print(f'   → 指数分斜率建议取各域平均     {sum(domain_slope.values()) / len(domain_slope):.3f}')
     print('\n   注意：以上斜率来自合成被试，模型参数若有误，去衰减因子会被高估，')
     print('         导致过度放大。正式标定必须用真实样本重做。')
 

@@ -20,7 +20,8 @@ struct WechslerProfile: Codable {
         let standardNine: Int
         let percentile: Double
         let band: IQScale.ScaledBand
-        /// 该分测验尺度分的估计标准误（尺度分单位）。12 题的小样本使这一项通常有 1.5–3 分。
+        /// 该分测验尺度分的估计标准误（尺度分单位）。12 题的小样本使这一项通常有 3–7 分，
+        /// 能力很高、天花板附近时更宽。
         let standardError: Double?
         /// 95% 估计区间的上下界，已限制在 1...19。
         let confidenceLower: Int?
@@ -78,7 +79,8 @@ struct WechslerProfile: Codable {
     /// 模型定义的平均能力（θ=0）时题库整体的预期得分率。旧记录没有该字段时为 nil。
     let bankAverageRate: Double?
     let flags: [WechslerIQEstimate.Flag]
-    /// 估计区间无法计算（天花板或地板导致 Fisher 信息趋零）。
+    /// 估计区间无法给出：Fisher 信息趋零、区间宽到失去解释力，
+    /// 或分数被量表边界截断导致区间退化。
     let intervalUnavailable: Bool
     let modelVersion: String
     let bankVersion: String
@@ -106,7 +108,12 @@ enum WechslerProfileScorer {
     /// 95% 区间半宽超过该值时，区间宽到失去解释力，不再作为有效区间展示。
     static let maximumIntervalHalfWidth = 30.0
 
-    /// 尺度分之和 → 合成分。斜率随参与的分测验个数选取，以保持合成分的标准差为 15。
+    /// 尺度分之和 → 合成分。
+    ///
+    /// 斜率由调用方传入：领域指数分统一用 `indexSlope`，全量表分按分测验个数
+    /// 在 0.96 与 0.72 之间选。这些斜率是为韦氏题库借用的，在本项目的题目参数下
+    /// 并不能让合成分的标准差落在 15 上——实际离散度与两个施测口径的差别，
+    /// 见 docs/WECHSLER_STYLE_SCORING.md 的「标定状态与已知偏差」。
     static func composite(scaledSum: Int, subtestCount: Int, slope: Double) -> Int {
         let raw = IQScale.compositeMean + slope * (Double(scaledSum) - IQScale.scaledMean * Double(subtestCount))
         return min(compositeRange.upperBound, max(compositeRange.lowerBound, Int(raw.rounded())))
@@ -180,6 +187,7 @@ enum WechslerProfileScorer {
         let intervalUnavailable = !fullScaleSEM.isFinite || indices.contains { !$0.standardError.isFinite }
             || 1.96 * fullScaleSEM > maximumIntervalHalfWidth
             || indices.contains { 1.96 * $0.standardError > maximumIntervalHalfWidth }
+            || fullScaleBounds.lower == nil || indices.contains { $0.confidenceLower == nil }
         return WechslerProfile(fullScale: fullScaleScore, indices: indices, subtests: scaledScores,
                                domainComparisons: comparisons,
                                overallRate: ability.overallRate,
@@ -210,13 +218,18 @@ enum WechslerProfileScorer {
     }
 
     /// 95% 置信区间。标准误无穷大（信息趋零）时不给出区间；
-    /// 区间上下界同样限制在合成分的可解释范围内。
+    /// 区间上下界限制在合成分的可解释范围内。
+    ///
+    /// 分数被量表边界截断时区间会塌成零宽（如 145–145），读起来像估计极其精确，
+    /// 实际上只是能力估计超出了量表可解释范围。这种情况下整段区间标为不可估计。
     private static func confidenceBounds(score: Int, standardError: Double) -> (lower: Int?, upper: Int?) {
         guard standardError.isFinite else { return (nil, nil) }
         let halfWidth = 1.96 * standardError
-        let lower = Int((Double(score) - halfWidth).rounded())
-        let upper = Int((Double(score) + halfWidth).rounded())
-        return (min(compositeRange.upperBound, max(compositeRange.lowerBound, lower)),
-                min(compositeRange.upperBound, max(compositeRange.lowerBound, upper)))
+        let lower = min(compositeRange.upperBound,
+                        max(compositeRange.lowerBound, Int((Double(score) - halfWidth).rounded())))
+        let upper = min(compositeRange.upperBound,
+                        max(compositeRange.lowerBound, Int((Double(score) + halfWidth).rounded())))
+        if lower == score || upper == score { return (nil, nil) }
+        return (lower, upper)
     }
 }

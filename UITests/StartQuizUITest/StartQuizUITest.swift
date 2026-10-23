@@ -61,7 +61,9 @@ final class StartQuizUITest: XCTestCase {
         reveal(start, app: app)
         start.tap()
         completeTutorial(app: app)
-        XCTAssertTrue(app.staticTexts["一层积木排成 3 行、每行 2 个小正方体，没有重叠，共有几个？"].exists)
+        // 首题具体是哪一道取决于抽题轮换，这里只校验分测验与题量恒定。
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '第 1 / 12 题'")).firstMatch.exists)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '积木'")).firstMatch.exists)
         app.buttons.matching(identifier: "wechslerOption").firstMatch.tap()
         app.buttons["endSession"].tap()
         XCTAssertTrue(app.staticTexts["题组 B · 题组尚未等值"].waitForExistence(timeout: 5))
@@ -69,7 +71,9 @@ final class StartQuizUITest: XCTestCase {
         reveal(restart, app: app)
         restart.tap()
         completeTutorial(app: app)
-        XCTAssertTrue(app.staticTexts["一层积木排成 3 行、每行 2 个小正方体，没有重叠，共有几个？"].exists,
+        // 重练时抽题优先取没做过的题，首题未必与第一轮相同：
+        // 题组归属由结果页的题组标识确认，这里只校验仍在出题且题量恒定。
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '第 1 / 12 题'")).firstMatch.exists,
                       "B 组重练应继续使用 B 组")
         app.buttons.matching(identifier: "wechslerOption").firstMatch.tap()
         app.buttons["endSession"].tap()

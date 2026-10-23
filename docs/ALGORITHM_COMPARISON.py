@@ -7,8 +7,8 @@
                  总体能力在聚合后比子测验平均更极端，会把领域差异抹平
   当前剖面       分测验各自独立估计 + 向「信息加权的中心」做经验贝叶斯收缩，
                  斜率借用自 Pearson 官方示例报告
-  重新标定后     在当前剖面基础上对能力估计去衰减，并按本项目实测离散度重新标定斜率
-                 （尚未实施，列出以展示标定的效果）
+  重新标定后     按本项目实测离散度重新标定斜率（全作答口径的建议值，
+                 尚未实施，列出以展示标定的效果）
 
 本脚本回答的问题是「几套方案在同一份作答上分别给出什么」，不是「哪一套更准」——
 后者需要与正式量表的配对数据，本项目没有。
@@ -33,11 +33,6 @@ DOMAINS = ['verbal', 'perceptual', 'memory', 'speed']
 CALIBRATION = core.CALIBRATION
 BORROWED_INDEX_SLOPE = CALIBRATION['indexSlope']
 BORROWED_FULL_SCALE_SLOPE = CALIBRATION['fullScaleSlope']
-SUGGESTED_INDEX_SLOPE = 1.977
-SUGGESTED_FULL_SCALE_SLOPE = 0.492
-# 自检在 200 个合成被试上测得的可靠性相关
-RELIABILITY = 0.761
-ATTENUATION = 1 / RELIABILITY
 
 COMPOSITE_RANGE = (CALIBRATION['compositeRangeLower'], CALIBRATION['compositeRangeUpper'])
 LEGACY_SUBTEST_PRIOR_SD = 0.75
@@ -88,11 +83,44 @@ def subtest_estimates(responses, mode):
     return global_theta, scaled, errors
 
 
+_SUGGESTED = None
+
+
+def suggested_slopes():
+    """从自检脚本的同一套流程复算建议斜率（全作答口径，与本脚本的分析口径一致）。
+
+    动态算而不是写死一个数：写死的建议值会随题目参数与换算公式的变化悄悄过期，
+    对比表就会把过时方案当成当前推荐。口径也必须一致——真实一轮 120 题的施测
+    情形给出的建议斜率与此不同，见 docs/WECHSLER_STYLE_SCORING.md。
+    """
+    global _SUGGESTED
+    if _SUGGESTED is not None:
+        return _SUGGESTED
+    rng = random.Random(20261022)
+    scaled_sums, domain_sums = [], {d: [] for d in DOMAINS}
+    for theta in core.theta_grid():
+        runs = [core.profile(core.simulate(theta, rng)) for _ in range(5)]
+        scaled = {s: sum(r['scaled'][s] for r in runs) / len(runs) for s in runs[0]['scaled']}
+        scaled_sums.append(sum(scaled.values()))
+        for domain in DOMAINS:
+            members = [s for s in SUBTESTS if DOMAIN[s] == domain]
+            domain_sums[domain].append(sum(scaled[s] for s in members))
+    # 固定网格的实现标准差正好是 1，无需再归一化。
+    # 建议斜率 = 目标标准差 ÷ 尺度分之和在真实能力分布下的离散度。
+    _, sd_sum = core.mean_sd(scaled_sums)
+    full_scale = 15.0 / sd_sum
+    index = {}
+    for domain in DOMAINS:
+        _, sd = core.mean_sd(domain_sums[domain])
+        index[domain] = 15.0 / sd
+    _SUGGESTED = (full_scale, sum(index.values()) / len(index))
+    return _SUGGESTED
+
+
 def composites(scaled, mode):
     """返回 (全量表分, {域: 指数分})。"""
     if mode == 'recalibrated':
-        index_slope = SUGGESTED_INDEX_SLOPE * ATTENUATION
-        full_scale_slope = SUGGESTED_FULL_SCALE_SLOPE * ATTENUATION
+        full_scale_slope, index_slope = suggested_slopes()
     else:
         index_slope = BORROWED_INDEX_SLOPE
         full_scale_slope = BORROWED_FULL_SCALE_SLOPE
@@ -141,7 +169,7 @@ def scenarios():
 
 
 def main():
-    print('各方案在同一份作答上的输出（韦氏合成分的可用范围是 55–145）\n')
+    print('各方案在同一份作答上的输出（韦氏合成分的可用范围是 50–145）\n')
     header = f'{"场景":<20}{"旧单参数":>9}{"早期收缩版":>12}{"当前剖面":>10}{"重新标定后":>12}'
     print(header)
     print('-' * len(header.encode('utf-8').decode('utf-8')))

@@ -1039,15 +1039,15 @@
     "id": 75,
     "difficulty": "medium",
     "category": "pattern",
-    "prompt": "图形规律：△ ▲ △ ▲ △ ？",
+    "prompt": "图形规律：● ▲ ● ▲ ●  ？",
     "options": [
       "▲",
-      "△",
-      "★",
-      "●"
+      "●",
+      "○",
+      "◆"
     ],
     "correctIndex": 0,
-    "explanation": "空心三角形与实心三角形交替出现，△ 之后应为 ▲。"
+    "explanation": "● 与 ▲ 交替出现，● 之后应为 ▲。"
   },
   {
     "id": 76,
@@ -1865,15 +1865,15 @@
     "id": 134,
     "difficulty": "easy",
     "category": "pattern",
-    "prompt": "图形规律：○ ◇ ○ ◇ ○ ？",
+    "prompt": "图形规律：● ◇ ● ◇ ●  ？",
     "options": [
-      "○",
       "◇",
       "●",
+      "○",
       "◆"
     ],
-    "correctIndex": 1,
-    "explanation": "○ 与 ◇ 交替出现，○ 之后应为 ◇。"
+    "correctIndex": 0,
+    "explanation": "● 与 ◇ 交替出现，● 之后应为 ◇。"
   },
   {
     "id": 135,
@@ -1921,15 +1921,15 @@
     "id": 138,
     "difficulty": "medium",
     "category": "pattern",
-    "prompt": "图形规律：▲ ■ ▲ ■ ▲ ？",
+    "prompt": "图形规律：● △ ● △ ●  ？",
     "options": [
-      "▲",
-      "■",
+      "△",
       "●",
+      "○",
       "◆"
     ],
-    "correctIndex": 1,
-    "explanation": "▲ 与 ■ 交替出现，▲ 之后应为 ■。"
+    "correctIndex": 0,
+    "explanation": "● 与 △ 交替出现，● 之后应为 △。"
   },
   {
     "id": 139,
@@ -4690,7 +4690,7 @@
       "○",
       "◇"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "● 与 ◆ 交替出现，● 之后应为 ◆。"
   },
   {
@@ -4713,7 +4713,7 @@
     "difficulty": "easy",
     "prompt": "图形规律：☆ □ ☆ □ ☆  ？",
     "options": [
-      "☆",
+      "□",
       "○",
       "●",
       "◆"
@@ -4732,7 +4732,7 @@
       "◆",
       "●"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "○ 与 ◇ 交替出现，○ 之后应为 ◇。"
   },
   {
@@ -4758,7 +4758,7 @@
       "○",
       "●",
       "◆",
-      "△"
+      "■"
     ],
     "correctIndex": 3,
     "explanation": "△ 与 ■ 交替出现，△ 之后应为 ■。"
@@ -4774,7 +4774,7 @@
       "☆",
       "○"
     ],
-    "correctIndex": 2,
+    "correctIndex": 0,
     "explanation": "☆ 与 ● 交替出现，☆ 之后应为 ●。"
   },
   {
@@ -4800,7 +4800,7 @@
       "◆",
       "●",
       "○",
-      "△"
+      "▲"
     ],
     "correctIndex": 3,
     "explanation": "△ 与 ▲ 交替出现，△ 之后应为 ▲。"
@@ -4825,7 +4825,7 @@
     "difficulty": "easy",
     "prompt": "图形规律：☆ ★ ☆ ★ ☆  ？",
     "options": [
-      "☆",
+      "★",
       "●",
       "◆",
       "○"
@@ -4840,7 +4840,7 @@
     "prompt": "图形规律：□ ☆ □ ☆ □  ？",
     "options": [
       "◆",
-      "□",
+      "☆",
       "○",
       "●"
     ],
@@ -4854,7 +4854,7 @@
     "prompt": "图形规律：▲ ■ ▲ ■ ▲  ？",
     "options": [
       "●",
-      "▲",
+      "■",
       "○",
       "◆"
     ],
@@ -4895,7 +4895,7 @@
     "difficulty": "medium",
     "prompt": "图形规律：◇ ▲ ◇ ▲ ◇  ？",
     "options": [
-      "◇",
+      "▲",
       "◆",
       "●",
       "○"
@@ -4942,7 +4942,7 @@
       "●",
       "○"
     ],
-    "correctIndex": 3,
+    "correctIndex": 0,
     "explanation": "○ 与 ◆ 交替出现，○ 之后应为 ◆。"
   },
   {
@@ -4998,7 +4998,7 @@
       "○",
       "●"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "▲ 与 ○ 交替出现，▲ 之后应为 ○。"
   },
   {

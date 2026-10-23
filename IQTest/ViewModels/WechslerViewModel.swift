@@ -121,8 +121,15 @@ class WechslerViewModel: ObservableObject {
                 items = WechslerSubtest.allCases.flatMap { sub -> [WechslerItem] in
                     let pool = loaded.filter { $0.subtest == sub }.sorted { $0.order < $1.order }
                     let unseen = pool.filter { !seen.contains($0.id) }
-                    let source = unseen.isEmpty ? pool : unseen
-                    return Array(source.prefix(WechslerViewModel.itemsPerSubtest))
+                    var picked = Array(unseen.prefix(WechslerViewModel.itemsPerSubtest))
+                    if picked.count < WechslerViewModel.itemsPerSubtest {
+                        // 未做过的题不够时用做过的题补足，保证每轮题量恒定。
+                        // 否则同一轮的分母会随已做题数缩水，不同轮次的得分率无法比较。
+                        let chosen = Set(picked.map(\.id))
+                        let rest = pool.filter { !chosen.contains($0.id) }
+                        picked.append(contentsOf: rest.prefix(WechslerViewModel.itemsPerSubtest - picked.count))
+                    }
+                    return picked
                 }
             }
             sessionAge = AgeBand.age
