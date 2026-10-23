@@ -46,6 +46,11 @@
    入口还会做一次一致性核对：`calibrate_slopes.py` 与 `ALGORITHM_SELF_CHECK.py` 是两套独立实现，
    **两个脚本都会真的跑起来**，在同一批合成被试上比较它们给出的建议斜率；
    只比一个手抄的常数是发现不了自检脚本自身被改坏的。
+   入口还会跑两项路径级检查：
+   - `tools/check_generator_consistency.py`：题库与生成器是否还对得上
+     （只改其中一方，下次跑生成器就会把另一方的修正覆盖回去）；
+   - `calibrate_slopes.py --selfcheck`：真实标定路径「应用导出 → csv → 标定」的
+     端到端往返是否无损。
    有意改动后用 `python3 docs/run_diagnostics.py --update` 重新建立基线。
    - 换算参数的唯一真源是 `IQTest/Resources/ScoringCalibration.json`，生产代码与分析脚本共用，
      单元测试断言两边一致。

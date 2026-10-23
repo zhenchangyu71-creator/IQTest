@@ -990,8 +990,14 @@ def main():
         plan[group] = (path, model_path, bank, model, generated, model_version)
 
     total = sum(len(items) for _, _, _, _, generated, _ in plan.values() for items in generated.values())
-    print(f'校验通过：A 组 {sum(len(i) for i in plan["A"][4].values())} 题，'
+    print(f'校验通过：新增 A 组 {sum(len(i) for i in plan["A"][4].values())} 题、'
           f'B 组 {sum(len(i) for i in plan["B"][4].values())} 题，共 {total} 题')
+    # 说清追加前后的题数：这是增量工具，不是覆盖。
+    # 题数变了会连带改变抽题轮换空间与诊断基线（题目参数指纹），使用者需要先知道。
+    for group in ('A', 'B'):
+        before = len(plan[group][2])
+        added = sum(len(items) for items in plan[group][4].values())
+        print(f'   {group} 组：题库 {before} 题 → 追加后 {before + added} 题')
 
     if args.check:
         return

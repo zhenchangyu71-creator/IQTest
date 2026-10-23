@@ -91,6 +91,7 @@ IQTest/
   Services/ItemExposureStore.swift   # 已做题目记录，抽题时优先选没做过的
 tools/generate_wechsler_items.py      # 韦氏题库扩充生成器（固定种子，可复现）
 tools/generate_raven_items.py         # 瑞文题库扩充生成器
+tools/check_generator_consistency.py  # 核对题库与生成器是否还对得上
 tools/repair_raven_answer_keys.py     # 修瑞文题库中「答案键与解析不一致」的题
 tools/repair_raven_duplicate_prompts.py # 修瑞文题库中「去空白后相同」的重复题干
 docs/COLLECTION_PLAN.md            # 真实样本采集方案与知情同意要点
@@ -130,6 +131,13 @@ project.yml                        # 应用及单元测试工程配置
 新题的难度参数按题目结构估计（数字广度按位数、算术按结果大小），不是随机采样——
 那会让题目实际难度与参数脱节，反而污染分数。但这些参数与旧题同样未经真实数据标定，
 **增加题量与减少重复都不构成 IQ 精度验证**。
+
+生成器是**增量**工具：它读现有题库、追加新题后写回，不是覆盖。跑一次会改变题库规模，
+连带改变抽题轮换空间与诊断基线（题目参数指纹），所以 `--check` 会打印追加前后的题数。
+题库与生成器必须同步：只改其中一方，下次跑生成器就会把另一方的修正覆盖回去。
+`tools/check_generator_consistency.py` 核对两者是否还对得上（只把题干、选项内容、解析、
+分值的变化算实质差异；仅选项排列顺序不同不算，因为作答时选项会被打乱），
+`docs/run_all.py` 每次都会跑它。
 
 ## 题库格式
 

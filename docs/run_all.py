@@ -15,12 +15,15 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
 
-# (脚本名, 说明, 是否耗时)
+# (脚本路径, 说明, 是否耗时)。路径相对仓库根。
 STEPS = [
-    ('run_diagnostics.py', '标定与难度门禁（相对基线是否劣化）', False),
-    ('ITEM_DIFFICULTY_AUDIT.py', '逐分测验难度与 A/B 参数关系', False),
-    ('ALGORITHM_COMPARISON.py', '几套换算方案的输出对比', True),
+    ('docs/run_diagnostics.py', '标定与难度门禁（相对基线是否劣化）', False),
+    ('docs/ITEM_DIFFICULTY_AUDIT.py', '逐分测验难度与 A/B 参数关系', False),
+    ('tools/check_generator_consistency.py', '题库与生成器是否还对得上', False),
+    ('docs/MEASUREMENT_PRECISION.py', '测量精度与区分度敏感性', True),
+    ('docs/ALGORITHM_COMPARISON.py', '几套换算方案的输出对比', True),
 ]
 
 # 两个独立实现给出的建议斜率应当一致：自检脚本与标定脚本各写了一套流程，
@@ -89,11 +92,11 @@ def main():
             print(f'\n=== 跳过：{script}（{description}）===')
             continue
         print(f'\n=== {script} — {description} ===')
-        result = subprocess.run([sys.executable, os.path.join(HERE, script)],
+        result = subprocess.run([sys.executable, os.path.join(ROOT, script)],
                                 cwd=HERE, capture_output=True, text=True)
         output = (result.stdout or '') + (result.stderr or '')
         # 门禁的输出是给人看的，完整保留；其余脚本只留摘要。
-        if script != 'run_diagnostics.py':
+        if script != 'docs/run_diagnostics.py':
             lines = [line for line in output.splitlines()
                      if line.strip() and '提示' not in line]
             output = '\n'.join(lines[:40])
