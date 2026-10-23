@@ -25,6 +25,7 @@ struct WechslerResultView: View {
                                 .font(.system(size: 64, weight: .bold, design: .rounded))
                                 .foregroundStyle(.purple)
                                 .accessibilityIdentifier("profileFullScaleScore")
+                                .accessibilityLabel("全量表分 \(profile.fullScale.score)")
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("全量表分").font(.subheadline)
                                 Text(confidenceText(profile.fullScale.confidenceLower, profile.fullScale.confidenceUpper))
@@ -88,7 +89,7 @@ struct WechslerResultView: View {
                         }
                         Text("指数分 Mean 100 / SD 15，由该领域两个分测验的尺度分之和换算。")
                             .font(.caption).foregroundStyle(.secondary)
-                        Text("各领域的换算刻度并不一致：以合成被试复算真实一轮 120 题的施测情形，言语约 15 分、知觉约 14 分、记忆约 11 分、加工速度约 10 分，而量表设计值都是 15 分。刻度不同，领域之间的分差就不能直接当作能力差异。")
+                        Text("各领域的换算刻度并不一致：同样一段能力差距，言语上会拉开约 15 分、知觉约 14 分、记忆约 11 分、加工速度只有约 10 分（量表的设计值是 15 分）。刻度不同，领域之间的分差就不能直接当作能力差异。")
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     .reportCard()
@@ -102,13 +103,17 @@ struct WechslerResultView: View {
                                     Spacer()
                                     Text("尺度分 \(scaled.scaled)").monospacedDigit()
                                     if let lower = scaled.confidenceLower, let upper = scaled.confidenceUpper {
+                                        // 光读「(9–16)」看不出是什么区间，屏幕阅读器需要完整说法。
                                         Text("(\(lower)–\(upper))").monospacedDigit()
                                             .foregroundStyle(.secondary)
+                                            .accessibilityLabel("95% 估计区间 \(lower) 到 \(upper)")
                                     }
                                     Text("九分 \(scaled.standardNine)").monospacedDigit()
                                     Text(scaled.band.rawValue).font(.caption)
                                 }
                                 .font(.subheadline)
+                                // 合成一行朗读，否则「尺度分 12」「(9–16)」「九分 6」是三个孤立片段。
+                                .accessibilityElement(children: .combine)
                             }
                         }
                         Text("尺度分 Mean 10 / SD 3，范围 1–19。括号内是 95% 估计区间：每个分测验只有 12 题，区间通常宽达 ±6–14 分，两个分测验的差异落在各自区间内时并不代表能力高低。九分是尺度分按标准正态切成的九档粗分，1 最低、9 最高。")
