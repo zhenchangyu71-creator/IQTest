@@ -46,33 +46,21 @@ final class QuestionBankExpansionTests: XCTestCase {
         // 用户无论怎么选都答不对。而结构校验（重复题干、选项重复、
         // 答案索引越界）完全看不出这类错误。
         let bank = try QuestionLoader.loadValidated()
-        // (正则, 答案所在的捕获组, 捕获组到选项的变换)
-        let rules: [(NSRegularExpression, Int, (String) -> String)] = [
-            (try NSRegularExpression(pattern: "(.)\\s*与\\s*(.)\\s*交替出现，\\1\\s*之后应为\\s*(.)"), 3, { $0 }),
-            (try NSRegularExpression(pattern: "以\\s*(.)\\s*(.)\\s*(.)\\s*为一组循环，第三组第三位应为\\s*(.)"), 4, { $0 }),
-            (try NSRegularExpression(pattern: "以\\s*(.)\\s*(.)\\s*(.)\\s*(.)\\s*为一组循环，第二组第二位应为\\s*(.)"), 5, { $0 }),
-            (try NSRegularExpression(pattern: "以\\s*(.)\\s*(.)\\s*(.)\\s*为一组循环，第三组第二位应为\\s*(.)"), 4, { $0 }),
-            (try NSRegularExpression(pattern: "(.)\\s*(.)\\s*(.)\\s*(.)\\s*之后回到\\s*(.)"), 5, { $0 }),
-            (try NSRegularExpression(pattern: "符号数量依次递增，第四组应有 4 个\\s*(.)"), 1, { $0 + $0 + $0 + $0 }),
-            // 兜底：早期题目的解析写成「实心圆与空心圆交替出现，● 之后应为 ○」，
-            // 符号对是名称而不是符号，靠「之后应为」后面的那个符号取答案。
-            (try NSRegularExpression(pattern: "之后应为\\s*([^\\s。]+)"), 1, { $0 })
-        ]
+        // 规则读资源文件里那一份，与生产代码和 Python 生成器共用：
+        // 早先这里另抄了一份正则，Python 端少了兜底规则，两边就悄悄漂移了。
+        let rules = try PatternAnswerRules.shared.get()
         var checked = 0
         var alternatingTotal = 0
         var alternatingChecked = 0
+        // 「交替」类要单独统计：答案键写反的正是这一类，必须逐题检查。
+        let alternating = try NSRegularExpression(pattern: "(.)\\s*与\\s*(.)\\s*交替出现，\\1\\s*之后应为\\s*(.)")
         for question in bank where question.category == .pattern {
             let full = NSRange(question.explanation.startIndex..., in: question.explanation)
-            // 答案键写反的正是「交替」类，这类必须逐题检查。
-            // 早期题目的解析用名称（实心圆与空心圆）而非符号，规则匹配不到，
-            // 因此这里只统计符号对符号的那一批，由兜底规则覆盖其余。
-            let isSymbolAlternating = rules[0].0.firstMatch(in: question.explanation, range: full) != nil
+            let isSymbolAlternating = alternating.firstMatch(in: question.explanation, range: full) != nil
             if isSymbolAlternating { alternatingTotal += 1 }
-            guard let rule = rules.first(where: {
-                $0.0.firstMatch(in: question.explanation, range: full) != nil
-            }), let match = rule.0.firstMatch(in: question.explanation, range: full),
-                  let range = Range(match.range(at: rule.1), in: question.explanation) else { continue }
-            let expected = rule.2(String(question.explanation[range]))
+            guard let expected = PatternAnswerRules.expectedAnswer(explanation: question.explanation,
+                                                                   options: question.options,
+                                                                   using: rules) else { continue }
             let actual = question.options[question.correctIndex]
             XCTAssertEqual(actual, expected,
                            "题 \(question.id)：解析说应为 \(expected)，答案键却指向 \(actual)")

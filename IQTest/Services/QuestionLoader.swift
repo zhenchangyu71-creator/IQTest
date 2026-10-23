@@ -48,5 +48,19 @@ enum QuestionLoader {
                 }
             }
         }
+        // 答案键必须与解析给出的答案一致：这类题用户无论选哪个都判错，
+        // 而结构校验（重复题号、选项重复、索引越界）全都看不出来。
+        // 规则只有一份，放在资源文件里，Swift 与 Python 生成器共用，
+        // 免得两处各写一份正则而悄悄漂移。
+        let rules = try PatternAnswerRules.shared.get()
+        for item in bank where item.category == .pattern {
+            guard let expected = PatternAnswerRules.expectedAnswer(explanation: item.explanation,
+                                                                   options: item.options,
+                                                                   using: rules) else { continue }
+            let actual = item.options[item.correctIndex]
+            guard actual == expected else {
+                throw BankError.invalid("题 \(item.id) 的解析说应为 \(expected)，答案键却指向 \(actual)")
+            }
+        }
     }
 }

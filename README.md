@@ -84,6 +84,7 @@ IQTest/
   Views/SubtestPracticeView.swift    # 单项练习
   Views/PracticeRadarView.swift      # 得分率雷达图
   Resources/Questions.json          # 432 道自编推理题
+  Resources/PatternAnswerRules.json # 图形规律题「解析里哪个符号是答案」的规则（Swift 与 Python 共用）
   Resources/Wechsler.json           # A 组 480 道自编练习题
   Resources/WechslerB.json          # B 组 480 道自编练习题
   Resources/WechslerIQModel.json    # A 组独立的启发式参数
@@ -131,6 +132,12 @@ project.yml                        # 应用及单元测试工程配置
 新题的难度参数按题目结构估计（数字广度按位数、算术按结果大小），不是随机采样——
 那会让题目实际难度与参数脱节，反而污染分数。但这些参数与旧题同样未经真实数据标定，
 **增加题量与减少重复都不构成 IQ 精度验证**。
+
+「解析里哪个符号是答案」的规则只有一份，放在 `Resources/PatternAnswerRules.json`：
+Swift 生产代码（加载题库时就校验）、单元测试与 Python 生成器共用。
+两处各抄一份正则副本曾真的漂移过——Python 端少了兜底规则，名称型解析的题在答案键写反时
+完全查不出来，而用户无论选哪个都判错。匹配到的答案**必须是该题的某个选项**：
+正则会回溯，某些规则可能匹配出空格这类垃圾，选项判据既挡得住它，也覆盖箭头与组合符号。
 
 生成器是**增量**工具：它读现有题库、追加新题后写回，不是覆盖。跑一次会改变题库规模，
 连带改变抽题轮换空间与诊断基线（题目参数指纹），所以 `--check` 会打印追加前后的题数。

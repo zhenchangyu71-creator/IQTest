@@ -30,22 +30,35 @@ PATTERN_SYMBOLS = ['●', '○', '◆', '◇', '▲', '△', '★', '☆', '■'
 
 # 每种 pattern 出题规则的「解析里哪个符号才是答案」。
 # 格式：(正则, 答案所在的捕获组, 从该捕获组到实际选项的变换)。
-PATTERN_ANSWER_RULES = [
-    (re.compile(r'(.)\s*与\s*(.)\s*交替出现，\1\s*之后应为\s*(.)'), 3, lambda s: s),
-    (re.compile(r'以\s*(.)\s*(.)\s*(.)\s*为一组循环，第三组第三位应为\s*(.)'), 4, lambda s: s),
-    (re.compile(r'以\s*(.)\s*(.)\s*(.)\s*(.)\s*为一组循环，第二组第二位应为\s*(.)'), 5, lambda s: s),
-    (re.compile(r'以\s*(.)\s*(.)\s*(.)\s*为一组循环，第三组第二位应为\s*(.)'), 4, lambda s: s),
-    (re.compile(r'(.)\s*(.)\s*(.)\s*(.)\s*之后回到\s*(.)'), 5, lambda s: s),
-    (re.compile(r'符号数量依次递增，第四组应有 4 个\s*(.)'), 1, lambda s: s * 4),
-]
+def _load_rules():
+    """读规则文件。规则只有一份，放在 IQTest/Resources 里，
+    Swift 生产代码、单元测试与本脚本共用。
+
+    两处各写一份正则副本曾真的漂移过：Swift 端有兜底规则而这里没有，
+    名称型解析的题在答案键写反时完全查不出来——而用户无论选哪个都判错。
+    """
+    path = os.path.join(ROOT, 'PatternAnswerRules.json')
+    with open(path, encoding='utf-8') as handle:
+        data = json.load(handle)
+    return [(re.compile(rule['pattern']), rule['group'], rule.get('repeat', 1))
+            for rule in data['rules']]
+
+
+PATTERN_ANSWER_RULES = _load_rules()
 
 
 def expected_answer(item):
     """从解析里取出这道题真正的答案；不是 pattern 类题目则返回 None。"""
-    for pattern, group, transform in PATTERN_ANSWER_RULES:
+    for pattern, group, repeat in PATTERN_ANSWER_RULES:
         match = pattern.search(item.get('explanation', ''))
-        if match:
-            return transform(match.group(group))
+        if not match:
+            continue
+        answer = match.group(group) * repeat
+        # 答案必须是该题的某个选项。正则会回溯，某些规则可能匹配出空格这类垃圾，
+        # 选项判据既挡得住它，也覆盖箭头与组合符号，不必维护一份会漏符号的白名单。
+        # 这条约束也让 Swift 与 Python 的正则引擎行为不同时结果一致。
+        if answer in item.get('options', []):
+            return answer
     return None
 
 

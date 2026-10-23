@@ -12,6 +12,7 @@
 
 用法：
     python3 tools/check_generator_consistency.py          # 报告差异
+    python3 tools/check_generator_consistency.py --check  # 同上（与另两个题库检查脚本同名，便于统一调用）
     python3 tools/check_generator_consistency.py --strict # 顺序差异也算失败
 
 退出码：0 无实质差异；1 有实质差异（--strict 下顺序差异也算）。
@@ -49,6 +50,8 @@ def substantive_difference(current, generated):
 
 def main():
     strict = '--strict' in sys.argv
+    # --check 与另两个题库检查脚本同名，便于统一调用；本脚本本来就只检查不修改。
+    _ = '--check' in sys.argv
     generator = load_module('gen_wechsler', os.path.join(TOOLS, 'generate_wechsler_items.py'))
 
     groups = (

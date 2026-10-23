@@ -1,15 +1,22 @@
 #!/bin/bash
-# 提交前检查：题目参数、题库或换算标定被改动时，先跑一遍诊断门禁。
+# 提交前检查：题目参数、题库或换算标定被改动时，先跑对应的检查。
 #
 # 这类改动会直接影响分数的刻度，却往往看不出问题：改一道题的阈值可能让
 # 整份剖面的离散度漂移，而合成分本身仍然"看起来正常"。门禁用固定样本
 # 比对基线，捕捉这类劣化。
 #
+# 检查按改动类型分开跑，因为两类改动要查的东西不同：
+#   韦氏题库 / 题目参数 / 换算标定 → 诊断门禁（离散度是否漂移）
+#   瑞文题库 / 题库生成器             → 答案键是否与解析一致、题干是否重复、
+#                                       题库与生成器是否还对得上
+# 早先只有第一类，改瑞文题库或生成器完全不触发任何检查——而答案键写反
+# 正是从那一带冒出来的：用户无论选哪个都判错，而结构���校验全都查不出。
+#
 # 安装（选一种）：
 #   git config core.hooksPath scripts/hooks     # 推荐，钩子随仓库走
-#   cp scripts/pre-commit.sh .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+#   cp scripts/hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
 #
-# 无需联网，也不改动任何文件；门禁只读参数与题库。
+# 无需联网，也不改动任何文件；检查只读参数与题库。
 
 set -uo pipefail
 
@@ -19,7 +26,8 @@ cd "$ROOT" || exit 0
 STAGED="$(git diff --cached --name-only 2>/dev/null)" || exit 0
 [ -n "$STAGED" ] || exit 0
 
-triggered=0
+wechsler_changed=0
+raven_changed=0
 while IFS= read -r file; do
   [ -n "$file" ] || continue
   case "$file" in
@@ -29,26 +37,56 @@ while IFS= read -r file; do
     IQTest/Resources/WechslerB.json|\
     IQTest/Models/Wechsler*.swift|\
     docs/ALGORITHM_SELF_CHECK.py|\
-    docs/ITEM_DIFFICULTY_AUDIT.py)
-      triggered=1
+    docs/ITEM_DIFFICULTY_AUDIT.py|\
+    docs/calibrate_slopes.py|\
+    docs/calibration_export.py|\
+    docs/fit_item_parameters.py|\
+    docs/run_diagnostics.py|\
+    tools/generate_wechsler_items.py)
+      wechsler_changed=1
+      ;;
+    IQTest/Resources/Questions.json|\
+    IQTest/Services/QuestionLoader.swift|\
+    tools/generate_raven_items.py|\
+    tools/repair_raven_answer_keys.py|\
+    tools/repair_raven_duplicate_prompts.py|\
+    tools/check_generator_consistency.py)
+      raven_changed=1
       ;;
   esac
 done <<< "$STAGED"
 
-[ "$triggered" -eq 1 ] || exit 0
+[ "$wechsler_changed" -eq 1 ] || [ "$raven_changed" -eq 1 ] || exit 0
 
 if ! command -v python3 >/dev/null 2>&1; then
-  echo "未找到 python3，跳过诊断门禁。"
+  echo "未找到 python3，跳过提交前检查。"
   exit 0
 fi
 
-echo "改动涉及题目参数或换算标定，运行诊断门禁…"
-if ! python3 docs/run_diagnostics.py; then
-  echo ""
-  echo "诊断门禁未通过，提交被中止。"
-  echo "若这次改动是有意的，请先确认门禁报告里的指标变化符合预期，"
-  echo "再执行 python3 docs/run_diagnostics.py --update 重建基线，然后重新提交。"
-  exit 1
+failed=0
+
+if [ "$wechsler_changed" -eq 1 ]; then
+  echo "改动涉及韦氏题库、题目参数或换算标定，运行诊断门禁…"
+  if ! python3 docs/run_diagnostics.py; then
+    echo ""
+    echo "诊断门禁未通过，提交被中止。"
+    echo "若这次改动是有意的，请先确认门禁报告里的指标变化符合预期，"
+    echo "再执行 python3 docs/run_diagnostics.py --update 重建基线，然后重新提交。"
+    failed=1
+  fi
 fi
 
+if [ "$raven_changed" -eq 1 ]; then
+  echo "改动涉及瑞文题库或题库生成器，检查答案键、题干重复与生成器一致性…"
+  for check in tools/repair_raven_answer_keys.py tools/repair_raven_duplicate_prompts.py \
+              tools/check_generator_consistency.py; do
+    if ! python3 "$check" --check; then
+      echo ""
+      echo "$check 未通过，提交被中止。"
+      failed=1
+    fi
+  done
+fi
+
+[ "$failed" -eq 0 ] || exit 1
 exit 0
