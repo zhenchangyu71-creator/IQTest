@@ -120,14 +120,18 @@ final class StartQuizUITest: XCTestCase {
         let export = try XCTUnwrap(app.buttons.matching(identifier: "exportRecords").allElementsBoundByIndex.first { $0.isHittable })
         export.tap()
         let filename = app.textFields["DOCPicker.filenameTextField"]
-        XCTAssertTrue(filename.waitForExistence(timeout: 8))
+        // 这是系统文件选择器，弹出速度受系统负载影响，比应用内元素慢得多。
+        XCTAssertTrue(filename.waitForExistence(timeout: 20))
         let marker = UUID().uuidString
         filename.tap()
         filename.typeText("-" + marker)
-        XCTAssertTrue((filename.value as? String)?.contains(marker) ?? false)
+        // 输入框的值不是立刻更新，等它生效再断言，否则会偶发失败。
+        let typed = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "value CONTAINS %@", marker), object: filename)
+        XCTAssertEqual(XCTWaiter.wait(for: [typed], timeout: 10), .completed)
         app.buttons.matching(NSPredicate(format: "label IN {'保存', 'Save'}")).firstMatch.tap()
         let closed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: filename)
-        XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 10), .completed)
+        XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 20), .completed)
         XCTAssertTrue(app.navigationBars["记录详情"].waitForExistence(timeout: 5))
         app.buttons["记录操作"].tap()
         app.buttons["从历史移除"].tap()
