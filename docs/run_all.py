@@ -67,6 +67,20 @@ def cross_check():
                   f'全量表分斜率 {suggested:.4f}（相差 {delta * 100:.2f}%）')
 
 
+def roundtrip_check():
+    """核对真实标定路径的端到端可用性。
+
+    真实数据要走「应用导出 → calibration_export.py → csv → 标定脚本」这条链，
+    而这条链此前从未被验证过：它两处逻辑（要求覆盖全部 480 题、把 None 送进相关系数）
+    会让真实数据永远无法参与标定，而表面看不出来。
+    """
+    result = subprocess.run(
+        [sys.executable, os.path.join(HERE, 'calibrate_slopes.py'), '--selfcheck', '40'],
+        cwd=HERE, capture_output=True, text=True)
+    message = (result.stdout or '').strip() or (result.stderr or '').strip()[:200]
+    return result.returncode == 0, message
+
+
 def main():
     quick = '--quick' in sys.argv
     failures = []
@@ -86,6 +100,12 @@ def main():
         print(output.rstrip())
         if result.returncode != 0:
             failures.append((script, result.returncode))
+
+    print('\n=== 真实标定路径的端到端自检 ===')
+    ok, message = roundtrip_check()
+    print(message)
+    if not ok:
+        failures.append(('calibrate_slopes.py 端到端自检', 1))
 
     print('\n=== 一致性核对：标定脚本 vs 自检脚本 ===')
     ok, message = cross_check()

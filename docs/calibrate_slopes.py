@@ -14,8 +14,11 @@
 
     --synthetic N  不读真实数据，改用 N 个合成被试跑同一流程。
                    真值已知，用来检验脚本本身是否正确。
+    --selfcheck N  端到端自检：造 N 个合成被试 → 写成应用导出格式 →
+                   走 calibration_export.py 的文件往返 → 再算一遍。
+                   往返前后的离散度必须一致，否则说明转换丢了题或错配了被试。
 
-退出码：0 成功；1 数据不足或输入有误。
+退出码：0 成功；1 数据不足、输入有误或自检未通过。
 """
 import csv
 import json
@@ -30,6 +33,9 @@ CALIBRATION_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'
                                 'IQTest', 'Resources', 'ScoringCalibration.json')
 # 目标：合成分的标准差回到量表定义上的 15。
 TARGET_SD = 15.0
+# 生产的一轮练习：每个分测验 12 题、共 120 题。真实数据就是这么大，
+# 不是把题库 480 题全做完——自检必须按真实规模跑。
+PER_SUBTEST_ADMIN = 12
 
 
 def read_csv(path):
@@ -39,15 +45,97 @@ def read_csv(path):
         return list(csv.DictReader(handle))
 
 
-def synthetic_subjects(count):
+def synthetic_subjects(count, per_subtest=0):
+    """合成被试。per_subtest > 0 时每个分测验只抽该数量的题，模拟生产的一轮练习。"""
     import random
     rng = random.Random(core.SEED if hasattr(core, 'SEED') else 20261022)
     subjects = []
     for _ in range(count):
         theta = rng.gauss(0.0, 1.0)
-        responses = core.simulate(theta, rng)
+        responses = core.simulate(theta, rng, per_subtest=per_subtest)
         subjects.append((f'synthetic-{len(subjects):03d}', responses, theta))
     return subjects
+
+
+def write_export(subjects, directory):
+    """把合成被试写成应用导出格式的信封 JSON（结构与 RecordExport.encode 一致）。"""
+    os.makedirs(directory, exist_ok=True)
+    index = {item['id']: item for item in core.BANK}
+    records = []
+    for pid, responses, _theta in subjects:
+        items = []
+        for item_id, score in responses.items():
+            item = index.get(item_id)
+            if item is None:
+                continue
+            items.append({
+                'itemID': item_id,
+                'subtest': item['subtest'],
+                'answer': score,
+                'score': score,
+                'maxScore': max(item['optionScores']),
+                'outcome': 'answered',
+                'elapsedSeconds': 5.0,
+            })
+        records.append({
+            'id': pid,
+            'date': '2026-01-01T00:00:00Z',
+            'testType': 'wechsler',
+            'score': sum(i['score'] for i in items),
+            'total': sum(i['maxScore'] for i in items),
+            'age': 25,
+            'completion': 'completed',
+            'questionSet': 'A',
+            'responses': items,
+        })
+    envelope = {'formatVersion': 1, 'exportedAt': '2026-01-01T00:00:00Z',
+                'notice': '自检用合成数据。', 'records': records}
+    path = os.path.join(directory, 'export.json')
+    with open(path, 'w', encoding='utf-8') as handle:
+        json.dump(envelope, handle, ensure_ascii=False)
+    return path
+
+
+def selfcheck(count=60):
+    """端到端自检：造合成导出 → 走 calibration_export.py 的文件往返 → 再算一遍。
+
+    这条路径此前从未被验证过，而真实数据要用它：两处逻辑（要求覆盖全部 480 题、
+    把 None 送进相关系数）会让真实数据永远无法参与标定。
+    往返前后的尺度分之和标准差必须一致——不一致就说明转换丢了题、丢了分
+    或错配了被试，那正是这条路径最危险、也最不容易看出来的故障方式。
+    """
+    import subprocess
+    import tempfile
+    subjects = synthetic_subjects(count, per_subtest=PER_SUBTEST_ADMIN)
+    direct = measure(subjects)
+    with tempfile.TemporaryDirectory() as tmp:
+        export_dir = os.path.join(tmp, 'export')
+        calib_dir = os.path.join(tmp, 'calib')
+        write_export(subjects, export_dir)
+        result = subprocess.run(
+            [sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                         'calibration_export.py'),
+             export_dir, '-o', calib_dir], capture_output=True, text=True)
+        if result.returncode != 0:
+            return False, ('calibration_export.py 运行失败：'
+                           + ((result.stderr or result.stdout).strip()[:200] or '无输出'))
+        round_trip, error = real_subjects(calib_dir)
+    if round_trip is None:
+        return False, f'往返后读不出被试：{error}'
+    if len(round_trip) != len(subjects):
+        return False, f'往返后被试数变了：{len(subjects)} → {len(round_trip)}'
+    after = measure(round_trip)
+    delta = abs(after['scaledSumSD'] - direct['scaledSumSD'])
+    if delta > 1e-6:
+        return False, (f'往返后尺度分之和的标准差变了：{direct["scaledSumSD"]:.4f}'
+                       f' → {after["scaledSumSD"]:.4f}')
+    slope_direct = TARGET_SD * direct['trueThetaSD'] / direct['scaledSumSD']
+    slope_round = TARGET_SD / after['scaledSumSD']
+    return True, (f'往返无损：{len(round_trip)} 名被试、每轮 {PER_SUBTEST_ADMIN * 10} 题，'
+                  f'尺度分之和标准差 {direct["scaledSumSD"]:.4f} 前后一致；'
+                  f'建议全量表分斜率 {slope_direct:.4f}（按实测归一化）'
+                  f'与 {slope_round:.4f}（按先验假设）相差 '
+                  f'{abs(slope_direct - slope_round) / slope_direct * 100:.1f}%')
 
 
 def real_subjects(directory):
@@ -57,6 +145,7 @@ def real_subjects(directory):
         return None, '缺少 responses.csv 或 persons.csv，请先运行 calibration_export.py。'
 
     complete = {}
+    answered_counts = {}
     for person in persons:
         if person.get('completion') != 'completed':
             continue
@@ -64,6 +153,7 @@ def real_subjects(directory):
         total = int(person.get('items_total') or 0)
         if total > 0 and answered == total:
             complete[person['person_id']] = True
+            answered_counts[person['person_id']] = answered
     if not complete:
         return None, '没有完整作答的记录，无法标定（超时与中断会污染离散度估计）。'
 
@@ -80,11 +170,16 @@ def real_subjects(directory):
 
     subjects = []
     for pid, scores in sorted(grouped.items()):
-        if len(scores) < len(core.BANK):
+        # 「完整」由 persons.csv 的 completion 与 answered == total 判定（见上）。
+        # 这里不再要求覆盖题库全部题目：生产的施测设计是每轮每分测验 12 题、共 120 题，
+        # 而题库有 480 题——要求全覆盖会让真实数据永远无法参与标定。
+        # 只需确认该被试的作答没有被「只保留 answered」这一步丢掉。
+        expected = answered_counts.get(pid, 0)
+        if expected > 0 and len(scores) != expected:
             continue
         subjects.append((pid, scores, None))
     if not subjects:
-        return None, '没有覆盖全部题目的完整记录。'
+        return None, '没有完整作答的记录（超时与中断会污染离散度估计）。'
     return subjects, None
 
 
@@ -103,13 +198,17 @@ def measure(subjects):
         for domain in domain_scaled:
             members = [s for s in core.SUBTESTS if core.DOMAIN[s] == domain]
             domain_scaled[domain].append(sum(profile['scaled'][s] for s in members))
+    # 真实作答没有能力真值，truths 里全是 None；只有合成被试才有真值。
+    # 「有没有真值」要看真值本身，不能看列表是否为空——否则会把 None 送进相关系数。
+    paired = [(t, th) for t, th in zip(truths, thetas) if t is not None]
     return {
         'thetaSD': core.mean_sd(thetas)[1],
         # 可靠度用「与真实能力的相关」衡量，不是估计值的离散度：
         # 模型误设时离散度会被放大，用离散度衡量会得出「误设反而更准」的反直觉结论。
-        'reliability': core.correlation(thetas, truths) if truths else None,
+        'reliability': (core.correlation([t for t, _ in paired], [th for _, th in paired])
+                        if len(paired) > 1 else None),
         # 合成被试有真值时，θ 的实现标准差未必正好是 1，反推斜率前要按它归一化。
-        'trueThetaSD': core.mean_sd(truths)[1] if truths else None,
+        'trueThetaSD': core.mean_sd([t for t, _ in paired])[1] if paired else None,
         'scaledSumSD': core.mean_sd(scaled_sums)[1],
         'compositeSD': core.mean_sd(fsiqs)[1],
         'domainScaledSD': {d: core.mean_sd(v)[1] for d, v in domain_scaled.items() if v},
@@ -119,6 +218,12 @@ def measure(subjects):
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     as_json = '--json' in sys.argv
+    if '--selfcheck' in sys.argv:
+        index = sys.argv.index('--selfcheck')
+        count = int(sys.argv[index + 1]) if index + 1 < len(sys.argv) else 60
+        ok, message = selfcheck(count)
+        print(message)
+        return 0 if ok else 1
     synthetic = None
     if '--synthetic' in sys.argv:
         index = sys.argv.index('--synthetic')
@@ -171,6 +276,7 @@ def main():
         print(json.dumps({
             'source': source,
             'thetaSD': round(theta_sd, 4),
+            'reliability': round(reliability, 4) if reliability is not None else None,
             'normalization': round(normalization, 4),
             'normalizationBasis': basis,
             'scaledSumSD': round(scaled_sum_sd, 3),

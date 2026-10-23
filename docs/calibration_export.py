@@ -60,10 +60,14 @@ def collect_sources(paths):
         except (json.JSONDecodeError, OSError) as error:
             print(f'跳过无法读取的文件 {path}：{error}')
             continue
-        entries = envelope.get('records', [])
+        entries = envelope.get('records', []) if isinstance(envelope, dict) else []
         if entries:
             records.extend(entries)
             used.append(path)
+        else:
+            # 采集阶段用户会手工处理文件（重命名、另存、从别的 App 导出）。
+            # 格式对不上就跳过并说清楚，不能让整个批次崩在一个看不懂的 traceback 上。
+            print(f'跳过格式不符的文件 {path}（期望 {{"records": [...]}} 结构）')
     return records, used
 
 
