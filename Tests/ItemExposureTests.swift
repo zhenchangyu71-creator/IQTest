@@ -188,4 +188,21 @@ final class ItemExposureTests: XCTestCase {
         }
         return nil
     }
+    func testSingleSubtestPracticeHasNoTwoQuestionsWithTheSameContent() throws {
+        // 单项练习从三段里各取一题。题库里存在内容完全相同的题，
+        // 重复对分布在不同段里（词汇 13/25、常识 14/26…），两段可能取到同一道题。
+        // 单项练习不记曝光，只能靠当次去重来避免。
+        for subtest in WechslerSubtest.allCases {
+            for _ in 0..<5 {
+                let vm = WechslerViewModel()
+                vm.start(practice: subtest)
+                XCTAssertEqual(vm.items.count, 3, subtest.rawValue)
+                var keys = Set<String>()
+                for item in vm.items {
+                    XCTAssertTrue(keys.insert(item.contentKey).inserted,
+                                  "\(subtest.rawValue) 单项练习出现了内容相同的两道题：\(item.id)")
+                }
+            }
+        }
+    }
 }

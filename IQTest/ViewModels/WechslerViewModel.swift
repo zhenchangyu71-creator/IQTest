@@ -108,11 +108,22 @@ class WechslerViewModel: ObservableObject {
             if let subtest {
                 let pool = loaded.filter { $0.subtest == subtest }.sorted { $0.order < $1.order }
                 // 按实际题量分为三段；不将文件位置宣称为已校准的难度。
-                items = (0..<3).compactMap { segment in
+                // 题库里存在内容完全相同的题，且重复对分布在不同段里
+                // （词汇 13/25、常识 14/26…），两段可能取到同一道题——
+                // 一次练习里出现两道一样的题是用户直接看得见的缺陷。
+                // 单项练习不记曝光，所以这里只能靠当次去重来避免。
+                var pickedContent = Set<String>()
+                var picked: [WechslerItem] = []
+                for segment in 0..<3 {
                     let lower = segment * pool.count / 3
                     let upper = (segment + 1) * pool.count / 3
-                    return pool[lower..<upper].randomElement()
+                    let segmentItems = Array(pool[lower..<upper])
+                    let fresh = segmentItems.filter { !pickedContent.contains($0.contentKey) }
+                    guard let item = (fresh.isEmpty ? segmentItems : fresh).randomElement() else { continue }
+                    pickedContent.insert(item.contentKey)
+                    picked.append(item)
                 }
+                items = picked
             } else {
                 // 每个分测验从题池中抽取固定题量，优先没做过的题：
                 // 整轮都做同一批题会让第二次测试必然重复，练习效应直接混入复测分数。
