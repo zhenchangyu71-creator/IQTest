@@ -146,6 +146,10 @@ final class QuizViewModel: ObservableObject {
             }
             return picked
         }.shuffled()
+        // 每题的选项顺序也要打乱：题库里正确选项的位置并不均匀
+        // （图形规律类约四成落在第一个），按原始顺序显示等于把答案位置告诉用户。
+        // 判分与历史快照都用这份打乱后的题目，位置不再泄露答案。
+        questions = questions.map { $0.shuffledOptions() }
         currentIndex = 0
         score = 0
         answers = []

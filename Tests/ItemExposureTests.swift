@@ -154,4 +154,38 @@ final class ItemExposureTests: XCTestCase {
             XCTAssertTrue(seen.contains(response.itemID))
         }
     }
+    func testWechslerRoundHasNoTwoQuestionsWithTheSameContent() throws {
+        // 题库里存在内容完全相同的题——扩充时把原有题又追加了一遍，
+        // 词汇、常识、符号编码三个分测验各有 12 对。同一轮里抽到两道一样的题，
+        // 练习体验与测量都会失真。
+        let vm = WechslerViewModel()
+        vm.start(questionSet: .a)
+        XCTAssertEqual(vm.items.count, 120, "题量必须恒定")
+        var keys = Set<String>()
+        for item in vm.items {
+            XCTAssertTrue(keys.insert(item.contentKey).inserted,
+                          "同一轮出现了内容相同的两道题：\(item.id)")
+        }
+    }
+
+    func testWechslerDoesNotRedrawASeenQuestionUnderAnotherID() throws {
+        // 做过一道题后，内容相同的另一份不应再被当成「新题」抽到：
+        // 否则复测会遇到原题，练习效应直接混进分数。
+        let bank = try WechslerLoader.loadValidated(.a)
+        let pair = try XCTUnwrap(duplicatePair(in: bank), "题库里应当存在内容相同的两道题")
+        ItemExposureStore.markSeen([pair.0], for: wechslerKey)
+        let vm = WechslerViewModel()
+        vm.start(questionSet: .a)
+        XCTAssertFalse(vm.items.contains { $0.id == pair.1 },
+                       "同内容的另一份不应被抽到：\(pair.0) 与 \(pair.1)")
+    }
+
+    private func duplicatePair(in bank: [WechslerItem]) -> (String, String)? {
+        var first: [String: String] = [:]
+        for item in bank {
+            if let previous = first[item.contentKey] { return (previous, item.id) }
+            first[item.contentKey] = item.id
+        }
+        return nil
+    }
 }

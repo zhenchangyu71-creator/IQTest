@@ -168,6 +168,31 @@ struct Question: Codable, Identifiable, Equatable {
     let correctIndex: Int
     let explanation: String
 
+    init(id: Int, testType: TestType, difficulty: Difficulty, category: QuestionCategory,
+         prompt: String, options: [String], correctIndex: Int, explanation: String) {
+        self.id = id
+        self.testType = testType
+        self.difficulty = difficulty
+        self.category = category
+        self.prompt = prompt
+        self.options = options
+        self.correctIndex = correctIndex
+        self.explanation = explanation
+    }
+
+    /// 呈现时打乱选项顺序后的副本。
+    ///
+    /// 题库里正确选项的位置并不均匀（图形规律类约四成落在第一个，语言类比类约四成），
+    /// 按题库原始顺序显示等于把答案位置告诉用户：一直选第一个就能多得近两分。
+    /// 打乱后位置不再泄露答案，正确选项的位置随之调整，判分与历史快照都跟着这份副本走。
+    func shuffledOptions() -> Question {
+        let order = options.indices.shuffled()
+        return Question(id: id, testType: testType, difficulty: difficulty, category: category,
+                        prompt: prompt, options: order.map { options[$0] },
+                        correctIndex: order.firstIndex(of: correctIndex) ?? correctIndex,
+                        explanation: explanation)
+    }
+
     /// 旧版题库没有 testType 字段，缺省视为瑞文
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

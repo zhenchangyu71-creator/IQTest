@@ -112,6 +112,18 @@ struct WechslerItem: Codable, Identifiable {
         zip(options, optionScores).first { $0.1 == maxScore }?.0 ?? ""
     }
 
+    /// 题目的内容指纹：题干与选项都相同才算同一道题。
+    ///
+    /// 题库里存在内容完全相同的题——扩充时把原有题又追加了一遍，
+    /// 词汇、常识、符号编码三个分测验各有 12 对。抽题与「是否做过」都要按内容判断：
+    /// 按题号判断会让同一轮出现两道一样的题（约一半的轮次），
+    /// 也会让复测时同内容的另一份被当成「新题」抽到，练习效应直接混进分数。
+    var contentKey: String {
+        ([prompt] + options)
+            .map { $0.split(whereSeparator: { $0.isWhitespace }).joined() }
+            .joined(separator: "\u{1}")
+    }
+
     init(id: String, order: Int = 0, subtest: WechslerSubtest, prompt: String,
          options: [String], optionScores: [Int], explanation: String,
          presentation: String? = nil, stimulus: String? = nil, displaySeconds: Int? = nil,

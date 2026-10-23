@@ -118,16 +118,35 @@ class WechslerViewModel: ObservableObject {
                 // 整轮都做同一批题会让第二次测试必然重复，练习效应直接混入复测分数。
                 let exposureKey = ItemExposureStore.bankKey("wechsler", questionSet.rawValue)
                 let seen = ItemExposureStore.seen(for: exposureKey)
+                // 题库里存在内容完全相同的题——扩充时把原有题又追加了一遍，
+                // 词汇、常识、符号编码三个分测验各有 12 对。
+                // 「做没做过」与「一轮内不重复」都按内容判断而不是按题号：
+                // 按题号判断会让同一轮出现两道一样的题（约一半的轮次），
+                // 也会让复测时同内容的另一份被当成「新题」抽到。
+                let contentById = Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, $0.contentKey) })
+                let seenContent = Set(seen.compactMap { contentById[$0] })
                 items = WechslerSubtest.allCases.flatMap { sub -> [WechslerItem] in
                     let pool = loaded.filter { $0.subtest == sub }.sorted { $0.order < $1.order }
-                    let unseen = pool.filter { !seen.contains($0.id) }
-                    var picked = Array(unseen.prefix(WechslerViewModel.itemsPerSubtest))
+                    let unseen = pool.filter { !seenContent.contains(contentById[$0.id] ?? "") }
+                    // 同一轮里不出现内容相同的两道题。
+                    var picked: [WechslerItem] = []
+                    var pickedContent = Set<String>()
+                    for item in unseen {
+                        let key = contentById[item.id] ?? ""
+                        guard pickedContent.insert(key).inserted else { continue }
+                        picked.append(item)
+                        if picked.count == WechslerViewModel.itemsPerSubtest { break }
+                    }
                     if picked.count < WechslerViewModel.itemsPerSubtest {
                         // 未做过的题不够时用做过的题补足，保证每轮题量恒定。
                         // 否则同一轮的分母会随已做题数缩水，不同轮次的得分率无法比较。
-                        let chosen = Set(picked.map(\.id))
-                        let rest = pool.filter { !chosen.contains($0.id) }
-                        picked.append(contentsOf: rest.prefix(WechslerViewModel.itemsPerSubtest - picked.count))
+                        let rest = pool.filter { !pickedContent.contains(contentById[$0.id] ?? "") }
+                        for item in rest {
+                            let key = contentById[item.id] ?? ""
+                            guard pickedContent.insert(key).inserted else { continue }
+                            picked.append(item)
+                            if picked.count == WechslerViewModel.itemsPerSubtest { break }
+                        }
                     }
                     return picked
                 }
